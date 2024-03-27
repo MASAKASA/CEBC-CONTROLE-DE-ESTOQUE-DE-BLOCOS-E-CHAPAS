@@ -68,6 +68,14 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLTxtEditarChapa").Font.Size = 16
             formControle.Controls("btnLTxtTrocaEstoque").Font.Size = 16
             
+        ' Tela cadastro chapas avulso
+        Case "fTiraEfeitoBotoesMaterialAvulso"
+            formControle.Controls("btnLImgCadastrarMaterialAvulso").top = 24
+            formControle.Controls("btnLImgCadastrarPolimentoAvulso").top = 78
+        Case "fTiraEfeitoBotoesAcoesAvulso"
+            formControle.Controls("btnLTxtCadastrarChapaAvulso").Font.Size = 16
+            formControle.Controls("btnLTxtLimparCadastroChapaAvulso").Font.Size = 16
+            
             
             
      

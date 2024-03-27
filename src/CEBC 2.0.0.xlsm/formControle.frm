@@ -317,3 +317,26 @@ Private Sub btnLTxtTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift A
     'Chama Serviço
     MsgBox "Chama Serviço troca material no estoque tela estoque m²"
 End Sub
+
+'-----------------------------------------------------------------TELA CADASTRO AVULSO-----------------------------------
+'                                                                 --------------------
+'Botão btnLImgCadastrarMaterialAvulso tela cadastro avulso
+Private Sub btnLImgCadastrarMaterialAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar tipo material tela cadastro avulso"
+End Sub
+'Botão btnLImgCadastrarPolimentoAvulso tela cadastro avulso
+Private Sub btnLImgCadastrarPolimentoAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar tipo polimento tela cadastro avulso"
+End Sub
+'Botão btnLTxtCadastrarChapaAvulso tela cadastro avulso
+Private Sub btnLTxtCadastrarChapaAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar chapas avulsos tela cadastro avulso"
+End Sub
+'Botão btnLTxtLimparCadastroChapaAvulso tela cadastro avulso
+Private Sub btnLTxtLimparCadastroChapaAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço limpar cadastro chapas avulsos tela cadastro avulso"
+End Sub

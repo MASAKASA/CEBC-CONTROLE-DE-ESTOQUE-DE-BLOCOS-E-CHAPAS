@@ -250,6 +250,12 @@ Private Sub efeitoBotoesImagem_MouseDown(ByVal Button As Integer, ByVal Shift As
         ' Tela estoque m²
         Case "btnLImgExportarEstoqueM2"
             efeitoBotoesImagem.top = 6
+            
+        ' Tela cadastro chapas avulso
+        Case "btnLImgCadastrarMaterialAvulso"
+            efeitoBotoesImagem.top = 24
+        Case "btnLImgCadastrarPolimentoAvulso"
+            efeitoBotoesImagem.top = 78
     End Select
 End Sub
 'Efeito de passagem por cima do mouse
@@ -279,6 +285,12 @@ Private Sub efeitoBotoesImagem_MouseMove(ByVal Button As Integer, ByVal Shift As
         ' Tela estoque m²
         Case "btnLImgExportarEstoqueM2"
             efeitoBotoesImagem.top = 4
+            
+        ' Tela cadastro chapas avulso
+        Case "btnLImgCadastrarMaterialAvulso"
+            efeitoBotoesImagem.top = 22
+        Case "btnLImgCadastrarPolimentoAvulso"
+            efeitoBotoesImagem.top = 76
     End Select
 End Sub
 'Efeito ao clicar com o mouse
