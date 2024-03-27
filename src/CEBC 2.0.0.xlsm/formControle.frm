@@ -1,0 +1,319 @@
+VERSION 5.00
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} formControle 
+   Caption         =   "CONTROLE DE BLOCOS E CHAPAS 2.0.0"
+   ClientHeight    =   13410
+   ClientLeft      =   120
+   ClientTop       =   465
+   ClientWidth     =   24645
+   OleObjectBlob   =   "formControle.frx":0000
+   StartUpPosition =   1  'CenterOwner
+   WhatsThisButton =   -1  'True
+   WhatsThisHelp   =   -1  'True
+End
+Attribute VB_Name = "formControle"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Explicit
+
+Dim botoesMenu() As clsLabel
+Dim botoesImg() As clsLabel
+Dim botoesText() As clsLabel
+Dim frameEfeito() As clsFrame
+'Inicialização do formControle
+Private Sub UserForm_Initialize()
+
+    Dim obj As Object
+    Dim i As Long
+    Dim j As Long
+    Dim l As Long
+    Dim m As Long
+    Dim nameObj As String
+    Dim nameObjInicio As String
+    
+    ReDim botoesMenu(1 To Me.Controls.Count)
+    ReDim botoesImg(1 To Me.Controls.Count)
+    ReDim botoesText(1 To Me.Controls.Count)
+    ReDim frameEfeito(1 To Me.Controls.Count)
+    
+    For Each obj In Me.Controls
+        
+        nameObj = obj.name
+        nameObjInicio = Mid(nameObj, 1, 7)
+        
+        If nameObjInicio = "btnLImg" Then
+            i = i + 1
+            Set botoesImg(i) = New clsLabel
+            Set botoesImg(i).efeitoBotoesImagem = obj
+        End If
+        
+        If nameObjInicio = "btnLTxt" Then
+            j = j + 1
+            Set botoesText(j) = New clsLabel
+            Set botoesText(j).efeitoBotoesTexto = obj
+        End If
+        
+        If nameObjInicio = "fTiraEf" Then
+            l = l + 1
+            Set frameEfeito(l) = New clsFrame
+            Set frameEfeito(l).efeitoFrame = obj
+        End If
+        
+        If nameObjInicio = "btnLMen" Then
+            m = m + 1
+            Set botoesMenu(m) = New clsLabel
+            Set botoesMenu(m).efeitoBotoesMenu = obj
+        End If
+        
+    Next obj
+    
+    Set obj = Nothing
+    
+    ReDim Preserve botoesImg(1 To i)
+    ReDim Preserve botoesText(1 To j)
+    ReDim Preserve frameEfeito(1 To l)
+    ReDim Preserve botoesMenu(1 To m)
+    
+    
+End Sub
+
+'-----------------------------------------------------------------MENU DO SISTEMA-----------------------------------
+'                                                                 ---------------
+'Efeito para clique nas label btnLMenuHome do menu
+Private Sub btnLMenuHome_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = 10
+End Sub
+'Efeito para clique nas label btnLMenuBloco do menu
+Private Sub btnLMenuBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = 3
+End Sub
+'Efeito para clique nas label btnLMenuChapa do menu
+Private Sub btnLMenuChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = 4
+End Sub
+'Efeito para clique nas label btnLMenuDespachar do menu
+Private Sub btnLMenuDespachar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = 2
+End Sub
+'Efeito para clique nas label btnLMenuCarrago do menu
+Private Sub btnLMenuCarrago_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = 6
+End Sub
+'Efeito para clique nas label btnLMenuUsuarios do menu
+Private Sub btnLMenuUsuarios_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = 7
+End Sub
+'Efeito para clique nas label btnLMenuCadastros do menu
+Private Sub btnLMenuCadastros_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = 7
+End Sub
+
+'-----------------------------------------------------------------TELA CADASTRO DE BLOCOS-----------------------------------
+'                                                                 -----------------------
+'Botão btnLImgCadastrarPedreira tela cadastrar bloco
+Private Sub btnLImgCadastrarPedreira_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar pedreira"
+End Sub
+'Botão btnLImgCadastrarSerrariaCB tela cadastrar bloco
+Private Sub btnLImgCadastrarSerrariaCB_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar serraria"
+End Sub
+'Botão btnLImgCadastroTipoMaterial tela cadastrar bloco
+Private Sub btnLImgCadastroTipoMaterial_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar tipo material"
+End Sub
+'Botão btnLTxtCadastrarBloco tela cadastrar bloco
+Private Sub btnLTxtCadastrarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar bloco"
+End Sub
+'Botão btnLTextLimparCadastroBloco tela cadastrar bloco
+Private Sub btnLTxtLimparCadastroBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço limpar campos tela cadastro de blocos"
+End Sub
+
+'-----------------------------------------------------------------TELA DESPACHE-----------------------------------
+'                                                                 -------------
+'Efeito de label nome do pdf tela despache
+Private Sub lDigiteNomeArquivoExemplo_Click()
+    lDigiteNomeArquivo.Visible = True
+    lDigiteNomeArquivoExemplo.Visible = False
+    txtNomeArquivo.SetFocus
+End Sub
+'Efeito e coloca em caixa alta o texto em txtNomeArquivo tela despache
+Private Sub txtNomeArquivo_Change()
+    lDigiteNomeArquivo.Visible = True
+    lDigiteNomeArquivoExemplo.Visible = False
+    
+    If txtNomeArquivo.Value = "" Then
+        lDigiteNomeArquivo.Visible = False
+        lDigiteNomeArquivoExemplo.Visible = True
+    End If
+    
+    txtNomeArquivo.Value = UCase(txtNomeArquivo.Value)
+End Sub
+'Efeito ao sair da caixa txtNomeArquivo de texto tela despache
+Private Sub txtNomeArquivo_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    If txtNomeArquivo.Value = "" Then
+        lDigiteNomeArquivo.Visible = False
+        lDigiteNomeArquivoExemplo.Visible = True
+    End If
+End Sub
+'Botão btnLImgCadastrarMotoristaDespache tela despache
+Private Sub btnLImgCadastrarMotoristaDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastro motorista tela despache"
+End Sub
+'Efeito de passagem do mouse botão btnLImgCadastrarDestinoDespache tela despache
+Private Sub btnLImgCadastrarDestinoDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastro destino tela despache"
+End Sub
+'Botão btnLTxtAdicionar tela despache
+Private Sub btnLTxtAdicionar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço adicionar chapa tela despache"
+End Sub
+'Botão btnLImgExportarListaDespache tela despache
+Private Sub btnLImgExportarListaDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço exportar pdf tela despache"
+End Sub
+'Botão btnLTxtDespachar tela despache
+Private Sub btnLTxtDespachar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço despachar tela despache"
+End Sub
+'Botão btnLTxtLimparDespache tela despache
+Private Sub btnLTxtLimparDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço limpar dados tela despache"
+End Sub
+
+'-----------------------------------------------------------------TELA ESTOQUE M³-----------------------------------
+'                                                                 ---------------
+'Efeito de label nome do pdf tela estoque m³
+Private Sub lDigiteNomeArquivoM3Explemplo_Click()
+    lDigiteNomeArquivoM3.Visible = True
+    lDigiteNomeArquivoM3Explemplo.Visible = False
+    txtNomeArquivoEstoqueBlocos.SetFocus
+End Sub
+'Efeito e coloca em caixa alta o texto em txtNomeArquivoEstoqueBlocos tela estoque m³
+Private Sub txtNomeArquivoEstoqueBlocos_Change()
+    lDigiteNomeArquivoM3.Visible = True
+    lDigiteNomeArquivoM3Explemplo.Visible = False
+
+    If txtNomeArquivoEstoqueBlocos.Value = "" Then
+        lDigiteNomeArquivoM3.Visible = False
+        lDigiteNomeArquivoM3Explemplo.Visible = True
+    End If
+
+    txtNomeArquivoEstoqueBlocos.Value = UCase(txtNomeArquivoEstoqueBlocos.Value)
+End Sub
+'Efeito ao sair da caixa txtNomeArquivoEstoqueBlocos de texto tela estoque m³
+Private Sub txtNomeArquivoEstoqueBlocos_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    If txtNomeArquivoEstoqueBlocos.Value = "" Then
+        lDigiteNomeArquivoM3.Visible = False
+        lDigiteNomeArquivoM3Explemplo.Visible = True
+    End If
+End Sub
+'Botão btnLTxtPesquisarBlocos tela estoque m³
+Private Sub btnLTxtPesquisarBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço pesquiasr tela estoque m³"
+End Sub
+'Botão btnLTxtLimparFiltrosBlocos tela estoque m³
+Private Sub btnLTxtLimparFiltrosBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço limpar filtros tela estoque m³"
+End Sub
+'Botão btnLImgExportarEstoqueM3 tela estoque m³
+Private Sub btnLImgExportarEstoqueM3_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço exportar estoque m³ tela estoque m³"
+End Sub
+'Botão btnLTxtNovoBloco tela estoque m³
+Private Sub btnLTxtNovoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço novo bloco tela estoque m³"
+End Sub
+'Botão btnLTxtEditarBloco tela estoque m³
+Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço editar bloco tela estoque m³"
+End Sub
+'Botão btnLTxtADDEstoque tela estoque m³
+Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço adicionar chapas ao estoque tela estoque m³"
+End Sub
+
+'-----------------------------------------------------------------TELA ESTOQUE M²-----------------------------------
+'                                                                 ---------------
+'Efeito de label nome do pdf tela estoque m²
+Private Sub lDigiteNomeArquivoM2Explemplo_Click()
+    lDigiteNomeArquivoM2.Visible = True
+    lDigiteNomeArquivoM2Explemplo.Visible = False
+    txtNomeArquivoEstoqueChapas.SetFocus
+End Sub
+'Efeito e coloca em caixa alta o texto em txtNomeArquivoEstoqueChapas tela estoque m²
+Private Sub txtNomeArquivoEstoqueChapas_Change()
+    lDigiteNomeArquivoM2.Visible = True
+    lDigiteNomeArquivoM2Explemplo.Visible = False
+
+    If txtNomeArquivoEstoqueChapas.Value = "" Then
+        lDigiteNomeArquivoM2.Visible = False
+        lDigiteNomeArquivoM2Explemplo.Visible = True
+    End If
+
+    txtNomeArquivoEstoqueChapas.Value = UCase(txtNomeArquivoEstoqueChapas.Value)
+End Sub
+'Efeito ao sair da caixa txtNomeArquivoEstoqueChapas de texto tela estoque m²
+Private Sub txtNomeArquivoEstoqueChapas_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    If txtNomeArquivoEstoqueChapas.Value = "" Then
+        lDigiteNomeArquivoM2.Visible = False
+        lDigiteNomeArquivoM2Explemplo.Visible = True
+    End If
+End Sub
+'Botão btnLTxtPesquisarChapas tela estoque m²
+Private Sub btnLTxtPesquisarChapas_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço pesquisar chapa tela estoque m²"
+End Sub
+'Botão btnLTxtLimparFiltrosChapas tela estoque m²
+Private Sub btnLTxtLimparFiltrosChapas_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço limpar filtros tela estoque m²"
+End Sub
+'Botão btnLImgExportarEstoqueM2 tela estoque m²
+Private Sub btnLImgExportarEstoqueM2_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço esportar estoque m² tela estoque m²"
+End Sub
+'Botão btnLTxtNovoAvulso tela estoque m²
+Private Sub btnLTxtNovoAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar avulso tela estoque m²"
+End Sub
+'Botão btnLTxtEditarChapa tela estoque m²
+Private Sub btnLTxtEditarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço editar chapa tela estoque m²"
+End Sub
+'Botão btnLTxtTrocaEstoque tela estoque m²
+Private Sub btnLTxtTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço troca material no estoque tela estoque m²"
+End Sub
