@@ -76,6 +76,16 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLTxtCadastrarChapaAvulso").Font.Size = 16
             formControle.Controls("btnLTxtLimparCadastroChapaAvulso").Font.Size = 16
             
+        ' Tela carregos
+        Case "fTiraEfeitoBotoesFiltrosCarregos"
+            formControle.Controls("btnLTxtPesquisarCarregos").Font.Size = 16
+            formControle.Controls("btnLTxtLimparListas").Font.Size = 16
+        Case "fTiraEfeitoBotoesExportarCarrego"
+            formControle.Controls("btnLImgExportarCarregoPDF").top = 24
+        Case "fTiraEfeitoBotoesAcoesListCarrego"
+            formControle.Controls("btnLTxtEditarCarrego").Font.Size = 16
+            formControle.Controls("btnLTxtVoltarCArrego").Font.Size = 16
+            
             
             
      

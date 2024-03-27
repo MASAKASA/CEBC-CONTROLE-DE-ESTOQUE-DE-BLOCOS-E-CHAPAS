@@ -340,3 +340,31 @@ Private Sub btnLTxtLimparCadastroChapaAvulso_MouseDown(ByVal Button As Integer, 
     'Chama Serviço
     MsgBox "Chama Serviço limpar cadastro chapas avulsos tela cadastro avulso"
 End Sub
+
+'-----------------------------------------------------------------TELA CARREGOS-----------------------------------
+'                                                                 -------------
+'Botão btnLTxtPesquisarCarregos tela carregos
+Private Sub btnLTxtPesquisarCarregos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço pesquisar por carregos tela carregos"
+End Sub
+'Botão btnLTxtLimparListas tela carregos
+Private Sub btnLTxtLimparListas_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço limpar dados filtro tela carregos"
+End Sub
+'Botão btnLImgExportarCarregoPDF tela carregos
+Private Sub btnLImgExportarCarregoPDF_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço exportar carregos em pdf tela carregos"
+End Sub
+'Botão btnLTxtEditarCarrego tela carregos
+Private Sub btnLTxtEditarCarrego_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço editar carrego tela carregos"
+End Sub
+'Botão btnLTxtVoltarCArrego tela carregos
+Private Sub btnLTxtVoltarCArrego_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço voltar tela carregos"
+End Sub

@@ -256,6 +256,10 @@ Private Sub efeitoBotoesImagem_MouseDown(ByVal Button As Integer, ByVal Shift As
             efeitoBotoesImagem.top = 24
         Case "btnLImgCadastrarPolimentoAvulso"
             efeitoBotoesImagem.top = 78
+            
+        ' Tela carregos
+        Case "btnLImgExportarCarregoPDF"
+            efeitoBotoesImagem.top = 24
     End Select
 End Sub
 'Efeito de passagem por cima do mouse
@@ -291,6 +295,10 @@ Private Sub efeitoBotoesImagem_MouseMove(ByVal Button As Integer, ByVal Shift As
             efeitoBotoesImagem.top = 22
         Case "btnLImgCadastrarPolimentoAvulso"
             efeitoBotoesImagem.top = 76
+            
+        ' Tela carregos
+        Case "btnLImgExportarCarregoPDF"
+            efeitoBotoesImagem.top = 22
     End Select
 End Sub
 'Efeito ao clicar com o mouse
