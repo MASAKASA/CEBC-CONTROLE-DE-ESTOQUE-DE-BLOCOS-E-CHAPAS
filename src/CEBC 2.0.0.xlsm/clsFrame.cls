@@ -86,9 +86,9 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLTxtEditarCarrego").Font.Size = 16
             formControle.Controls("btnLTxtVoltarCArrego").Font.Size = 16
             
-            
-            
-     
-        
+        ' Tela editar bloco
+        Case "fTiraEfeitoBotoesAcoesEdicaoBloco"
+            formControle.Controls("btnLTxtSalvarEdicaoBloco").Font.Size = 16
+            formControle.Controls("btnLTxtVoltarEdicaoBloco").Font.Size = 16
     End Select
 End Sub

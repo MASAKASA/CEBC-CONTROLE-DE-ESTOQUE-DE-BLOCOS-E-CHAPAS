@@ -368,3 +368,16 @@ Private Sub btnLTxtVoltarCArrego_MouseDown(ByVal Button As Integer, ByVal Shift 
     'Chama Serviço
     MsgBox "Chama Serviço voltar tela carregos"
 End Sub
+
+'-----------------------------------------------------------------TELA EDITAR BLOCO-----------------------------------
+'                                                                 -----------------
+'Botão btnLTxtSalvarEdicaoBloco tela carregos
+Private Sub btnLTxtSalvarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço editar bloco tela editar bloco"
+End Sub
+'Botão btnLTxtVoltarEdicaoBloco tela carregos
+Private Sub btnLTxtVoltarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço voltar tela editar bloco"
+End Sub
