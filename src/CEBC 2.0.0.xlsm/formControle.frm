@@ -4,7 +4,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} formControle
    ClientHeight    =   13410
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   24645
+   ClientWidth     =   24675
    OleObjectBlob   =   "formControle.frx":0000
    StartUpPosition =   1  'CenterOwner
    WhatsThisButton =   -1  'True
@@ -380,4 +380,52 @@ End Sub
 Private Sub btnLTxtVoltarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
     MsgBox "Chama Serviço voltar tela editar bloco"
+End Sub
+
+'-----------------------------------------------------------------TELA LANÇAMENTO E EDIÇÃO CHAPA-----------------------------------
+'                                                                 ------------------------------
+'Botão btnLImgCadastrarPolideiraChapa tela lançamento e edição chapa
+Private Sub btnLImgCadastrarPolideiraChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar Polideira tela lançamento e edição chapa"
+End Sub
+'Botão btnLImgCadastrarTipoPolideiraChapa tela lançamento e edição chapa
+Private Sub btnLImgCadastrarTipoPolideiraChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar tipo polimento tela lançamento e edição chapa"
+End Sub
+'Botão btnLImgCadastrarTipoMaterialChapa tela lançamento e edição chapa
+Private Sub btnLImgCadastrarTipoMaterialChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço tipo material tela lançamento e edição chapa"
+End Sub
+'Botão btnLImgCadastrarTipoMaterialChapaTamanhos tela lançamento e edição chapa
+Private Sub btnLImgCadastrarTipoMaterialChapaTamanhos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço tipo material tela lançamento e edição chapa"
+End Sub
+'Botão btnLTxtAdicionarTamanhoChapa tela lançamento e edição chapa
+Private Sub btnLTxtAdicionarTamanhoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço adicionar tamanhos tela lançamento e edição chapa"
+End Sub
+'Botão btnLTxtEditarTamanhoChapa tela lançamento e edição chapa
+Private Sub btnLTxtEditarTamanhoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço editar tamanho chapa tela lançamento e edição chapa"
+End Sub
+'Botão btnLTxtTirarDaLista tela lançamento e edição chapa
+Private Sub btnLTxtTirarDaLista_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço tira tamanho da lista tela lançamento e edição chapa"
+End Sub
+'Botão btnLTxtSalvarChapa tela lançamento e edição chapa
+Private Sub btnLTxtSalvarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço salva alteração da chapa tela lançamento e edição chapa"
+End Sub
+'Botão btnLTxtVoltarChapa tela lançamento e edição chapa
+Private Sub btnLTxtVoltarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço voltar tela lançamento e edição chapa"
 End Sub
