@@ -32,6 +32,7 @@ Public FontSizeSmall As Integer
 'Efeito ao clicar com o mouse
 Private Sub efeitoBotoesMenu_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     
+    ' Atribuicoes
     rMenuOnClick = 200
     gMenuOnClick = 230
     bMenuOnClick = 255
