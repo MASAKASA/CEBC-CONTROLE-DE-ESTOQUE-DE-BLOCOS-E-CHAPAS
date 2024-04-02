@@ -146,37 +146,12 @@ End Sub
 
 '-----------------------------------------------------------------TELA DESPACHE-----------------------------------
 '                                                                 -------------
-'Efeito de label nome do pdf tela despache
-Private Sub lDigiteNomeArquivoExemplo_Click()
-    lDigiteNomeArquivo.Visible = True
-    lDigiteNomeArquivoExemplo.Visible = False
-    txtNomeArquivo.SetFocus
-End Sub
-'Efeito e coloca em caixa alta o texto em txtNomeArquivo tela despache
-Private Sub txtNomeArquivo_Change()
-    lDigiteNomeArquivo.Visible = True
-    lDigiteNomeArquivoExemplo.Visible = False
-    
-    If txtNomeArquivo.Value = "" Then
-        lDigiteNomeArquivo.Visible = False
-        lDigiteNomeArquivoExemplo.Visible = True
-    End If
-    
-    txtNomeArquivo.Value = UCase(txtNomeArquivo.Value)
-End Sub
-'Efeito ao sair da caixa txtNomeArquivo de texto tela despache
-Private Sub txtNomeArquivo_Exit(ByVal Cancel As MSForms.ReturnBoolean)
-    If txtNomeArquivo.Value = "" Then
-        lDigiteNomeArquivo.Visible = False
-        lDigiteNomeArquivoExemplo.Visible = True
-    End If
-End Sub
 'Botão btnLImgCadastrarMotoristaDespache tela despache
 Private Sub btnLImgCadastrarMotoristaDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
     MsgBox "Chama Serviço cadastro motorista tela despache"
 End Sub
-'Efeito de passagem do mouse botão btnLImgCadastrarDestinoDespache tela despache
+'Botão btnLImgCadastrarDestinoDespache tela despache
 Private Sub btnLImgCadastrarDestinoDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
     MsgBox "Chama Serviço cadastro destino tela despache"
@@ -185,11 +160,6 @@ End Sub
 Private Sub btnLTxtAdicionar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
     MsgBox "Chama Serviço adicionar chapa tela despache"
-End Sub
-'Botão btnLImgExportarListaDespache tela despache
-Private Sub btnLImgExportarListaDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
-    MsgBox "Chama Serviço exportar pdf tela despache"
 End Sub
 'Botão btnLTxtDespachar tela despache
 Private Sub btnLTxtDespachar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)

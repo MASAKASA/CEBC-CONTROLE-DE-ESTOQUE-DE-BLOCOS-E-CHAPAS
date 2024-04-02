@@ -350,11 +350,9 @@ Private Sub efeitoBotoesImagem_MouseDown(ByVal Button As Integer, ByVal Shift As
         
         ' Tela despache
         Case "btnLImgCadastrarMotoristaDespache"
-            efeitoBotoesImagem.top = 70
+            efeitoBotoesImagem.top = 28
         Case "btnLImgCadastrarDestinoDespache"
-            efeitoBotoesImagem.top = 70
-        Case "btnLImgExportarListaDespache"
-            efeitoBotoesImagem.top = 6
+            efeitoBotoesImagem.top = 76
             
         ' Tela estoque m³
         Case "btnLImgExportarEstoqueM3"
@@ -399,9 +397,9 @@ Private Sub efeitoBotoesImagem_MouseMove(ByVal Button As Integer, ByVal Shift As
         
         ' Tela despache
         Case "btnLImgCadastrarMotoristaDespache"
-            efeitoBotoesImagem.top = 70
+            efeitoBotoesImagem.top = 28
         Case "btnLImgCadastrarDestinoDespache"
-            efeitoBotoesImagem.top = 70
+            efeitoBotoesImagem.top = 76
         Case "btnLImgExportarListaDespache"
             efeitoBotoesImagem.top = 4
             

@@ -46,12 +46,11 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLTxtLimparCadastroBloco").Font.Size = botoesTextoFontSizeSmall
         
         ' Tela despache
-        Case "fTiraEfeitoBotoesPesquisaEAdicicao"
-            formControle.Controls("btnLImgCadastrarMotoristaDespache").top = 72
-            formControle.Controls("btnLImgCadastrarDestinoDespache").top = 72
+        Case "fTiraEfeitoBotoesCabecalho"
+            formControle.Controls("btnLImgCadastrarMotoristaDespache").top = 30
+            formControle.Controls("btnLImgCadastrarDestinoDespache").top = 78
+        Case "fTiraEfeitoBotoesMaterial"
             formControle.Controls("btnLTxtAdicionar").Font.Size = botoesTextoFontSizeSmall
-        Case "fTiraEfeitoBotoesExportarDespachePDF"
-            formControle.Controls("btnLImgExportarListaDespache").top = 6
         Case "fTiraEfeitoBotoesAcoesDespachar"
             formControle.Controls("btnLTxtDespachar").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtLimparDespache").Font.Size = botoesTextoFontSizeSmall
