@@ -113,5 +113,12 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
         Case "fTiraEfeitoBotoesAcoesEdicaoChapa"
             formControle.Controls("btnLTxtSalvarChapa").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtVoltarChapa").Font.Size = botoesTextoFontSizeSmall
+            
+        ' Tela Troca estoque
+        Case "fTiraEfeitoBotoesTrocaPor"
+            formControle.Controls("btnLTxtAdicionarTrocaEstoque").Font.Size = botoesTextoFontSizeSmall
+        Case "fTiraEfeitoBotoesAcoesTrocaEstoque"
+            formControle.Controls("btnLTxtTrocarEstoque").Font.Size = botoesTextoFontSizeSmall
+            formControle.Controls("btnLTxtVoltarTrocaEstoque").Font.Size = botoesTextoFontSizeSmall
     End Select
 End Sub

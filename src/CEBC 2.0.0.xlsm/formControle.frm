@@ -399,3 +399,22 @@ Private Sub btnLTxtVoltarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As
     'Chama Serviço
     MsgBox "Chama Serviço voltar tela lançamento e edição chapa"
 End Sub
+
+
+'-----------------------------------------------------------------TELA TROCA ESTOQUE-----------------------------------
+'                                                                 ------------------
+'Botão btnLTxtAdicionarTrocaEstoque tela troca estoque
+Private Sub btnLTxtAdicionarTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço adicionar material para troca tela troca estoque"
+End Sub
+'Botão btnLTxtTrocarEstoque tela troca estoque
+Private Sub btnLTxtTrocarEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço troca de estoque tela troca estoque"
+End Sub
+'Botão btnLTxtVoltarTrocaEstoque tela troca estoque
+Private Sub btnLTxtVoltarTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço voltar tela troca estoque"
+End Sub
