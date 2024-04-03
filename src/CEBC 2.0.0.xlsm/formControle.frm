@@ -108,12 +108,17 @@ End Sub
 'Efeito para clique nas label btnLMenuUsuarios do menu
 Private Sub btnLMenuUsuarios_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 7
+    Me.MultiPageCEBC.Value = 11
 End Sub
 'Efeito para clique nas label btnLMenuCadastros do menu
 Private Sub btnLMenuCadastros_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 7
+    Me.MultiPageCEBC.Value = 1
+End Sub
+'Efeito para clique nas label btnLMenuLogs do menu
+Private Sub btnLMenuLogs_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = 12
 End Sub
 
 '-----------------------------------------------------------------TELA CADASTRO DE BLOCOS-----------------------------------
@@ -417,4 +422,43 @@ End Sub
 Private Sub btnLTxtVoltarTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
     MsgBox "Chama Serviço voltar tela troca estoque"
+End Sub
+
+
+'-----------------------------------------------------------------TELA CADASTROS DIVERSOS-----------------------------------
+'                                                                 -----------------------
+'Botão btnLTxtSalvarPedreira tela cadastros diversos
+Private Sub btnLTxtSalvarPedreira_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar ou editar pedreira tela cadastros diversos"
+End Sub
+'Botão btnLTxtSalvarSerraria tela cadastros diversos
+Private Sub btnLTxtSalvarSerraria_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar ou editar serraria tela cadastros diversos"
+End Sub
+'Botão btnLTxtSalvarPolideira tela cadastros diversos
+Private Sub btnLTxtSalvarPolideira_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar ou editar polideira tela cadastros diversos"
+End Sub
+'Botão btnLTxtSalvarTipoMaterial tela cadastros diversos
+Private Sub btnLTxtSalvarTipoMaterial_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar ou editar tipo material tela cadastros diversos"
+End Sub
+'Botão btnLTxtSalvarTipoPolimento tela cadastros diversos
+Private Sub btnLTxtSalvarTipoPolimento_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar ou editar tipo polimento tela cadastros diversos"
+End Sub
+'Botão btnLTxtSalvarMotorista tela cadastros diversos
+Private Sub btnLTxtSalvarMotorista_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar ou editar motorista tela cadastros diversos"
+End Sub
+'Botão btnLTxtSalvarMotorista tela cadastros diversos
+Private Sub btnLTxtSalvarDestino_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar ou editar destino tela cadastros diversos"
 End Sub

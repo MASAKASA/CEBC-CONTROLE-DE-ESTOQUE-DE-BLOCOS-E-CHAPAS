@@ -35,6 +35,7 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLMenuCarrago").Font.Size = menuFontSizeSmall
             formControle.Controls("btnLMenuUsuarios").Font.Size = menuFontSizeSmall
             formControle.Controls("btnLMenuCadastros").Font.Size = menuFontSizeSmall
+            formControle.Controls("btnLMenuLogs").Font.Size = menuFontSizeSmall
             
         ' Tela cadastrar bloco
         Case "fTiraEfeitoBotoesPedreiraBloco"
@@ -120,5 +121,21 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
         Case "fTiraEfeitoBotoesAcoesTrocaEstoque"
             formControle.Controls("btnLTxtTrocarEstoque").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtVoltarTrocaEstoque").Font.Size = botoesTextoFontSizeSmall
+            
+        ' Tela Cadastro diversos
+        Case "fTiraEfeitoBotoesPedreira"
+            formControle.Controls("btnLTxtSalvarPedreira").Font.Size = botoesTextoFontSizeSmall
+        Case "fTiraEfeitoBotoesSerraria"
+            formControle.Controls("btnLTxtSalvarSerraria").Font.Size = botoesTextoFontSizeSmall
+        Case "fTiraEfeitoBotoesPolideira"
+            formControle.Controls("btnLTxtSalvarPolideira").Font.Size = botoesTextoFontSizeSmall
+        Case "fTiraEfeitoBotoesTipoMaterial"
+            formControle.Controls("btnLTxtSalvarTipoMaterial").Font.Size = botoesTextoFontSizeSmall
+        Case "fTiraEfeitoBotoesTipoPolimento"
+            formControle.Controls("btnLTxtSalvarTipoPolimento").Font.Size = botoesTextoFontSizeSmall
+        Case "fTiraEfeitoBotoesMotorista"
+            formControle.Controls("btnLTxtSalvarMotorista").Font.Size = botoesTextoFontSizeSmall
+        Case "fTiraEfeitoBotoesDestino"
+            formControle.Controls("btnLTxtSalvarDestino").Font.Size = botoesTextoFontSizeSmall
     End Select
 End Sub
