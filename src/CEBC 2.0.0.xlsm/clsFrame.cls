@@ -33,9 +33,9 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLMenuChapa").Font.Size = menuFontSizeSmall
             formControle.Controls("btnLMenuDespachar").Font.Size = menuFontSizeSmall
             formControle.Controls("btnLMenuCarrago").Font.Size = menuFontSizeSmall
-            formControle.Controls("btnLMenuUsuarios").Font.Size = menuFontSizeSmall
             formControle.Controls("btnLMenuCadastros").Font.Size = menuFontSizeSmall
-            formControle.Controls("btnLMenuLogs").Font.Size = menuFontSizeSmall
+            formControle.Controls("btnLMenuUsuarios").Font.Size = menuFontSizeSmall
+            
             
         ' Tela cadastrar bloco
         Case "fTiraEfeitoBotoesPedreiraBloco"
@@ -137,5 +137,13 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLTxtSalvarMotorista").Font.Size = botoesTextoFontSizeSmall
         Case "fTiraEfeitoBotoesDestino"
             formControle.Controls("btnLTxtSalvarDestino").Font.Size = botoesTextoFontSizeSmall
+        
+        ' Tela Usuarios
+        Case "fTiraEfeitoBotoesCadastroEdicaoUsuario"
+            formControle.Controls("btnLTxtSalvarUsuario").Font.Size = botoesTextoFontSizeSmall
+        Case "fTiraEfeitoBotoesListaUsuarios"
+            formControle.Controls("btnLTxtListUsuario").Font.Size = botoesTextoFontSizeSmall
+        Case "fTiraEfeitoBotoesLogUsuarios"
+            formControle.Controls("btnLTxtListUsuarioLog").Font.Size = botoesTextoFontSizeSmall
     End Select
 End Sub

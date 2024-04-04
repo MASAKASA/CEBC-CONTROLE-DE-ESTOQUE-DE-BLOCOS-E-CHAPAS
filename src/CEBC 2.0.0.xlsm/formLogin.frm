@@ -19,17 +19,17 @@ End Sub
 
 'Efeito de label tela login
 Private Sub lUsuarioExemplo_Click()
-    LUsuario.Visible = True
+    lUsuario.Visible = True
     lUsuarioExemplo.Visible = False
     txtUsuario.SetFocus
 End Sub
 'Efeito e coloca em caixa alta o texto em txtUsuario tela login
 Private Sub txtUsuario_Change()
-    LUsuario.Visible = True
+    lUsuario.Visible = True
     lUsuarioExemplo.Visible = False
     
     If txtUsuario.Value = "" Then
-        LUsuario.Visible = False
+        lUsuario.Visible = False
         lUsuarioExemplo.Visible = True
     End If
     
@@ -38,7 +38,7 @@ End Sub
 'Efeito ao sair da caixa txtUsuario de texto tela login
 Private Sub txtUsuario_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     If txtUsuario.Value = "" Then
-        LUsuario.Visible = False
+        lUsuario.Visible = False
         lUsuarioExemplo.Visible = True
     End If
 End Sub

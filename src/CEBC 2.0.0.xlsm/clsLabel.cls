@@ -33,9 +33,13 @@ Public FontSizeSmall As Integer
 Private Sub efeitoBotoesMenu_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     
     ' OBS.:
-    ' TODA VEZ QUE ADICIONAR MAIS UM ITEM NO MENU LEMBRAR DE
-    ' TROCAR A COR DO FUNDO DA LABEL QUE FICA POR TRÁS DA LABEL
-    ' PRINCIPAL(QUE É A DO BOTÃO)
+    '   1 - TODA VEZ QUE ADICIONAR MAIS UM ITEM NO MENU LEMBRAR DE
+    '       TROCAR A COR DO FUNDO DA LABEL QUE FICA POR TRÁS DA LABEL
+    '       PRINCIPAL(QUE É A DO BOTÃO)
+    '
+    '   2 - SE CASO TROCAR A CORES E EFEITOS DOS BOTÕES DO MENU, IR NO
+    '       MOUSEDOWN DO BOTÃO ADDESTOQUE NA TELA ESTOQUE M3 PARA TROCAR
+    '       AS CONFIGURAÇÃO DO BOTÕES BLOCO E CHAPA DO MENU
     
     ' Atribuicoes
     rMenuOnClick = 200
@@ -85,20 +89,15 @@ Private Sub efeitoBotoesMenu_MouseDown(ByVal Button As Integer, ByVal Shift As I
             formControle.Controls("btnLMenuCarrago").Width = WidthMenuOffClick
             formControle.Controls("btnLMenuCarrago").TextAlign = fmTextAlignLeft
             
-            formControle.Controls("btnLMenuUsuarios").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuUsuarios").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuUsuarios").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuUsuarios").TextAlign = fmTextAlignLeft
-            
             formControle.Controls("btnLMenuCadastros").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
             formControle.Controls("btnLMenuCadastros").Left = leftMenuOffClick
             formControle.Controls("btnLMenuCadastros").Width = WidthMenuOffClick
             formControle.Controls("btnLMenuCadastros").TextAlign = fmTextAlignLeft
             
-            formControle.Controls("btnLMenuLogs").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuLogs").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuLogs").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuLogs").TextAlign = fmTextAlignLeft
+            formControle.Controls("btnLMenuUsuarios").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
+            formControle.Controls("btnLMenuUsuarios").Left = leftMenuOffClick
+            formControle.Controls("btnLMenuUsuarios").Width = WidthMenuOffClick
+            formControle.Controls("btnLMenuUsuarios").TextAlign = fmTextAlignLeft
             
         Case "btnLMenuBloco"
             ' Botão bloco
@@ -130,20 +129,15 @@ Private Sub efeitoBotoesMenu_MouseDown(ByVal Button As Integer, ByVal Shift As I
             formControle.Controls("btnLMenuCarrago").Width = WidthMenuOffClick
             formControle.Controls("btnLMenuCarrago").TextAlign = fmTextAlignLeft
             
-            formControle.Controls("btnLMenuUsuarios").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuUsuarios").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuUsuarios").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuUsuarios").TextAlign = fmTextAlignLeft
-            
             formControle.Controls("btnLMenuCadastros").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
             formControle.Controls("btnLMenuCadastros").Left = leftMenuOffClick
             formControle.Controls("btnLMenuCadastros").Width = WidthMenuOffClick
             formControle.Controls("btnLMenuCadastros").TextAlign = fmTextAlignLeft
             
-            formControle.Controls("btnLMenuLogs").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuLogs").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuLogs").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuLogs").TextAlign = fmTextAlignLeft
+            formControle.Controls("btnLMenuUsuarios").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
+            formControle.Controls("btnLMenuUsuarios").Left = leftMenuOffClick
+            formControle.Controls("btnLMenuUsuarios").Width = WidthMenuOffClick
+            formControle.Controls("btnLMenuUsuarios").TextAlign = fmTextAlignLeft
             
         Case "btnLMenuChapa"
             ' Botão chapa
@@ -175,20 +169,15 @@ Private Sub efeitoBotoesMenu_MouseDown(ByVal Button As Integer, ByVal Shift As I
             formControle.Controls("btnLMenuCarrago").Width = WidthMenuOffClick
             formControle.Controls("btnLMenuCarrago").TextAlign = fmTextAlignLeft
             
-            formControle.Controls("btnLMenuUsuarios").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuUsuarios").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuUsuarios").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuUsuarios").TextAlign = fmTextAlignLeft
-            
             formControle.Controls("btnLMenuCadastros").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
             formControle.Controls("btnLMenuCadastros").Left = leftMenuOffClick
             formControle.Controls("btnLMenuCadastros").Width = WidthMenuOffClick
             formControle.Controls("btnLMenuCadastros").TextAlign = fmTextAlignLeft
             
-            formControle.Controls("btnLMenuLogs").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuLogs").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuLogs").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuLogs").TextAlign = fmTextAlignLeft
+            formControle.Controls("btnLMenuUsuarios").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
+            formControle.Controls("btnLMenuUsuarios").Left = leftMenuOffClick
+            formControle.Controls("btnLMenuUsuarios").Width = WidthMenuOffClick
+            formControle.Controls("btnLMenuUsuarios").TextAlign = fmTextAlignLeft
             
         Case "btnLMenuDespachar"
             ' Botão despachar
@@ -220,20 +209,15 @@ Private Sub efeitoBotoesMenu_MouseDown(ByVal Button As Integer, ByVal Shift As I
             formControle.Controls("btnLMenuCarrago").Width = WidthMenuOffClick
             formControle.Controls("btnLMenuCarrago").TextAlign = fmTextAlignLeft
             
-            formControle.Controls("btnLMenuUsuarios").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuUsuarios").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuUsuarios").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuUsuarios").TextAlign = fmTextAlignLeft
-            
             formControle.Controls("btnLMenuCadastros").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
             formControle.Controls("btnLMenuCadastros").Left = leftMenuOffClick
             formControle.Controls("btnLMenuCadastros").Width = WidthMenuOffClick
             formControle.Controls("btnLMenuCadastros").TextAlign = fmTextAlignLeft
             
-            formControle.Controls("btnLMenuLogs").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuLogs").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuLogs").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuLogs").TextAlign = fmTextAlignLeft
+            formControle.Controls("btnLMenuUsuarios").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
+            formControle.Controls("btnLMenuUsuarios").Left = leftMenuOffClick
+            formControle.Controls("btnLMenuUsuarios").Width = WidthMenuOffClick
+            formControle.Controls("btnLMenuUsuarios").TextAlign = fmTextAlignLeft
             
         Case "btnLMenuCarrago"
             ' Botão carrego
@@ -265,20 +249,15 @@ Private Sub efeitoBotoesMenu_MouseDown(ByVal Button As Integer, ByVal Shift As I
             formControle.Controls("btnLMenuDespachar").Width = WidthMenuOffClick
             formControle.Controls("btnLMenuDespachar").TextAlign = fmTextAlignLeft
             
-            formControle.Controls("btnLMenuUsuarios").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuUsuarios").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuUsuarios").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuUsuarios").TextAlign = fmTextAlignLeft
-            
             formControle.Controls("btnLMenuCadastros").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
             formControle.Controls("btnLMenuCadastros").Left = leftMenuOffClick
             formControle.Controls("btnLMenuCadastros").Width = WidthMenuOffClick
             formControle.Controls("btnLMenuCadastros").TextAlign = fmTextAlignLeft
             
-            formControle.Controls("btnLMenuLogs").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuLogs").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuLogs").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuLogs").TextAlign = fmTextAlignLeft
+            formControle.Controls("btnLMenuUsuarios").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
+            formControle.Controls("btnLMenuUsuarios").Left = leftMenuOffClick
+            formControle.Controls("btnLMenuUsuarios").Width = WidthMenuOffClick
+            formControle.Controls("btnLMenuUsuarios").TextAlign = fmTextAlignLeft
             
         Case "btnLMenuUsuarios"
             ' Botão usuarios
@@ -320,11 +299,6 @@ Private Sub efeitoBotoesMenu_MouseDown(ByVal Button As Integer, ByVal Shift As I
             formControle.Controls("btnLMenuCadastros").Width = WidthMenuOffClick
             formControle.Controls("btnLMenuCadastros").TextAlign = fmTextAlignLeft
             
-            formControle.Controls("btnLMenuLogs").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuLogs").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuLogs").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuLogs").TextAlign = fmTextAlignLeft
-            
         Case "btnLMenuCadastros"
             ' Botão usuarios
             formControle.Controls("btnLMenuCadastros").BackColor = RGB(rMenuOnClick, gMenuOnClick, bMenuOnClick)
@@ -365,55 +339,6 @@ Private Sub efeitoBotoesMenu_MouseDown(ByVal Button As Integer, ByVal Shift As I
             formControle.Controls("btnLMenuUsuarios").Width = WidthMenuOffClick
             formControle.Controls("btnLMenuUsuarios").TextAlign = fmTextAlignLeft
             
-            formControle.Controls("btnLMenuLogs").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuLogs").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuLogs").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuLogs").TextAlign = fmTextAlignLeft
-            
-        Case "btnLMenuLogs"
-            ' Botão logs
-            formControle.Controls("btnLMenuLogs").BackColor = RGB(rMenuOnClick, gMenuOnClick, bMenuOnClick)
-            formControle.Controls("btnLMenuLogs").Font.Size = FontSizeBig
-            formControle.Controls("btnLMenuLogs").Font.Size = FontSizeSmall
-            formControle.Controls("btnLMenuLogs").Left = leftMenuOnClick
-            formControle.Controls("btnLMenuLogs").Width = WidthMenuOnClick
-            formControle.Controls("btnLMenuLogs").TextAlign = fmTextAlignCenter
-            
-            ' Demais botões no menu
-            formControle.Controls("btnLMenuHome").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuHome").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuHome").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuHome").TextAlign = fmTextAlignLeft
-            
-            formControle.Controls("btnLMenuBloco").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuBloco").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuBloco").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuBloco").TextAlign = fmTextAlignLeft
-            
-            formControle.Controls("btnLMenuChapa").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuChapa").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuChapa").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuChapa").TextAlign = fmTextAlignLeft
-            
-            formControle.Controls("btnLMenuDespachar").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuDespachar").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuDespachar").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuDespachar").TextAlign = fmTextAlignLeft
-            
-            formControle.Controls("btnLMenuCarrago").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuCarrago").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuCarrago").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuCarrago").TextAlign = fmTextAlignLeft
-            
-            formControle.Controls("btnLMenuUsuarios").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuUsuarios").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuUsuarios").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuUsuarios").TextAlign = fmTextAlignLeft
-            
-            formControle.Controls("btnLMenuCadastros").BackColor = RGB(rMenuOffClick, gMenuOffClick, bMenuOffClick)
-            formControle.Controls("btnLMenuCadastros").Left = leftMenuOffClick
-            formControle.Controls("btnLMenuCadastros").Width = WidthMenuOffClick
-            formControle.Controls("btnLMenuCadastros").TextAlign = fmTextAlignLeft
     End Select
 End Sub
 'Efeito de passagem por cima do mouse

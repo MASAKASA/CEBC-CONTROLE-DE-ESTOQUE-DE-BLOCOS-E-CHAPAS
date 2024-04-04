@@ -105,20 +105,15 @@ Private Sub btnLMenuCarrago_MouseDown(ByVal Button As Integer, ByVal Shift As In
     'Muda abra da multPage
     Me.MultiPageCEBC.Value = 6
 End Sub
-'Efeito para clique nas label btnLMenuUsuarios do menu
-Private Sub btnLMenuUsuarios_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 11
-End Sub
 'Efeito para clique nas label btnLMenuCadastros do menu
 Private Sub btnLMenuCadastros_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Muda abra da multPage
     Me.MultiPageCEBC.Value = 1
 End Sub
-'Efeito para clique nas label btnLMenuLogs do menu
-Private Sub btnLMenuLogs_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+'Efeito para clique nas label btnLMenuUsuarios do menu
+Private Sub btnLMenuUsuarios_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 12
+    Me.MultiPageCEBC.Value = 11
 End Sub
 
 '-----------------------------------------------------------------TELA CADASTRO DE BLOCOS-----------------------------------
@@ -126,27 +121,27 @@ End Sub
 'Botão btnLImgCadastrarPedreira tela cadastrar bloco
 Private Sub btnLImgCadastrarPedreira_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastrar pedreira"
+    MsgBox "Chama Serviço cadastrar pedreira, tela cadastrar bloco"
 End Sub
 'Botão btnLImgCadastrarSerrariaCB tela cadastrar bloco
 Private Sub btnLImgCadastrarSerrariaCB_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastrar serraria"
+    MsgBox "Chama Serviço cadastrar serraria, tela cadastrar bloco"
 End Sub
 'Botão btnLImgCadastroTipoMaterial tela cadastrar bloco
 Private Sub btnLImgCadastroTipoMaterial_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastrar tipo material"
+    MsgBox "Chama Serviço cadastrar tipo material, tela cadastrar bloco"
 End Sub
 'Botão btnLTxtCadastrarBloco tela cadastrar bloco
 Private Sub btnLTxtCadastrarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastrar bloco"
+    MsgBox "Chama Serviço cadastrar bloco, tela cadastrar bloco"
 End Sub
 'Botão btnLTextLimparCadastroBloco tela cadastrar bloco
 Private Sub btnLTxtLimparCadastroBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço limpar campos tela cadastro de blocos"
+    MsgBox "Chama Serviço limpar campos, tela cadastro de blocos"
 End Sub
 
 '-----------------------------------------------------------------TELA DESPACHE-----------------------------------
@@ -154,27 +149,27 @@ End Sub
 'Botão btnLImgCadastrarMotoristaDespache tela despache
 Private Sub btnLImgCadastrarMotoristaDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastro motorista tela despache"
+    MsgBox "Chama Serviço cadastro motorista, tela despache"
 End Sub
 'Botão btnLImgCadastrarDestinoDespache tela despache
 Private Sub btnLImgCadastrarDestinoDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastro destino tela despache"
+    MsgBox "Chama Serviço cadastro destino, tela despache"
 End Sub
 'Botão btnLTxtAdicionar tela despache
 Private Sub btnLTxtAdicionar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço adicionar chapa tela despache"
+    MsgBox "Chama Serviço adicionar chapa, tela despache"
 End Sub
 'Botão btnLTxtDespachar tela despache
 Private Sub btnLTxtDespachar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço despachar tela despache"
+    MsgBox "Chama Serviço despachar, tela despache"
 End Sub
 'Botão btnLTxtLimparDespache tela despache
 Private Sub btnLTxtLimparDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço limpar dados tela despache"
+    MsgBox "Chama Serviço limpar dados, tela despache"
 End Sub
 
 '-----------------------------------------------------------------TELA ESTOQUE M³-----------------------------------
@@ -207,32 +202,47 @@ End Sub
 'Botão btnLTxtPesquisarBlocos tela estoque m³
 Private Sub btnLTxtPesquisarBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço pesquiasr tela estoque m³"
+    MsgBox "Chama Serviço pesquiar, tela estoque m³"
 End Sub
 'Botão btnLTxtLimparFiltrosBlocos tela estoque m³
 Private Sub btnLTxtLimparFiltrosBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço limpar filtros tela estoque m³"
+    MsgBox "Chama Serviço limpar filtros, tela estoque m³"
 End Sub
 'Botão btnLImgExportarEstoqueM3 tela estoque m³
 Private Sub btnLImgExportarEstoqueM3_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço exportar estoque m³ tela estoque m³"
+    MsgBox "Chama Serviço exportar estoque m³, tela estoque m³"
 End Sub
 'Botão btnLTxtNovoBloco tela estoque m³
 Private Sub btnLTxtNovoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
-    MsgBox "Chama Serviço novo bloco tela estoque m³"
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = 0
 End Sub
 'Botão btnLTxtEditarBloco tela estoque m³
 Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
-    MsgBox "Chama Serviço editar bloco tela estoque m³"
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = 7
 End Sub
 'Botão btnLTxtADDEstoque tela estoque m³
 Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
-    MsgBox "Chama Serviço adicionar chapas ao estoque tela estoque m³"
+    
+    ' Botão chapa
+    formControle.Controls("btnLMenuChapa").BackColor = RGB(200, 230, 255)
+    formControle.Controls("btnLMenuChapa").Font.Size = 32
+    formControle.Controls("btnLMenuChapa").Font.Size = 20
+    formControle.Controls("btnLMenuChapa").Left = 15
+    formControle.Controls("btnLMenuChapa").Width = 172
+    formControle.Controls("btnLMenuChapa").TextAlign = fmTextAlignCenter
+                
+    ' Botão Menu
+    formControle.Controls("btnLMenuBloco").BackColor = RGB(0, 100, 200)
+    formControle.Controls("btnLMenuBloco").Left = 2
+    formControle.Controls("btnLMenuBloco").Width = 189
+    formControle.Controls("btnLMenuBloco").TextAlign = fmTextAlignLeft
+    
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = 8
 End Sub
 
 '-----------------------------------------------------------------TELA ESTOQUE M²-----------------------------------
@@ -265,32 +275,32 @@ End Sub
 'Botão btnLTxtPesquisarChapas tela estoque m²
 Private Sub btnLTxtPesquisarChapas_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço pesquisar chapa tela estoque m²"
+    MsgBox "Chama Serviço pesquisar chapa, tela estoque m²"
 End Sub
 'Botão btnLTxtLimparFiltrosChapas tela estoque m²
 Private Sub btnLTxtLimparFiltrosChapas_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço limpar filtros tela estoque m²"
+    MsgBox "Chama Serviço limpar filtros, tela estoque m²"
 End Sub
 'Botão btnLImgExportarEstoqueM2 tela estoque m²
 Private Sub btnLImgExportarEstoqueM2_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço esportar estoque m² tela estoque m²"
+    MsgBox "Chama Serviço esportar estoque m², tela estoque m²"
 End Sub
 'Botão btnLTxtNovoAvulso tela estoque m²
 Private Sub btnLTxtNovoAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
-    MsgBox "Chama Serviço cadastrar avulso tela estoque m²"
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = 5
 End Sub
 'Botão btnLTxtEditarChapa tela estoque m²
 Private Sub btnLTxtEditarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
-    MsgBox "Chama Serviço editar chapa tela estoque m²"
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = 8
 End Sub
 'Botão btnLTxtTrocaEstoque tela estoque m²
 Private Sub btnLTxtTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
-    MsgBox "Chama Serviço troca material no estoque tela estoque m²"
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = 9
 End Sub
 
 '-----------------------------------------------------------------TELA CADASTRO AVULSO-----------------------------------
@@ -298,22 +308,22 @@ End Sub
 'Botão btnLImgCadastrarMaterialAvulso tela cadastro avulso
 Private Sub btnLImgCadastrarMaterialAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastrar tipo material tela cadastro avulso"
+    MsgBox "Chama Serviço cadastrar tipo material, tela cadastro avulso"
 End Sub
 'Botão btnLImgCadastrarPolimentoAvulso tela cadastro avulso
 Private Sub btnLImgCadastrarPolimentoAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastrar tipo polimento tela cadastro avulso"
+    MsgBox "Chama Serviço cadastrar tipo polimento, tela cadastro avulso"
 End Sub
 'Botão btnLTxtCadastrarChapaAvulso tela cadastro avulso
 Private Sub btnLTxtCadastrarChapaAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastrar chapas avulsos tela cadastro avulso"
+    MsgBox "Chama Serviço cadastrar chapas avulsos, tela cadastro avulso"
 End Sub
 'Botão btnLTxtLimparCadastroChapaAvulso tela cadastro avulso
 Private Sub btnLTxtLimparCadastroChapaAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço limpar cadastro chapas avulsos tela cadastro avulso"
+    MsgBox "Chama Serviço limpar cadastro chapas avulsos, tela cadastro avulso"
 End Sub
 
 '-----------------------------------------------------------------TELA CARREGOS-----------------------------------
@@ -321,27 +331,27 @@ End Sub
 'Botão btnLTxtPesquisarCarregos tela carregos
 Private Sub btnLTxtPesquisarCarregos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço pesquisar por carregos tela carregos"
+    MsgBox "Chama Serviço pesquisar por carregos, tela carregos"
 End Sub
 'Botão btnLTxtLimparListas tela carregos
 Private Sub btnLTxtLimparListas_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço limpar dados filtro tela carregos"
+    MsgBox "Chama Serviço limpar dados filtro, tela carregos"
 End Sub
 'Botão btnLImgExportarCarregoPDF tela carregos
 Private Sub btnLImgExportarCarregoPDF_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço exportar carregos em pdf tela carregos"
+    MsgBox "Chama Serviço exportar carregos em pdf, tela carregos"
 End Sub
 'Botão btnLTxtEditarCarrego tela carregos
 Private Sub btnLTxtEditarCarrego_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço editar carrego tela carregos"
+    MsgBox "Chama Serviço editar carrego, tela carregos"
 End Sub
 'Botão btnLTxtVoltarCArrego tela carregos
 Private Sub btnLTxtVoltarCArrego_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço voltar tela carregos"
+    MsgBox "Chama Serviço voltar, tela carregos"
 End Sub
 
 '-----------------------------------------------------------------TELA EDITAR BLOCO-----------------------------------
@@ -349,12 +359,12 @@ End Sub
 'Botão btnLTxtSalvarEdicaoBloco tela carregos
 Private Sub btnLTxtSalvarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço editar bloco tela editar bloco"
+    MsgBox "Chama Serviço editar bloco, tela editar bloco"
 End Sub
 'Botão btnLTxtVoltarEdicaoBloco tela carregos
 Private Sub btnLTxtVoltarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço voltar tela editar bloco"
+    MsgBox "Chama Serviço voltar, tela editar bloco"
 End Sub
 
 '-----------------------------------------------------------------TELA LANÇAMENTO E EDIÇÃO CHAPA-----------------------------------
@@ -362,47 +372,47 @@ End Sub
 'Botão btnLImgCadastrarPolideiraChapa tela lançamento e edição chapa
 Private Sub btnLImgCadastrarPolideiraChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastrar Polideira tela lançamento e edição chapa"
+    MsgBox "Chama Serviço cadastrar Polideira, tela lançamento e edição chapa"
 End Sub
 'Botão btnLImgCadastrarTipoPolideiraChapa tela lançamento e edição chapa
 Private Sub btnLImgCadastrarTipoPolideiraChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastrar tipo polimento tela lançamento e edição chapa"
+    MsgBox "Chama Serviço cadastrar tipo polimento, tela lançamento e edição chapa"
 End Sub
 'Botão btnLImgCadastrarTipoMaterialChapa tela lançamento e edição chapa
 Private Sub btnLImgCadastrarTipoMaterialChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço tipo material tela lançamento e edição chapa"
+    MsgBox "Chama Serviço tipo material, tela lançamento e edição chapa"
 End Sub
 'Botão btnLImgCadastrarTipoMaterialChapaTamanhos tela lançamento e edição chapa
 Private Sub btnLImgCadastrarTipoMaterialChapaTamanhos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço tipo material tela lançamento e edição chapa"
+    MsgBox "Chama Serviço tipo material, tela lançamento e edição chapa"
 End Sub
 'Botão btnLTxtAdicionarTamanhoChapa tela lançamento e edição chapa
 Private Sub btnLTxtAdicionarTamanhoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço adicionar tamanhos tela lançamento e edição chapa"
+    MsgBox "Chama Serviço adicionar tamanhos, tela lançamento e edição chapa"
 End Sub
 'Botão btnLTxtEditarTamanhoChapa tela lançamento e edição chapa
 Private Sub btnLTxtEditarTamanhoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço editar tamanho chapa tela lançamento e edição chapa"
+    MsgBox "Chama Serviço editar tamanho chapa, tela lançamento e edição chapa"
 End Sub
 'Botão btnLTxtTirarDaLista tela lançamento e edição chapa
 Private Sub btnLTxtTirarDaLista_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço tira tamanho da lista tela lançamento e edição chapa"
+    MsgBox "Chama Serviço tira tamanho da lista, tela lançamento e edição chapa"
 End Sub
 'Botão btnLTxtSalvarChapa tela lançamento e edição chapa
 Private Sub btnLTxtSalvarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço salva alteração da chapa tela lançamento e edição chapa"
+    MsgBox "Chama Serviço salva alteração da chapa, tela lançamento e edição chapa"
 End Sub
 'Botão btnLTxtVoltarChapa tela lançamento e edição chapa
 Private Sub btnLTxtVoltarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço voltar tela lançamento e edição chapa"
+    MsgBox "Chama Serviço voltar, tela lançamento e edição chapa"
 End Sub
 
 
@@ -411,17 +421,17 @@ End Sub
 'Botão btnLTxtAdicionarTrocaEstoque tela troca estoque
 Private Sub btnLTxtAdicionarTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço adicionar material para troca tela troca estoque"
+    MsgBox "Chama Serviço adicionar material para troca, tela troca estoque"
 End Sub
 'Botão btnLTxtTrocarEstoque tela troca estoque
 Private Sub btnLTxtTrocarEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço troca de estoque tela troca estoque"
+    MsgBox "Chama Serviço troca de estoque, tela troca estoque"
 End Sub
 'Botão btnLTxtVoltarTrocaEstoque tela troca estoque
 Private Sub btnLTxtVoltarTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço voltar tela troca estoque"
+    MsgBox "Chama Serviço voltar, tela troca estoque"
 End Sub
 
 
@@ -430,35 +440,54 @@ End Sub
 'Botão btnLTxtSalvarPedreira tela cadastros diversos
 Private Sub btnLTxtSalvarPedreira_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastrar ou editar pedreira tela cadastros diversos"
+    MsgBox "Chama Serviço cadastrar ou editar pedreira, tela cadastros diversos"
 End Sub
 'Botão btnLTxtSalvarSerraria tela cadastros diversos
 Private Sub btnLTxtSalvarSerraria_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastrar ou editar serraria tela cadastros diversos"
+    MsgBox "Chama Serviço cadastrar ou editar serraria, tela cadastros diversos"
 End Sub
 'Botão btnLTxtSalvarPolideira tela cadastros diversos
 Private Sub btnLTxtSalvarPolideira_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastrar ou editar polideira tela cadastros diversos"
+    MsgBox "Chama Serviço cadastrar ou editar polideira, tela cadastros diversos"
 End Sub
 'Botão btnLTxtSalvarTipoMaterial tela cadastros diversos
 Private Sub btnLTxtSalvarTipoMaterial_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastrar ou editar tipo material tela cadastros diversos"
+    MsgBox "Chama Serviço cadastrar ou editar tipo material, tela cadastros diversos"
 End Sub
 'Botão btnLTxtSalvarTipoPolimento tela cadastros diversos
 Private Sub btnLTxtSalvarTipoPolimento_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastrar ou editar tipo polimento tela cadastros diversos"
+    MsgBox "Chama Serviço cadastrar ou editar tipo polimento, tela cadastros diversos"
 End Sub
 'Botão btnLTxtSalvarMotorista tela cadastros diversos
 Private Sub btnLTxtSalvarMotorista_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastrar ou editar motorista tela cadastros diversos"
+    MsgBox "Chama Serviço cadastrar ou editar motorista, tela cadastros diversos"
 End Sub
 'Botão btnLTxtSalvarMotorista tela cadastros diversos
 Private Sub btnLTxtSalvarDestino_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço cadastrar ou editar destino tela cadastros diversos"
+    MsgBox "Chama Serviço cadastrar ou editar destino, tela cadastros diversos"
+End Sub
+
+
+'-----------------------------------------------------------------TELA USUARIO-----------------------------------
+'                                                                 ------------
+'Botão btnLTxtSalvarUsuario tela usuarios
+Private Sub btnLTxtSalvarUsuario_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço cadastrar ou editar usuário, tela usuarios"
+End Sub
+'Botão btnLTxtListUsuario tela usuarios
+Private Sub btnLTxtListUsuario_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço carrega lista com usuários, tela usuarios"
+End Sub
+'Botão btnLTxtListUsuarioLog tela usuarios
+Private Sub btnLTxtListUsuarioLog_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Chama Serviço
+    MsgBox "Chama Serviço carrega lista com log dos usuários, tela usuarios"
 End Sub
