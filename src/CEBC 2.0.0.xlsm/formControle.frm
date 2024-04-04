@@ -75,7 +75,8 @@ Private Sub UserForm_Initialize()
     ReDim Preserve frameEfeito(1 To l)
     ReDim Preserve botoesMenu(1 To m)
     
-    
+    'Retira os nomes de cima da multPage
+    Me.MultiPageCEBC.Style = fmTabStyleNone
 End Sub
 
 '-----------------------------------------------------------------MENU DO SISTEMA-----------------------------------
@@ -83,12 +84,12 @@ End Sub
 'Efeito para clique nas label btnLMenuHome do menu
 Private Sub btnLMenuHome_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 10
+    Me.MultiPageCEBC.Value = 0
 End Sub
 'Efeito para clique nas label btnLMenuBloco do menu
 Private Sub btnLMenuBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 3
+    Me.MultiPageCEBC.Value = 1
 End Sub
 'Efeito para clique nas label btnLMenuChapa do menu
 Private Sub btnLMenuChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -98,17 +99,17 @@ End Sub
 'Efeito para clique nas label btnLMenuDespachar do menu
 Private Sub btnLMenuDespachar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 2
+    Me.MultiPageCEBC.Value = 8
 End Sub
 'Efeito para clique nas label btnLMenuCarrago do menu
 Private Sub btnLMenuCarrago_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 6
+    Me.MultiPageCEBC.Value = 9
 End Sub
 'Efeito para clique nas label btnLMenuCadastros do menu
 Private Sub btnLMenuCadastros_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 1
+    Me.MultiPageCEBC.Value = 10
 End Sub
 'Efeito para clique nas label btnLMenuUsuarios do menu
 Private Sub btnLMenuUsuarios_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -217,12 +218,12 @@ End Sub
 'Botão btnLTxtNovoBloco tela estoque m³
 Private Sub btnLTxtNovoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 0
+    Me.MultiPageCEBC.Value = 2
 End Sub
 'Botão btnLTxtEditarBloco tela estoque m³
 Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 7
+    Me.MultiPageCEBC.Value = 3
 End Sub
 'Botão btnLTxtADDEstoque tela estoque m³
 Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -242,7 +243,7 @@ Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As 
     formControle.Controls("btnLMenuBloco").TextAlign = fmTextAlignLeft
     
     'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 8
+    Me.MultiPageCEBC.Value = 6
 End Sub
 
 '-----------------------------------------------------------------TELA ESTOQUE M²-----------------------------------
@@ -295,12 +296,12 @@ End Sub
 'Botão btnLTxtEditarChapa tela estoque m²
 Private Sub btnLTxtEditarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 8
+    Me.MultiPageCEBC.Value = 6
 End Sub
 'Botão btnLTxtTrocaEstoque tela estoque m²
 Private Sub btnLTxtTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 9
+    Me.MultiPageCEBC.Value = 7
 End Sub
 
 '-----------------------------------------------------------------TELA CADASTRO AVULSO-----------------------------------
