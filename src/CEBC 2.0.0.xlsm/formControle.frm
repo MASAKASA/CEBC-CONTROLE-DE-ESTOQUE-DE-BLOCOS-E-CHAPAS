@@ -77,6 +77,9 @@ Private Sub UserForm_Initialize()
     
     'Retira os nomes de cima da multPage
     Me.MultiPageCEBC.Style = fmTabStyleNone
+    
+    'Coloca data atual na txtDataCadastro na tela cadastro de bloco
+    txtDataCadastro.Value = Date
 End Sub
 
 '-----------------------------------------------------------------MENU DO SISTEMA-----------------------------------
@@ -119,6 +122,53 @@ End Sub
 
 '-----------------------------------------------------------------TELA CADASTRO DE BLOCOS-----------------------------------
 '                                                                 -----------------------
+' txtIdBloco tela cadastro de bloco
+Private Sub txtIdBloco_Change()
+    ' Coloca tudo em caixa alta
+    txtIdBloco.Value = UCase(txtIdBloco.Value)
+    
+    ' Cria o código para o sistema
+    txtIdBlocoSistema.Value = txtIdBloco & "-" & Util.ExtrairUltimaPalavra(txtNomeBloco.Value) & "-BL"
+    
+    ' Deixa em branco o codigo se as variaveis forem vazias
+    If txtIdBloco.Value = "" And txtNomeBloco.Value = "" Then
+        txtIdBlocoSistema.Value = ""
+    End If
+End Sub
+' txtNomeBloco tela cadastro de bloco
+Private Sub txtNomeBloco_Change()
+    ' Coloca tudo em caixa alta
+    txtNomeBloco.Value = UCase(txtNomeBloco.Value)
+    
+    ' Cria o código para o sistema
+    txtIdBlocoSistema.Value = txtIdBloco & "-" & Util.ExtrairUltimaPalavra(txtNomeBloco.Value) & "-BL"
+    
+    ' Deixa em branco o codigo se as variaveis forem vazias
+    If txtIdBloco.Value = "" And txtNomeBloco.Value = "" Then
+        txtIdBlocoSistema.Value = ""
+    End If
+End Sub
+' txtNomeBloco tela cadastro de bloco
+Private Sub txtObsBlocoCB_Change()
+    ' Coloca tudo em caixa alta
+    txtObsBlocoCB.Value = UCase(txtObsBlocoCB.Value)
+End Sub
+' txtNomeBloco tela cadastro de bloco
+Private Sub txtComprimentoBloco_Change()
+    'Define o resultado no TextBox
+    txtComprimentoBloco.Value = Util.formatarMetros(txtComprimentoBloco.Value)
+    
+    'Move o cursor para o final do TextBox
+    txtComprimentoBloco.SelStart = Len(txtComprimentoBloco.Value)
+    
+'    'Retorna valor calculado e formatado
+'    txtTotalM3.Value = Util.formatarComPontos(Format(Util.calcularM3(txtComprimentoBloco.Value, _
+'            txtAlturaBloco.Value, txtLarguraBloco.Value), "0.0000"))
+'
+'    'Retorna valor calculado e formatado
+'    txtValorTotalBloco.Value = Util.formatarComPontos(Format(Util.calcularValorBloco(txtValorM3.Value, _
+'            TextBoxValorM3.Value), "0.00"))
+End Sub
 'Botão btnLImgCadastrarPedreira tela cadastrar bloco
 Private Sub btnLImgCadastrarPedreira_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
@@ -199,6 +249,42 @@ Private Sub txtNomeArquivoEstoqueBlocos_Exit(ByVal Cancel As MSForms.ReturnBoole
         lDigiteNomeArquivoM3.Visible = False
         lDigiteNomeArquivoM3Explemplo.Visible = True
     End If
+End Sub
+' txtDataInicioBlocoPesquisa tela estoque m³
+Private Sub txtDataInicioBlocoPesquisa_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+    ' Deixa só a digitação de numero
+    If KeyAscii < 48 Or KeyAscii > 57 Then
+        KeyAscii = 0
+    End If
+    
+    ' Coloca as barras para formatação
+    If Len(txtDataInicioBlocoPesquisa.Value) = 2 Or Len(txtDataInicioBlocoPesquisa.Value) = 5 Then
+    
+        txtDataInicioBlocoPesquisa.Value = txtDataInicioBlocoPesquisa.Value & "/"
+    End If
+End Sub
+' txtDataFinalBlocoPesquisa tela estoque m³
+Private Sub txtDataFinalBlocoPesquisa_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+    ' Deixa só a digitação de numero
+    If KeyAscii < 48 Or KeyAscii > 57 Then
+        KeyAscii = 0
+    End If
+    
+    ' Coloca as barras para formatação
+    If Len(txtDataFinalBlocoPesquisa.Value) = 2 Or Len(txtDataFinalBlocoPesquisa.Value) = 5 Then
+    
+        txtDataFinalBlocoPesquisa.Value = txtDataFinalBlocoPesquisa.Value & "/"
+    End If
+End Sub
+' txtMaterialBlocoPesquisa tela estoque m³
+Private Sub txtMaterialBlocoPesquisa_Change()
+    'Coloca tudo em caixa alta
+    txtMaterialBlocoPesquisa.Value = UCase(txtMaterialBlocoPesquisa.Value)
+End Sub
+' txtIdBlocoPesquisa tela estoque m³
+Private Sub txtIdBlocoPesquisa_Change()
+    'Coloca tudo em caixa alta
+    txtIdBlocoPesquisa.Value = UCase(txtIdBlocoPesquisa.Value)
 End Sub
 'Botão btnLTxtPesquisarBlocos tela estoque m³
 Private Sub btnLTxtPesquisarBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
