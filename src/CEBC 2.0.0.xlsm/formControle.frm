@@ -22,8 +22,6 @@ Dim botoesMenu() As clsLabel
 Dim botoesImg() As clsLabel
 Dim botoesText() As clsLabel
 Dim frameEfeito() As clsFrame
-' Variaveis para manipulação com varios metodos
-Dim tamanhoColunasList As String
 'Inicialização do formControle
 Private Sub UserForm_Initialize()
     ' Variaveis para o metodo
@@ -86,13 +84,8 @@ Private Sub UserForm_Initialize()
     ReDim Preserve botoesText(1 To l)
     ReDim Preserve frameEfeito(1 To m)
     
-    tamanhoColunasList = "185;250;52;52;52;52;90;75;75;74;"
-    
     ' Retira os nomes de cima da multPage
     Me.MultiPageCEBC.Style = fmTabStyleNone
-    
-    ' Chama metodo para carregar lista e blocos cadastros do dia atual
-    Call carregarListCadastradosHoje
 End Sub
 
 '-----------------------------------------------------------------MENU DO SISTEMA-----------------------------------
@@ -102,40 +95,49 @@ Private Sub btnLMenuHome_MouseDown(ByVal Button As Integer, ByVal Shift As Integ
     'Muda abra da multPage
     Me.MultiPageCEBC.Value = 0
 End Sub
-'Efeito para clique nas label btnLMenuBloco do menu
+' Efeito para clique nas label btnLMenuBloco do menu
 Private Sub btnLMenuBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Muda abra da multPage
+    
+    ' Carregar os comboBox da tela
+    Call carregarPedreiras(cbPedreiraBlocoPesquisa)
+    Call carregarSerrarias(cbSerrariaBlocoPesquisa)
+    Call carregarTemNota(cbTemNota)
+    
+    ' Carregar a list
+    Call carregarList(ListEstoqueM3)
+    
+    ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 1
 End Sub
-'Efeito para clique nas label btnLMenuChapa do menu
+' Efeito para clique nas label btnLMenuChapa do menu
 Private Sub btnLMenuChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Muda abra da multPage
+    ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 4
 End Sub
-'Efeito para clique nas label btnLMenuDespachar do menu
+' Efeito para clique nas label btnLMenuDespachar do menu
 Private Sub btnLMenuDespachar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Muda abra da multPage
+    ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 8
 End Sub
-'Efeito para clique nas label btnLMenuCarrago do menu
+' Efeito para clique nas label btnLMenuCarrago do menu
 Private Sub btnLMenuCarrago_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Muda abra da multPage
+    ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 9
 End Sub
-'Efeito para clique nas label btnLMenuCadastros do menu
+' Efeito para clique nas label btnLMenuCadastros do menu
 Private Sub btnLMenuCadastros_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Muda abra da multPage
+    ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 10
 End Sub
-'Efeito para clique nas label btnLMenuUsuarios do menu
+' Efeito para clique nas label btnLMenuUsuarios do menu
 Private Sub btnLMenuUsuarios_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Muda abra da multPage
+    ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 11
 End Sub
 
 '-----------------------------------------------------------------TELA ESTOQUE M³-----------------------------------
 '                                                                 ---------------
-'Efeito de label nome do pdf tela estoque m³
+' Efeito de label nome do pdf tela estoque m³
 Private Sub lDigiteNomeArquivoM3Explemplo_Click()
     lDigiteNomeArquivoM3.Visible = True
     lDigiteNomeArquivoM3Explemplo.Visible = False
@@ -196,6 +198,51 @@ Private Sub txtIdBlocoPesquisa_Change()
     'Coloca tudo em caixa alta
     txtIdBlocoPesquisa.Value = UCase(txtIdBlocoPesquisa.Value)
 End Sub
+' Atelho para seleção dos status, obPedreiraESerrada tela estoque m³
+Private Sub obPedreiraESerrada_Click()
+    chbPedreida.Value = True
+    chbSerraria.Value = True
+    chbChapasBrutas.Value = False
+    chbEmProcesso.Value = False
+    chbEstoque.Value = False
+    chbFechado.Value = False
+End Sub
+' Atelho para seleção dos status, obEmEstoque tela estoque m³
+Private Sub obEmEstoque_Click()
+    chbPedreida.Value = False
+    chbSerraria.Value = False
+    chbChapasBrutas.Value = True
+    chbEmProcesso.Value = True
+    chbEstoque.Value = True
+    chbFechado.Value = False
+End Sub
+' Atelho para seleção dos status, obFechado tela estoque m³
+Private Sub obFechado_Click()
+    chbPedreida.Value = False
+    chbSerraria.Value = False
+    chbChapasBrutas.Value = False
+    chbEmProcesso.Value = False
+    chbEstoque.Value = False
+    chbFechado.Value = True
+End Sub
+' Atelho para seleção dos status, opPedreiraSerradaEmProcesso tela estoque m³
+Private Sub opPedreiraSerradaEmProcesso_Click()
+    chbPedreida.Value = True
+    chbSerraria.Value = True
+    chbChapasBrutas.Value = True
+    chbEmProcesso.Value = True
+    chbEstoque.Value = True
+    chbFechado.Value = False
+End Sub
+' Atelho para seleção dos status, opTodos tela estoque m³
+Private Sub opTodos_Click()
+    chbPedreida.Value = True
+    chbSerraria.Value = True
+    chbChapasBrutas.Value = True
+    chbEmProcesso.Value = True
+    chbEstoque.Value = True
+    chbFechado.Value = True
+End Sub
 'Botão btnLTxtPesquisarBlocos tela estoque m³
 Private Sub btnLTxtPesquisarBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
@@ -204,7 +251,7 @@ End Sub
 'Botão btnLTxtLimparFiltrosBlocos tela estoque m³
 Private Sub btnLTxtLimparFiltrosBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço limpar filtros, tela estoque m³"
+    Call limparCamposPesquisaEstoque3
 End Sub
 'Botão btnLImgExportarEstoqueM3 tela estoque m³
 Private Sub btnLImgExportarEstoqueM3_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -216,13 +263,31 @@ Private Sub btnLTxtNovoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As I
     ' Coloca data atual na txtDataCadastro na tela cadastro de bloco
     txtDataCadastro.Value = Date
     
+    ' Chama metodo para carregar comboBox
+    Call carregarPedreiras(Me.cbPedreira)
+    Call carregarSerrarias(Me.cbSerrariaCB)
+    Call carregarTiposMateriais(Me.cbTipoMaterial)
+    Call carregarTemNota(cbNotaC)
+    
+    ' Chama metodo para carregar lista e blocos cadastros do dia atual
+    Call carregarList(Me.listCadastradosHoje)
+    
     'Muda abra da multPage
     Me.MultiPageCEBC.Value = 2
 End Sub
 'Botão btnLTxtEditarBloco tela estoque m³
 Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Muda abra da multPage
+    ' Captura o id do item selecionado
+    
+    
+    'Muda abra da multPage para tela editar bloco
     Me.MultiPageCEBC.Value = 3
+    
+    ' Chama serviço para pesquisa do bloco
+    
+    
+    ' Carrega os dados na tela editar bloco
+    Call carregarDadosBlocoTelaEdicaoBloco ' Irá enviar o objeto Bloco para poder carregar os campos
 End Sub
 'Botão btnLTxtADDEstoque tela estoque m³
 Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -387,66 +452,6 @@ Private Sub txtValorM3_Change()
     txtValorTotalBloco.Value = Util.formatarComPontos(Format(Util.calcularValorBloco(txtValorM3.Value, _
             txtTotalM3.Value), "0.00"))
 End Sub
-' Carrega a lista listCadastradosHoje tela cadastro de bloco
-Private Sub carregarListCadastradosHoje()
-'    'Variaveis do metodo
-'    Dim Data As String
-'    Dim listaBlocos As Variant
-'    Dim totalDia As Double
-'    Dim tamanhoLista As Integer
-'    Dim i As Long
-    
-'    'Formata a data
-'    Data = Util.ConverterFormatoData(txtDataCadastro.Value)
-'
-'    'Criando Coleção para manipulaçã
-'    listaBlocos = BlocosDAO.listarBlocosEntreDatas(Data, Data)
-
-    ' Limpar a ListBox
-    Me.listCadastradosHoje.Clear
-    
-    ' Tamanho das colunas, String fica no metodo de inicialização do sistema UserForm_Initialize
-    Me.listCadastradosHoje.ColumnWidths = tamanhoColunasList
-
-'    'Captura o tamanho da matriz
-'    tamanhoLista = TamanhoDaMatriz(listaBlocos)
-    
-'    'Sem não tiver dados
-'    If listaBlocos(1, 1) = "SEM DADOS" Then
-'
-'        'Seta valor na label
-'        lTotalDia = "0,00"
-'        lTotalDia.Caption = Format(totalDia, "0.00")
-'
-'    Else
-    
-'        'Adiciona os dados na ListBox
-'        For i = 1 To tamanhoLista
-    
-            'Adiciona uma linha
-            listCadastradosHoje.AddItem
-            
-            'Adiciona os dados do bloco
-            listCadastradosHoje.List(listCadastradosHoje.ListCount - 1, 0) = "37766-50793-MOON-LIGHT-BL"
-            listCadastradosHoje.List(listCadastradosHoje.ListCount - 1, 1) = "BLOCO BRANCO DALLAS MOON-LIGHT"
-            listCadastradosHoje.List(listCadastradosHoje.ListCount - 1, 2) = "3,0000"
-            listCadastradosHoje.List(listCadastradosHoje.ListCount - 1, 3) = "2,0000"
-            listCadastradosHoje.List(listCadastradosHoje.ListCount - 1, 4) = "2,0000"
-            listCadastradosHoje.List(listCadastradosHoje.ListCount - 1, 5) = "71"
-            listCadastradosHoje.List(listCadastradosHoje.ListCount - 1, 6) = "1.500,00"
-            listCadastradosHoje.List(listCadastradosHoje.ListCount - 1, 7) = "15.000,00"
-            listCadastradosHoje.List(listCadastradosHoje.ListCount - 1, 8) = "5.000,00"
-            listCadastradosHoje.List(listCadastradosHoje.ListCount - 1, 9) = "150.000,00"
-                
-'            'Soma o total do dia
-'            lTotalDia = lTotalDia + Util.formatarComPontos(Format(Util.calcularValorBloco(CStr(listaBlocos(i, 11)), _
-'                CStr(listaBlocos(i, 9))), "0.00"))
-'        Next i
-    
-'        lTotalDia.Caption = listCadastradosHoje.List(listCadastradosHoje.ListCount - 1, 9)
-'    End If
-
-End Sub
 'Botão btnLImgCadastrarPedreira tela cadastrar bloco
 Private Sub btnLImgCadastrarPedreira_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
@@ -470,7 +475,7 @@ End Sub
 'Botão btnLTextLimparCadastroBloco tela cadastrar bloco
 Private Sub btnLTxtLimparCadastroBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço limpar campos, tela cadastro de blocos"
+    Call limparCamposCadastroBlocos
 End Sub
 
 '-----------------------------------------------------------------TELA DESPACHE-----------------------------------
@@ -612,15 +617,75 @@ End Sub
 
 '-----------------------------------------------------------------TELA EDITAR BLOCO-----------------------------------
 '                                                                 -----------------
-'Botão btnLTxtSalvarEdicaoBloco tela carregos
+' Carrega os campos com os dados do bloco tela editar bloco
+Private Sub carregarDadosBlocoTelaEdicaoBloco() ' Irá receber o objeto Bloco para poder carregar os campos
+    ' Descrição e dimensões finais
+    txtIdBlocoEditar.Value = "37766-50793-MOON-LIGHT-BL"
+    txtMaterialEditar.Value = "BLOCO MARMORE BRANCO CLASSICO"
+    cbTipoMaterialEditar.Value = "COMERCIAL SATAND"
+    txtObsEditar.Value = "BLOCO COM CHAPAS QUEBRADAS SERÃO REPOSTAS POSTERIORMENTE"
+    cbPedreiraEditar.Value = "MINERAÇÃO VISTA LINDA"
+    cbSerrariaEditar.Value = "ELSON BABISQUE"
+    cbPolideiraEditar.Value = "SÃO ROQUE"
+    txtNBlocoPedreiraEditar.Value = "37766-50793-MOON-LIGHT-BL"
+    cbEstoqueEditar.Value = "CASA DO GRANITO"
+    txtDataCadastroEditar.Value = "22/02/2024"
+    txtQtdM3blocoEditar.Value = "12,255"
+    txtQtdM2SerradaEditar.Value = "359,5448"
+    txtQtdM2PolimentoEditar.Value = "284,4578"
+    txtTotalChapaBlocoEditar.Value = "71"
+    cbStatusBlocoEditar.Value = "EM PROCESSO"
+    cbNotaBlocoEditar.Value = "SIM"
+    txtCodFreteBlocoEditar.Value = "359"
+    
+    ' Dimensões bloco e médias chapas
+    txtCompBrutaBlocoEditar.Value = "3,2550"
+    txtAltBrutaBlocoEditar.Value = "2,0500"
+    txtLArgBrutaBlocoEditar.Value = "1,9500"
+    txtCompLiquidoBlocoEditar.Value = "2,755"
+    txtAltLiquidoBlocoEditar.Value = "1,550"
+    txtLArgLiquidoBlocoEditar.Value = "1,450"
+    txtCompBrutaBrutoChapaEditar.Value = "3,0000"
+    txtAltBrutaBrutoChapaEditar.Value = "2,0000"
+    txtCompBrutaliquidoChapaEditar.Value = "2,9500"
+    txtAltBrutaLiquidoChapaEditar.Value = "1,9500"
+    txtCompPolidaBrutoChapaEditar.Value = "2,9000"
+    txtAltPolidaBrutoChapaEditar.Value = "1,9000"
+    txtCompPolidaLiquidoChapaEditar.Value = "2,8000"
+    txtAltPolidaLiquidaChapaEditar.Value = "1,8000"
+    
+    ' Valores
+    txtValoBlocoEditar.Value = "103.986,56"
+    txtPrecoBlocoEditar.Value = "1.5000,00"
+    txtFreteBlocoEditar.Value = "12.500,00"
+    txtValorSerradaEditar.Value = "24,00"
+    txtValorPolimentoEditar.Value = "11,00"
+    txtValorADDImpostosEditar.Value = "15.000,00"
+    txtTotalSerradaEditar.Value = "11.000,00"
+    txtTotalPolimentoEditar.Value = "9.000,00"
+    
+    ' Custos
+    txtCustoMaterialBlocoEditar.Value = "135,50"
+    txtTotalM2PolimentoBlocoEditar.Value = "284,4578"
+    txtTotalBlocoEditar.Value = "25.956,65"
+    
+    ' Se Status do bloco for finalizado deixar visivel lBlocoFinalizado e cbAbrirBlocoEditar e desabilitar todos os campos
+    
+End Sub
+' Habilita e desabilita campos para edição tela editar bloco
+Private Sub cbAbrirBlocoEditar_Click()
+
+End Sub
+'Botão btnLTxtSalvarEdicaoBloco tela editar bloco
 Private Sub btnLTxtSalvarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
     MsgBox "Chama Serviço editar bloco, tela editar bloco"
 End Sub
-'Botão btnLTxtVoltarEdicaoBloco tela carregos
+'Botão btnLTxtVoltarEdicaoBloco tela editar bloco
 Private Sub btnLTxtVoltarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
-    MsgBox "Chama Serviço voltar, tela editar bloco"
+    ' Muda abra da multPage
+    Me.MultiPageCEBC.Value = 1
 End Sub
 
 '-----------------------------------------------------------------TELA LANÇAMENTO E EDIÇÃO CHAPA-----------------------------------
@@ -746,4 +811,184 @@ End Sub
 Private Sub btnLTxtListUsuarioLog_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
     MsgBox "Chama Serviço carrega lista com log dos usuários, tela usuarios"
+End Sub
+
+'-----------------------------------------------------------------LIMPAR CAMPOS-----------------------------------
+'                                                                 -------------
+' Limpa os campos de pesquisa da tela estoque M³
+Private Sub limparCamposPesquisaEstoque3()
+    txtDataInicioBlocoPesquisa.Value = ""
+    txtDataFinalBlocoPesquisa.Value = ""
+    txtMaterialBlocoPesquisa.Value = ""
+    txtIdBlocoPesquisa.Value = ""
+    cbPedreiraBlocoPesquisa.Value = ""
+    cbSerrariaBlocoPesquisa.Value = ""
+    cbTemNota.Value = ""
+    obPedreiraESerrada.Value = True
+    obEmEstoque.Value = False
+    obFechado.Value = False
+    opPedreiraSerradaEmProcesso.Value = False
+    opTodos.Value = False
+    chbPedreida.Value = True
+    chbSerraria.Value = True
+    chbChapasBrutas.Value = False
+    chbEmProcesso.Value = False
+    chbEstoque.Value = False
+    chbFechado.Value = False
+End Sub
+' Limpa os campos da tela cadastrao de blocos
+Private Sub limparCamposCadastroBlocos()
+    txtDataCadastro.Value = Date
+    txtIdBlocoSistema.Value = ""
+    cbPedreira.Value = ""
+    cbSerrariaCB.Value = ""
+    txtIdBloco.Value = ""
+    txtNomeBloco.Value = ""
+    cbTipoMaterial.Value = ""
+    cbNotaC.Value = ""
+    obPedreiraCB.Value = True
+    obSerrariaCB.Value = False
+    txtObsBlocoCB.Value = ""
+    txtComprimentoBloco.Value = "0,0000"
+    txtAlturaBloco.Value = "0,0000"
+    txtLarguraBloco.Value = "0,0000"
+    txtCompBrutoBloco.Value = "0,0000"
+    txtAlturaBlocoBruto.Value = "0,0000"
+    txtLarguraBlocoBruto.Value = "0,0000"
+    txtAdicionais.Value = "0,00"
+    txtValorFreteBloco.Value = "0,00"
+    txtValorM3.Value = "0,00"
+    lTotalDia.Caption = "0,00"
+End Sub
+
+'-----------------------------------------------------------------CARREAGMENTO DOS COMBOBBOX-----------------------------------
+'                                                                 --------------------------
+' Carrega a combobox de pedreira
+Private Sub carregarPedreiras(cbPedreiras As MSForms.ComboBox)
+
+    cbPedreiras.AddItem "PEDREIRA 01"
+    cbPedreiras.AddItem "PEDREIRA 02"
+'    ' for para carregamento
+'    For Each nomePedreira In pedreiras
+'
+'        If nomePedreira <> "IMPORTADO" And nomePedreira <> "AVULSO" Then
+'            ComboBoxPedreira.AddItem nomePedreira ' Tela cadastro de blocos
+'
+'        End If
+'
+'        If nomePedreira <> "AVULSO" Then
+'            ComboBoxPedreiraBlocoPesquisa.AddItem nomePedreira ' Tela pesquisa de blocos
+'
+'        End If
+'    Next nomePedreira
+End Sub
+' Carrega a combobox de serraria
+Private Sub carregarSerrarias(cbSerrarias As MSForms.ComboBox)
+
+    cbSerrarias.AddItem "SERRARIA 01"
+    cbSerrarias.AddItem "SERRARIA 02"
+'    ' for para carregamento
+'    For Each nomePedreira In pedreiras
+'
+'        If nomePedreira <> "IMPORTADO" And nomePedreira <> "AVULSO" Then
+'            ComboBoxPedreira.AddItem nomePedreira ' Tela cadastro de blocos
+'
+'        End If
+'
+'        If nomePedreira <> "AVULSO" Then
+'            ComboBoxPedreiraBlocoPesquisa.AddItem nomePedreira ' Tela pesquisa de blocos
+'
+'        End If
+'    Next nomePedreira
+End Sub
+' Carrega a combobox de tipo material
+Private Sub carregarTiposMateriais(cbTiposMateriais As MSForms.ComboBox)
+
+    cbTiposMateriais.AddItem "TIPO 01"
+    cbTiposMateriais.AddItem "TIPO 02"
+'    ' for para carregamento
+'    For Each nomePedreira In pedreiras
+'
+'        If nomePedreira <> "IMPORTADO" And nomePedreira <> "AVULSO" Then
+'            ComboBoxPedreira.AddItem nomePedreira ' Tela cadastro de blocos
+'
+'        End If
+'
+'        If nomePedreira <> "AVULSO" Then
+'            ComboBoxPedreiraBlocoPesquisa.AddItem nomePedreira ' Tela pesquisa de blocos
+'
+'        End If
+'    Next nomePedreira
+End Sub
+' Carrega a combobox tem nota
+Private Sub carregarTemNota(cbTemNota As MSForms.ComboBox)
+
+    cbTemNota.AddItem "SIM"
+    cbTemNota.AddItem "NÃO"
+End Sub
+
+'-----------------------------------------------------------------CARREAGMENTO DAS LIST-----------------------------------
+'                                                                 ---------------------
+' Carrega a lista
+Private Sub carregarList(lista As MSForms.ListBox)
+'    'Variaveis do metodo
+'    Dim Data As String
+'    Dim listaBlocos As Variant
+'    Dim totalDia As Double
+'    Dim tamanhoLista As Integer
+'    Dim i As Long
+    
+'    'Formata a data
+'    Data = Util.ConverterFormatoData(txtDataCadastro.Value)
+'
+'    'Criando Coleção para manipulaçã
+'    listaBlocos = BlocosDAO.listarBlocosEntreDatas(Data, Data)
+
+    ' Limpar a ListBox
+    lista.Clear
+    
+    ' Tamanho do cabeçalho nome   | COD | DECRCIÇÃO | COMP | ALT   | LARG | QTD   | VALOR M³ | ADD | FRETE | TOTAL |
+    ' Tamanho do cabeçalho left   | 7   | 193       | 444  | 496,5 | 549  | 601,5 | 654      | 745 | 820,5 | 896   |
+    ' Tamanho do cabeçalho width  | 185 | 250       | 52   | 52    | 52   | 52    | 90       | 75  | 75    | 74,5  |
+    ' Tamanho das colunas da list
+    lista.ColumnWidths = "185;250;52;52;52;52;90;75;75;74;"
+
+'    'Captura o tamanho da matriz
+'    tamanhoLista = TamanhoDaMatriz(listaBlocos)
+    
+'    'Sem não tiver dados
+'    If listaBlocos(1, 1) = "SEM DADOS" Then
+'
+'        'Seta valor na label
+'        lTotalDia = "0,00"
+'        lTotalDia.Caption = Format(totalDia, "0.00")
+'
+'    Else
+    
+'        'Adiciona os dados na ListBox
+'        For i = 1 To tamanhoLista
+    
+            'Adiciona uma linha
+            lista.AddItem
+            
+            'Adiciona os dados do bloco
+            lista.list(lista.ListCount - 1, 0) = "37766-50793-MOON-LIGHT-BL"
+            lista.list(lista.ListCount - 1, 1) = "BLOCO BRANCO DALLAS MOON-LIGHT"
+            lista.list(lista.ListCount - 1, 2) = "3,0000"
+            lista.list(lista.ListCount - 1, 3) = "2,0000"
+            lista.list(lista.ListCount - 1, 4) = "2,0000"
+            lista.list(lista.ListCount - 1, 5) = "71"
+            lista.list(lista.ListCount - 1, 6) = "1.500,00"
+            lista.list(lista.ListCount - 1, 7) = "15.000,00"
+            lista.list(lista.ListCount - 1, 8) = "5.000,00"
+            lista.list(lista.ListCount - 1, 9) = "150.000,00"
+                
+'            'Soma o total do dia
+'            lTotalDia = lTotalDia + Util.formatarComPontos(Format(Util.calcularValorBloco(CStr(listaBlocos(i, 11)), _
+'                CStr(listaBlocos(i, 9))), "0.00"))
+'        Next i
+    
+'        lTotalDia.Caption = listCadastradosHoje.List(listCadastradosHoje.ListCount - 1, 9)
+'    End If
+
 End Sub
