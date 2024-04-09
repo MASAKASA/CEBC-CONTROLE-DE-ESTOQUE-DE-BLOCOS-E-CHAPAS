@@ -44,6 +44,7 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLImgCadastroTipoMaterial").top = 24
         Case "fTiraEfeitoBotoesAcoesBloco"
             formControle.Controls("btnLTxtCadastrarBloco").Font.Size = botoesTextoFontSizeSmall
+            formControle.Controls("btnLTxtVoltarCadastroBloco").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtLimparCadastroBloco").Font.Size = botoesTextoFontSizeSmall
         
         ' Tela despache
@@ -84,6 +85,7 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLImgCadastrarPolimentoAvulso").top = 78
         Case "fTiraEfeitoBotoesAcoesAvulso"
             formControle.Controls("btnLTxtCadastrarChapaAvulso").Font.Size = botoesTextoFontSizeSmall
+            formControle.Controls("btnLTxtVoltarCadatradoChapasAvulso").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtLimparCadastroChapaAvulso").Font.Size = botoesTextoFontSizeSmall
             
         ' Tela carregos
