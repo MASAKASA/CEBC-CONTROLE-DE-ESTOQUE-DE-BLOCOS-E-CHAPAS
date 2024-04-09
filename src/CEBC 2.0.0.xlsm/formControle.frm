@@ -22,7 +22,7 @@ Dim botoesMenu() As clsLabel
 Dim botoesImg() As clsLabel
 Dim botoesText() As clsLabel
 Dim frameEfeito() As clsFrame
-'Inicialização do formControle
+' Inicialização do formControle
 Private Sub UserForm_Initialize()
     ' Variaveis para o metodo
     Dim obj As Object
@@ -90,21 +90,21 @@ End Sub
 
 '-----------------------------------------------------------------MENU DO SISTEMA-----------------------------------
 '                                                                 ---------------
-'Efeito para clique nas label btnLMenuHome do menu
+' Efeito para clique nas label btnLMenuHome do menu
 Private Sub btnLMenuHome_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Muda abra da multPage
+    ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 0
 End Sub
 ' Efeito para clique nas label btnLMenuBloco do menu
 Private Sub btnLMenuBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     
     ' Carregar os comboBox da tela
-    Call carregarPedreiras(cbPedreiraBlocoPesquisa)
-    Call carregarSerrarias(cbSerrariaBlocoPesquisa)
-    Call carregarTemNota(cbTemNota)
+    Call carregarPedreiras(Me.cbPedreiraBlocoPesquisa)
+    Call carregarSerrarias(Me.cbSerrariaBlocoPesquisa)
+    Call carregarTemNota(Me.cbTemNota)
     
     ' Carregar a list
-    Call carregarList(ListEstoqueM3)
+    Call carregarList(Me.ListEstoqueM3)
     
     ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 1
@@ -112,11 +112,11 @@ End Sub
 ' Efeito para clique nas label btnLMenuChapa do menu
 Private Sub btnLMenuChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Carregar os comboBox da tela
-    Call carregarPolideiras(cbPolideiraChapaPesquisa)
-    Call carregarTiposPolimento(cbTipoPolimentoPesquisa)
+    Call carregarPolideiras(Me.cbPolideiraChapaPesquisa)
+    Call carregarTiposPolimento(Me.cbTipoPolimentoPesquisa)
     
     ' Carregar a list
-    Call carregarList(ListEstoqueChapas)
+    Call carregarList(Me.ListEstoqueChapas)
     
     ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 4
@@ -150,7 +150,7 @@ Private Sub lDigiteNomeArquivoM3Explemplo_Click()
     lDigiteNomeArquivoM3Explemplo.Visible = False
     txtNomeArquivoEstoqueBlocos.SetFocus
 End Sub
-'Efeito e coloca em caixa alta o texto em txtNomeArquivoEstoqueBlocos tela estoque m³
+' Efeito e coloca em caixa alta o texto em txtNomeArquivoEstoqueBlocos tela estoque m³
 Private Sub txtNomeArquivoEstoqueBlocos_Change()
     lDigiteNomeArquivoM3.Visible = True
     lDigiteNomeArquivoM3Explemplo.Visible = False
@@ -162,7 +162,7 @@ Private Sub txtNomeArquivoEstoqueBlocos_Change()
 
     txtNomeArquivoEstoqueBlocos.Value = UCase(txtNomeArquivoEstoqueBlocos.Value)
 End Sub
-'Efeito ao sair da caixa txtNomeArquivoEstoqueBlocos de texto tela estoque m³
+' Efeito ao sair da caixa txtNomeArquivoEstoqueBlocos de texto tela estoque m³
 Private Sub txtNomeArquivoEstoqueBlocos_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     If txtNomeArquivoEstoqueBlocos.Value = "" Then
         lDigiteNomeArquivoM3.Visible = False
@@ -250,22 +250,22 @@ Private Sub opTodos_Click()
     chbEstoque.Value = True
     chbFechado.Value = True
 End Sub
-'Botão btnLTxtPesquisarBlocos tela estoque m³
+' Botão btnLTxtPesquisarBlocos tela estoque m³
 Private Sub btnLTxtPesquisarBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço pesquiar, tela estoque m³"
 End Sub
-'Botão btnLTxtLimparFiltrosBlocos tela estoque m³
+' Botão btnLTxtLimparFiltrosBlocos tela estoque m³
 Private Sub btnLTxtLimparFiltrosBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     Call limparCamposPesquisaEstoqueM3
 End Sub
-'Botão btnLImgExportarEstoqueM3 tela estoque m³
+' Botão btnLImgExportarEstoqueM3 tela estoque m³
 Private Sub btnLImgExportarEstoqueM3_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço exportar estoque m³, tela estoque m³"
 End Sub
-'Botão btnLTxtNovoBloco tela estoque m³
+' Botão btnLTxtNovoBloco tela estoque m³
 Private Sub btnLTxtNovoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Coloca data atual na txtDataCadastro na tela cadastro de bloco
     txtDataCadastro.Value = Date
@@ -274,7 +274,7 @@ Private Sub btnLTxtNovoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As I
     Call carregarPedreiras(Me.cbPedreira)
     Call carregarSerrarias(Me.cbSerrariaCB)
     Call carregarTiposMateriais(Me.cbTipoMaterial)
-    Call carregarTemNota(cbNotaC)
+    Call carregarTemNota(Me.cbNotaC)
     
     ' Chama metodo para carregar lista e blocos cadastros do dia atual
     Call carregarList(Me.listCadastradosHoje)
@@ -282,12 +282,12 @@ Private Sub btnLTxtNovoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As I
     'Muda abra da multPage
     Me.MultiPageCEBC.Value = 2
 End Sub
-'Botão btnLTxtEditarBloco tela estoque m³
+' Botão btnLTxtEditarBloco tela estoque m³
 Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Captura o id do item selecionado
     
     
-    'Muda abra da multPage para tela editar bloco
+    ' Muda abra da multPage para tela editar bloco
     Me.MultiPageCEBC.Value = 3
     
     ' Chama serviço para pesquisa do bloco
@@ -296,7 +296,7 @@ Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As
     ' Carrega os dados na tela editar bloco
     Call carregarDadosBlocoTelaEdicaoBloco ' Irá enviar o objeto Bloco para poder carregar os campos
 End Sub
-'Botão btnLTxtADDEstoque tela estoque m³
+' Botão btnLTxtADDEstoque tela estoque m³
 Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     
     ' Botão chapa
@@ -459,14 +459,14 @@ Private Sub txtValorM3_Change()
     txtValorTotalBloco.Value = Util.formatarComPontos(Format(Util.calcularValorBloco(txtValorM3.Value, _
             txtTotalM3.Value), "0.00"))
 End Sub
-'Botão btnLImgCadastrarPedreira tela cadastrar bloco
+' Botão btnLImgCadastrarPedreira tela cadastrar bloco
 Private Sub btnLImgCadastrarPedreira_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastrar pedreira, tela cadastrar bloco"
 End Sub
-'Botão btnLImgCadastrarSerrariaCB tela cadastrar bloco
+' Botão btnLImgCadastrarSerrariaCB tela cadastrar bloco
 Private Sub btnLImgCadastrarSerrariaCB_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastrar serraria, tela cadastrar bloco"
 End Sub
 'Botão btnLImgCadastroTipoMaterial tela cadastrar bloco
@@ -474,19 +474,19 @@ Private Sub btnLImgCadastroTipoMaterial_MouseDown(ByVal Button As Integer, ByVal
     'Chama Serviço
     MsgBox "Chama Serviço cadastrar tipo material, tela cadastrar bloco"
 End Sub
-'Botão btnLTxtCadastrarBloco tela cadastrar bloco
+' Botão btnLTxtCadastrarBloco tela cadastrar bloco
 Private Sub btnLTxtCadastrarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastrar bloco, tela cadastrar bloco"
 End Sub
-'Botão btnLTxtVoltarCadastroBloco tela cadastrar bloco
+' Botão btnLTxtVoltarCadastroBloco tela cadastrar bloco
 Private Sub btnLTxtVoltarCadastroBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Muda abra da multPage - tela estoque ³
     Me.MultiPageCEBC.Value = 1
 End Sub
-'Botão btnLTextLimparCadastroBloco tela cadastrar bloco
+' Botão btnLTextLimparCadastroBloco tela cadastrar bloco
 Private Sub btnLTxtLimparCadastroBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     Call limparCamposCadastroBlocos
 End Sub
 
@@ -551,27 +551,27 @@ End Sub
 Private Sub cbAbrirBlocoEditar_Click()
 
 End Sub
-'Botão btnLTxtSalvarEdicaoBloco tela editar bloco
+' Botão btnLTxtSalvarEdicaoBloco tela editar bloco
 Private Sub btnLTxtSalvarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
     MsgBox "Chama Serviço editar bloco, tela editar bloco"
 End Sub
-'Botão btnLTxtVoltarEdicaoBloco tela editar bloco
+' Botão btnLTxtVoltarEdicaoBloco tela editar bloco
 Private Sub btnLTxtVoltarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 1
 End Sub
 
 '-----------------------------------------------------------------TELA ESTOQUE M²-----------------------------------
 '                                                                 ---------------
-'Efeito de label nome do pdf tela estoque m²
+' Efeito de label nome do pdf tela estoque m²
 Private Sub lDigiteNomeArquivoM2Explemplo_Click()
     lDigiteNomeArquivoM2.Visible = True
     lDigiteNomeArquivoM2Explemplo.Visible = False
     txtNomeArquivoEstoqueChapas.SetFocus
 End Sub
-'Efeito e coloca em caixa alta o texto em txtNomeArquivoEstoqueChapas tela estoque m²
+' Efeito e coloca em caixa alta o texto em txtNomeArquivoEstoqueChapas tela estoque m²
 Private Sub txtNomeArquivoEstoqueChapas_Change()
     lDigiteNomeArquivoM2.Visible = True
     lDigiteNomeArquivoM2Explemplo.Visible = False
@@ -583,7 +583,7 @@ Private Sub txtNomeArquivoEstoqueChapas_Change()
 
     txtNomeArquivoEstoqueChapas.Value = UCase(txtNomeArquivoEstoqueChapas.Value)
 End Sub
-'Efeito ao sair da caixa txtNomeArquivoEstoqueChapas de texto tela estoque m²
+' Efeito ao sair da caixa txtNomeArquivoEstoqueChapas de texto tela estoque m²
 Private Sub txtNomeArquivoEstoqueChapas_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     If txtNomeArquivoEstoqueChapas.Value = "" Then
         lDigiteNomeArquivoM2.Visible = False
@@ -592,253 +592,418 @@ Private Sub txtNomeArquivoEstoqueChapas_Exit(ByVal Cancel As MSForms.ReturnBoole
 End Sub
 ' txtMaterialChapaPesquisa tela estoque m²
 Private Sub txtMaterialChapaPesquisa_Change()
-    'Coloca tudo em caixa alta
+    ' Coloca tudo em caixa alta
     txtMaterialChapaPesquisa.Value = UCase(txtMaterialChapaPesquisa.Value)
 End Sub
 ' txtIdBlocoChapaPesquisa tela estoque m²
 Private Sub txtIdBlocoChapaPesquisa_Change()
-    'Coloca tudo em caixa alta
+    ' Coloca tudo em caixa alta
     txtIdBlocoChapaPesquisa.Value = UCase(txtIdBlocoChapaPesquisa.Value)
 End Sub
 ' txtIdchapaEstoque tela estoque m²
 Private Sub txtIdchapaEstoque_Change()
-    'Coloca tudo em caixa alta
+    ' Coloca tudo em caixa alta
     txtIdchapaEstoque.Value = UCase(txtIdchapaEstoque.Value)
 End Sub
-'Botão btnLTxtPesquisarChapas tela estoque m²
+' Botão btnLTxtPesquisarChapas tela estoque m²
 Private Sub btnLTxtPesquisarChapas_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço pesquisar chapa, tela estoque m²"
 End Sub
-'Botão btnLTxtLimparFiltrosChapas tela estoque m²
+' Botão btnLTxtLimparFiltrosChapas tela estoque m²
 Private Sub btnLTxtLimparFiltrosChapas_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     Call limparCamposPesquisaEstoqueM2
 End Sub
-'Botão btnLImgExportarEstoqueM2 tela estoque m²
+' Botão btnLImgExportarEstoqueM2 tela estoque m²
 Private Sub btnLImgExportarEstoqueM2_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço esportar estoque m², tela estoque m²"
 End Sub
 'Botão btnLTxtNovoAvulso tela estoque m²
 Private Sub btnLTxtNovoAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    ' Coloca data atual na txtDataCadastroChapaAvulsa na tela cadastro chapa avulso
+    txtDataCadastroChapaAvulsa.Value = Date
+    
+    ' Chama metodo para carregar comboBox
+    Call carregarTiposMateriais(Me.cbTipoMaterialL)
+    Call carregarTiposPolimento(Me.cbTipoPolimentoL)
+    Call carregarTemNota(Me.cbTemNotaAvulso)
+    
+    ' Chama metodo para carregar lista
+    Call carregarList(Me.ListMaterias)
+    
     'Muda abra da multPage
     Me.MultiPageCEBC.Value = 5
 End Sub
-'Botão btnLTxtEditarChapa tela estoque m²
+' Botão btnLTxtEditarChapa tela estoque m²
 Private Sub btnLTxtEditarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Muda abra da multPage
+    ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 6
 End Sub
-'Botão btnLTxtTrocaEstoque tela estoque m²
+' Botão btnLTxtTrocaEstoque tela estoque m²
 Private Sub btnLTxtTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Muda abra da multPage
+    ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 7
 End Sub
 
 '-----------------------------------------------------------------TELA CADASTRO AVULSO-----------------------------------
 '                                                                 --------------------
-'Botão btnLImgCadastrarMaterialAvulso tela cadastro avulso
+' txtIdBlocoAvulso tela cadastro avulso
+Private Sub txtIdBlocoAvulso_Change()
+    ' Coloca tudo em caixa alta
+    txtIdBlocoAvulso.Value = UCase(txtIdBlocoAvulso.Value)
+    
+    ' Cria o código para o sistema
+    txtIdBlocoAvulsoSistema.Value = txtIdBlocoAvulso & "-" & Util.ExtrairUltimaPalavra(txtMaterialAvulso.Value) & "-BL"
+    
+    ' Deixa em branco o codigo se as variaveis forem vazias
+    If txtIdBlocoAvulso.Value = "" And txtMaterialAvulso.Value = "" Then
+        txtIdBlocoAvulsoSistema.Value = ""
+    End If
+End Sub
+' txtMaterialAvulso tela cadastro avulso
+Private Sub txtMaterialAvulso_Change()
+    ' Coloca tudo em caixa alta
+    txtMaterialAvulso.Value = UCase(txtMaterialAvulso.Value)
+    
+    ' Cria o código para o sistema
+    txtIdBlocoAvulsoSistema.Value = txtIdBlocoAvulso & "-" & Util.ExtrairUltimaPalavra(txtMaterialAvulso.Value) & "-BL"
+    
+    ' Deixa em branco o codigo se as variaveis forem vazias
+    If txtIdBlocoAvulso.Value = "" And txtMaterialAvulso.Value = "" Then
+        txtIdBlocoAvulsoSistema.Value = ""
+    End If
+End Sub
+' txtObsBlocoL tela cadastro avulso
+Private Sub txtObsBlocoL_Change()
+    ' Coloca tudo em caixa alta
+    txtObsBlocoL.Value = UCase(txtObsBlocoL.Value)
+End Sub
+' txtComprimentoChapaAvulsa tela cadastro avulso
+Private Sub txtComprimentoChapaAvulsa_Change()
+   'Define o resultado no TextBox
+    txtComprimentoChapaAvulsa.Value = Util.formatarMetros(txtComprimentoChapaAvulsa)
+    
+    ' Seta o valor no comprimento bruto
+    txtCompChapasBrutasAvulso.Value = txtComprimentoChapaAvulsa.Value
+
+    'Move o cursor para o final do TextBox
+    txtComprimentoChapaAvulsa.SelStart = Len(txtComprimentoChapaAvulsa.Value)
+    
+    'Retorna valor calculado e formatado
+    txtTotalM2Avulso.Value = Util.formatarComPontos(Format(Util.calcularM2(txtComprimentoChapaAvulsa.Value, _
+        txtAlturaChapaAvulsa.Value, txtQuantidadeChapasAvulsas.Value), "0.0000"))
+        
+    'Seta o custo do material m²
+    txtCustoSimplesM2Avulso.Value = Util.formatarComPontos(Format(Util.custoMaterialM2(txtTotalBlocoAvulso.Value, _
+            txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", txtTotalM2Avulso.Value), "0.00"))
+End Sub
+' txtAlturaChapaAvulsa tela cadastro avulso
+Private Sub txtAlturaChapaAvulsa_Change()
+   'Define o resultado no TextBox
+    txtAlturaChapaAvulsa.Value = Util.formatarMetros(txtAlturaChapaAvulsa)
+    
+    ' Seta o valor na altura bruto
+    txtAlturaChapasBrutasAvulso.Value = txtAlturaChapaAvulsa.Value
+
+    'Move o cursor para o final do TextBox
+    txtAlturaChapaAvulsa.SelStart = Len(txtAlturaChapaAvulsa.Value)
+    
+    'Retorna valor calculado e formatado
+    txtTotalM2Avulso.Value = Util.formatarComPontos(Format(Util.calcularM2(txtComprimentoChapaAvulsa.Value, _
+        txtAlturaChapaAvulsa.Value, txtQuantidadeChapasAvulsas.Value), "0.0000"))
+        
+    'Seta o custo do material m²
+    txtCustoSimplesM2Avulso.Value = Util.formatarComPontos(Format(Util.custoMaterialM2(txtTotalBlocoAvulso.Value, _
+            txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", txtTotalM2Avulso.Value), "0.00"))
+End Sub
+' txtQuantidadeChapasAvulsas tela cadastro avulso
+Private Sub txtQuantidadeChapasAvulsas_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+    ' Deixa só a digitação de numero
+    If KeyAscii < 48 Or KeyAscii > 57 Then
+        KeyAscii = 0
+    End If
+End Sub
+' txtQuantidadeChapasAvulsas tela cadastro avulso
+Private Sub txtQuantidadeChapasAvulsas_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    ' Se não tiver valor deixa com 0
+    If txtQuantidadeChapasAvulsas.Value = "" Then
+        txtQuantidadeChapasAvulsas.Value = 0
+    End If
+    
+    'Retorna valor calculado e formatado
+    txtTotalM2Avulso.Value = Util.formatarComPontos(Format(Util.calcularM2(txtComprimentoChapaAvulsa.Value, _
+        txtAlturaChapaAvulsa.Value, txtQuantidadeChapasAvulsas.Value), "0.0000"))
+    'Seta o custo do material m²
+    txtCustoSimplesM2Avulso.Value = Util.formatarComPontos(Format(Util.custoMaterialM2(txtTotalBlocoAvulso.Value, _
+            txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", txtTotalM2Avulso.Value), "0.00"))
+End Sub
+' txtCompChapasBrutasAvulso tela cadastro avulso
+Private Sub txtCompChapasBrutasAvulso_Change()
+   'Define o resultado no TextBox
+    txtCompChapasBrutasAvulso.Value = Util.formatarMetros(txtCompChapasBrutasAvulso)
+
+    'Move o cursor para o final do TextBox
+    txtCompChapasBrutasAvulso.SelStart = Len(txtCompChapasBrutasAvulso.Value)
+End Sub
+' txtAlturaChapasBrutasAvulso tela cadastro avulso
+Private Sub txtAlturaChapasBrutasAvulso_Change()
+   'Define o resultado no TextBox
+    txtAlturaChapasBrutasAvulso.Value = Util.formatarMetros(txtAlturaChapasBrutasAvulso)
+
+    'Move o cursor para o final do TextBox
+    txtAlturaChapasBrutasAvulso.SelStart = Len(txtAlturaChapasBrutasAvulso.Value)
+End Sub
+' txtAdicionaisAvulso tela cadastro avulso
+Private Sub txtAdicionaisAvulso_Change()
+    ' Define o resultado no TextBox
+    txtAdicionaisAvulso.Value = Util.formatarValor(txtAdicionaisAvulso.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtAdicionaisAvulso.SelStart = Len(txtAdicionaisAvulso.Value)
+    
+    'Seta o custo do material m²
+    txtCustoSimplesM2Avulso.Value = Util.formatarComPontos(Format(Util.custoMaterialM2(txtTotalBlocoAvulso.Value, _
+            txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", txtTotalM2Avulso.Value), "0.00"))
+End Sub
+' txtValorFreteAvulso tela cadastro avulso
+Private Sub txtValorFreteAvulso_Change()
+    ' Define o resultado no TextBox
+    txtValorFreteAvulso.Value = Util.formatarValor(txtValorFreteAvulso.Value)
+
+    ' Move o cursor para o final do TextBox
+    txtValorFreteAvulso.SelStart = Len(txtValorFreteAvulso.Value)
+    
+    'Seta o custo do material m²
+    txtCustoSimplesM2Avulso.Value = Util.formatarComPontos(Format(Util.custoMaterialM2(txtTotalBlocoAvulso.Value, _
+            txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", txtTotalM2Avulso.Value), "0.00"))
+End Sub
+' txtValorBlocoAvulso tela cadastro avulso
+Private Sub txtValorMetroAvulso_Change()
+    ' Define o resultado no TextBox
+    txtValorMetroAvulso.Value = Util.formatarValor(txtValorMetroAvulso.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtValorMetroAvulso.SelStart = Len(txtValorMetroAvulso.Value)
+
+    ' Retorna valor calculado e formatado
+    txtTotalBlocoAvulso.Value = Util.formatarComPontos(Format(Util.calcularValorBloco(txtTotalM2Avulso.Value, _
+            txtValorMetroAvulso.Value), "0.00"))
+            
+    'Se m² for diferente de 0 calcula o custo do material
+    'Seta o custo do material m²
+    txtCustoSimplesM2Avulso.Value = Util.formatarComPontos(Format(Util.custoMaterialM2(txtTotalBlocoAvulso.Value, _
+            txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", txtTotalM2Avulso.Value), "0.00"))
+End Sub
+' txtTotalM2Avulso tela cadastro avulso
+Private Sub txtTotalM2Avulso_Change()
+    'Se m² for diferente de 0 calcula o custo do material
+    'Seta o custo do material m²
+    txtCustoSimplesM2Avulso.Value = Util.formatarComPontos(Format(Util.custoMaterialM2(txtTotalBlocoAvulso.Value, _
+            txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", txtTotalM2Avulso.Value), "0.00"))
+End Sub
+' Botão btnLImgCadastrarMaterialAvulso tela cadastro avulso
 Private Sub btnLImgCadastrarMaterialAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastrar tipo material, tela cadastro avulso"
 End Sub
-'Botão btnLImgCadastrarPolimentoAvulso tela cadastro avulso
+' Botão btnLImgCadastrarPolimentoAvulso tela cadastro avulso
 Private Sub btnLImgCadastrarPolimentoAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastrar tipo polimento, tela cadastro avulso"
 End Sub
-'Botão btnLTxtCadastrarChapaAvulso tela cadastro avulso
+' Botão btnLTxtCadastrarChapaAvulso tela cadastro avulso
 Private Sub btnLTxtCadastrarChapaAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastrar chapas avulsos, tela cadastro avulso"
 End Sub
-'Botão btnLTxtVoltarCadatradoChapasAvulso tela cadastro avulso
+' Botão btnLTxtVoltarCadatradoChapasAvulso tela cadastro avulso
 Private Sub btnLTxtVoltarCadatradoChapasAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Muda abra da multPage - tela estoque m²
     Me.MultiPageCEBC.Value = 4
 End Sub
-'Botão btnLTxtLimparCadastroChapaAvulso tela cadastro avulso
+' Botão btnLTxtLimparCadastroChapaAvulso tela cadastro avulso
 Private Sub btnLTxtLimparCadastroChapaAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
-    MsgBox "Chama Serviço limpar cadastro chapas avulsos, tela cadastro avulso"
+    ' Chama Serviço
+    Call limparCamposCadastroAvulso
 End Sub
 
 '-----------------------------------------------------------------TELA LANÇAMENTO E EDIÇÃO CHAPA-----------------------------------
 '                                                                 ------------------------------
-'Botão btnLImgCadastrarPolideiraChapa tela lançamento e edição chapa
+' Botão btnLImgCadastrarPolideiraChapa tela lançamento e edição chapa
 Private Sub btnLImgCadastrarPolideiraChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastrar Polideira, tela lançamento e edição chapa"
 End Sub
-'Botão btnLImgCadastrarTipoPolideiraChapa tela lançamento e edição chapa
+' Botão btnLImgCadastrarTipoPolideiraChapa tela lançamento e edição chapa
 Private Sub btnLImgCadastrarTipoPolideiraChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastrar tipo polimento, tela lançamento e edição chapa"
 End Sub
-'Botão btnLImgCadastrarTipoMaterialChapa tela lançamento e edição chapa
+' Botão btnLImgCadastrarTipoMaterialChapa tela lançamento e edição chapa
 Private Sub btnLImgCadastrarTipoMaterialChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço tipo material, tela lançamento e edição chapa"
 End Sub
-'Botão btnLImgCadastrarTipoMaterialChapaTamanhos tela lançamento e edição chapa
+' Botão btnLImgCadastrarTipoMaterialChapaTamanhos tela lançamento e edição chapa
 Private Sub btnLImgCadastrarTipoMaterialChapaTamanhos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço tipo material, tela lançamento e edição chapa"
 End Sub
-'Botão btnLTxtAdicionarTamanhoChapa tela lançamento e edição chapa
+' Botão btnLTxtAdicionarTamanhoChapa tela lançamento e edição chapa
 Private Sub btnLTxtAdicionarTamanhoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço adicionar tamanhos, tela lançamento e edição chapa"
 End Sub
-'Botão btnLTxtEditarTamanhoChapa tela lançamento e edição chapa
+' Botão btnLTxtEditarTamanhoChapa tela lançamento e edição chapa
 Private Sub btnLTxtEditarTamanhoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço editar tamanho chapa, tela lançamento e edição chapa"
 End Sub
-'Botão btnLTxtTirarDaLista tela lançamento e edição chapa
+' Botão btnLTxtTirarDaLista tela lançamento e edição chapa
 Private Sub btnLTxtTirarDaLista_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço tira tamanho da lista, tela lançamento e edição chapa"
 End Sub
-'Botão btnLTxtSalvarChapa tela lançamento e edição chapa
+' Botão btnLTxtSalvarChapa tela lançamento e edição chapa
 Private Sub btnLTxtSalvarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço salva alteração da chapa, tela lançamento e edição chapa"
 End Sub
-'Botão btnLTxtVoltarChapa tela lançamento e edição chapa
+' Botão btnLTxtVoltarChapa tela lançamento e edição chapa
 Private Sub btnLTxtVoltarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço voltar, tela lançamento e edição chapa"
 End Sub
 
 '-----------------------------------------------------------------TELA TROCA ESTOQUE-----------------------------------
 '                                                                 ------------------
-'Botão btnLTxtAdicionarTrocaEstoque tela troca estoque
+' Botão btnLTxtAdicionarTrocaEstoque tela troca estoque
 Private Sub btnLTxtAdicionarTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço adicionar material para troca, tela troca estoque"
 End Sub
-'Botão btnLTxtTrocarEstoque tela troca estoque
+' Botão btnLTxtTrocarEstoque tela troca estoque
 Private Sub btnLTxtTrocarEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço troca de estoque, tela troca estoque"
 End Sub
-'Botão btnLTxtVoltarTrocaEstoque tela troca estoque
+' Botão btnLTxtVoltarTrocaEstoque tela troca estoque
 Private Sub btnLTxtVoltarTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço voltar, tela troca estoque"
 End Sub
 
 '-----------------------------------------------------------------TELA DESPACHE-----------------------------------
 '                                                                 -------------
-'Botão btnLImgCadastrarMotoristaDespache tela despache
+' Botão btnLImgCadastrarMotoristaDespache tela despache
 Private Sub btnLImgCadastrarMotoristaDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastro motorista, tela despache"
 End Sub
-'Botão btnLImgCadastrarDestinoDespache tela despache
+' Botão btnLImgCadastrarDestinoDespache tela despache
 Private Sub btnLImgCadastrarDestinoDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastro destino, tela despache"
 End Sub
-'Botão btnLTxtAdicionar tela despache
+' Botão btnLTxtAdicionar tela despache
 Private Sub btnLTxtAdicionar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço adicionar chapa, tela despache"
 End Sub
-'Botão btnLTxtDespachar tela despache
+' Botão btnLTxtDespachar tela despache
 Private Sub btnLTxtDespachar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço despachar, tela despache"
 End Sub
-'Botão btnLTxtLimparDespache tela despache
+' Botão btnLTxtLimparDespache tela despache
 Private Sub btnLTxtLimparDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço limpar dados, tela despache"
 End Sub
 
 '-----------------------------------------------------------------TELA CARREGOS-----------------------------------
 '                                                                 -------------
-'Botão btnLTxtPesquisarCarregos tela carregos
+' Botão btnLTxtPesquisarCarregos tela carregos
 Private Sub btnLTxtPesquisarCarregos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço pesquisar por carregos, tela carregos"
 End Sub
-'Botão btnLTxtLimparListas tela carregos
+' Botão btnLTxtLimparListas tela carregos
 Private Sub btnLTxtLimparListas_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço limpar dados filtro, tela carregos"
 End Sub
-'Botão btnLImgExportarCarregoPDF tela carregos
+' Botão btnLImgExportarCarregoPDF tela carregos
 Private Sub btnLImgExportarCarregoPDF_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço exportar carregos em pdf, tela carregos"
 End Sub
-'Botão btnLTxtEditarCarrego tela carregos
+' Botão btnLTxtEditarCarrego tela carregos
 Private Sub btnLTxtEditarCarrego_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço editar carrego, tela carregos"
 End Sub
-'Botão btnLTxtVoltarCArrego tela carregos
+' Botão btnLTxtVoltarCArrego tela carregos
 Private Sub btnLTxtVoltarCArrego_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço voltar, tela carregos"
 End Sub
 
 '-----------------------------------------------------------------TELA CADASTROS DIVERSOS-----------------------------------
 '                                                                 -----------------------
-'Botão btnLTxtSalvarPedreira tela cadastros diversos
+' Botão btnLTxtSalvarPedreira tela cadastros diversos
 Private Sub btnLTxtSalvarPedreira_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastrar ou editar pedreira, tela cadastros diversos"
 End Sub
-'Botão btnLTxtSalvarSerraria tela cadastros diversos
+' Botão btnLTxtSalvarSerraria tela cadastros diversos
 Private Sub btnLTxtSalvarSerraria_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastrar ou editar serraria, tela cadastros diversos"
 End Sub
-'Botão btnLTxtSalvarPolideira tela cadastros diversos
+' Botão btnLTxtSalvarPolideira tela cadastros diversos
 Private Sub btnLTxtSalvarPolideira_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastrar ou editar polideira, tela cadastros diversos"
 End Sub
-'Botão btnLTxtSalvarTipoMaterial tela cadastros diversos
+' Botão btnLTxtSalvarTipoMaterial tela cadastros diversos
 Private Sub btnLTxtSalvarTipoMaterial_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastrar ou editar tipo material, tela cadastros diversos"
 End Sub
-'Botão btnLTxtSalvarTipoPolimento tela cadastros diversos
+' Botão btnLTxtSalvarTipoPolimento tela cadastros diversos
 Private Sub btnLTxtSalvarTipoPolimento_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastrar ou editar tipo polimento, tela cadastros diversos"
 End Sub
-'Botão btnLTxtSalvarMotorista tela cadastros diversos
+' Botão btnLTxtSalvarMotorista tela cadastros diversos
 Private Sub btnLTxtSalvarMotorista_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastrar ou editar motorista, tela cadastros diversos"
 End Sub
-'Botão btnLTxtSalvarMotorista tela cadastros diversos
+' Botão btnLTxtSalvarMotorista tela cadastros diversos
 Private Sub btnLTxtSalvarDestino_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastrar ou editar destino, tela cadastros diversos"
 End Sub
 
 '-----------------------------------------------------------------TELA USUARIO-----------------------------------
 '                                                                 ------------
-'Botão btnLTxtSalvarUsuario tela usuarios
+' Botão btnLTxtSalvarUsuario tela usuarios
 Private Sub btnLTxtSalvarUsuario_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço cadastrar ou editar usuário, tela usuarios"
 End Sub
-'Botão btnLTxtListUsuario tela usuarios
+' Botão btnLTxtListUsuario tela usuarios
 Private Sub btnLTxtListUsuario_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço carrega lista com usuários, tela usuarios"
 End Sub
-'Botão btnLTxtListUsuarioLog tela usuarios
+' Botão btnLTxtListUsuarioLog tela usuarios
 Private Sub btnLTxtListUsuarioLog_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
+    ' Chama Serviço
     MsgBox "Chama Serviço carrega lista com log dos usuários, tela usuarios"
 End Sub
 
@@ -900,12 +1065,40 @@ Private Sub limparCamposCadastroBlocos()
     txtValorM3.Value = "0,00"
     lTotalDia.Caption = "0,00"
 End Sub
+' Limpa os campos de pesquisa da tela cadastro avulso
+Private Sub limparCamposCadastroAvulso()
+    txtDataCadastroChapaAvulsa.Value = Date
+    txtIdBlocoAvulsoSistema.Value = ""
+    txtIdBlocoAvulso.Value = ""
+    txtMaterialAvulso.Value = ""
+    cbTipoMaterialL.Value = ""
+    cbTipoPolimentoL.Value = ""
+    obAvulso.Value = True
+    opImportado.Value = False
+    cbTemNotaAvulso.Value = ""
+    txtObsBlocoL.Value = ""
+    txtComprimentoChapaAvulsa.Value = ""
+    txtAlturaChapaAvulsa.Value = ""
+    txtQuantidadeChapasAvulsas.Value = 0
+    txtEspessuraAvulso.Value = "02"
+    txtCompChapasBrutasAvulso.Value = "0,0000"
+    txtAlturaChapasBrutasAvulso.Value = "0,0000"
+    txtAdicionaisAvulso.Value = "0,00"
+    txtValorFreteAvulso.Value = "0,00"
+    txtValorMetroAvulso.Value = "0,00"
+    txtTotalM2Avulso.Value = "0,00"
+    txtCustoSimplesM2Avulso.Value = "0,00"
+    txtTotalBlocoAvulso.Value = "0,00"
+End Sub
 
 '-----------------------------------------------------------------CARREAGMENTO DOS COMBOBBOX-----------------------------------
 '                                                                 --------------------------
 ' Carrega a combobox de pedreira
 Private Sub carregarPedreiras(cbPedreiras As MSForms.ComboBox)
-
+    ' limpa a lista para carregamento
+    cbPedreiras.Clear
+    
+    ' Carregamento para lista
     cbPedreiras.AddItem "PEDREIRA 01"
     cbPedreiras.AddItem "PEDREIRA 02"
 '    ' for para carregamento
@@ -924,7 +1117,10 @@ Private Sub carregarPedreiras(cbPedreiras As MSForms.ComboBox)
 End Sub
 ' Carrega a combobox de serraria
 Private Sub carregarSerrarias(cbSerrarias As MSForms.ComboBox)
-
+    ' limpa a lista para carregamento
+    cbSerrarias.Clear
+    
+    ' Carregamento para lista
     cbSerrarias.AddItem "SERRARIA 01"
     cbSerrarias.AddItem "SERRARIA 02"
 '    ' for para carregamento
@@ -943,7 +1139,10 @@ Private Sub carregarSerrarias(cbSerrarias As MSForms.ComboBox)
 End Sub
 ' Carrega a combobox de tipo material
 Private Sub carregarTiposMateriais(cbTiposMateriais As MSForms.ComboBox)
-
+    ' limpa a lista para carregamento
+    cbTiposMateriais.Clear
+    
+    ' Carregamento para lista
     cbTiposMateriais.AddItem "TIPO 01"
     cbTiposMateriais.AddItem "TIPO 02"
 '    ' for para carregamento
@@ -962,20 +1161,32 @@ Private Sub carregarTiposMateriais(cbTiposMateriais As MSForms.ComboBox)
 End Sub
 ' Carrega a combobox tem nota
 Private Sub carregarTemNota(cbTemNota As MSForms.ComboBox)
-
+    ' limpa a lista para carregamento
+    cbTemNota.Clear
+    
+    ' Carregamento para lista
     cbTemNota.AddItem "SIM"
     cbTemNota.AddItem "NÃO"
 End Sub
 ' Carrega a combobox de polideira
 Private Sub carregarPolideiras(cbPolideiras As MSForms.ComboBox)
+    ' limpa a lista para carregamento
+    cbPolideiras.Clear
+    
+    ' Carregamento para lista
     cbPolideiras.AddItem "POLIDEIRA 01"
     cbPolideiras.AddItem "POLIDEIRA 02"
 End Sub
 ' Carrega a combobox de tipo polimento
 Private Sub carregarTiposPolimento(cbTiposPolimento As MSForms.ComboBox)
+    ' limpa a lista para carregamento
+    cbTiposPolimento.Clear
+    
+    ' Carregamento para lista
     cbTiposPolimento.AddItem "TIPO 01"
     cbTiposPolimento.AddItem "TIPO 02"
 End Sub
+
 '-----------------------------------------------------------------CARREAGMENTO DAS LIST-----------------------------------
 '                                                                 ---------------------
 ' Carrega a lista
@@ -996,7 +1207,8 @@ Private Sub carregarList(lista As MSForms.ListBox)
     ' Limpar a ListBox
     lista.Clear
     
-    ' Tamanho do cabeçalho nome   | COD | DECRCIÇÃO | COMP | ALT   | LARG | QTD   | VALOR M³ | ADD | FRETE | TOTAL |
+    ' NOME CABEÇALHO CHAPAS       | COD | DECRCIÇÃO | QTD  | COMP  | ALT  | M²    | TIPO     | ESP | VALOR | TOTAL |
+    ' NOME CABEÇALHO BLOCOS       | COD | DECRCIÇÃO | COMP | ALT   | LARG | QTD   | VALOR M³ | ADD | FRETE | TOTAL |
     ' Tamanho do cabeçalho left   | 7   | 193       | 444  | 496,5 | 549  | 601,5 | 654      | 745 | 820,5 | 896   |
     ' Tamanho do cabeçalho width  | 185 | 250       | 52   | 52    | 52   | 52    | 90       | 75  | 75    | 74,5  |
     ' Tamanho das colunas da list

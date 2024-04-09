@@ -191,11 +191,12 @@ Function custoBloco(valorBloco, valorFrete, valorSerrada, valorPolimento, valore
     
 End Function
 'Calcula o custo do material
-Function custoMaterialM2(valorBloco, valorFrete, valorSerrada, valorPolimento, qtdM2) As Double
+Function custoMaterialM2(valorBloco, valorFrete, valoresAdicionais, valorSerrada, valorPolimento, qtdM2) As Double
     
     'Variaveis do metodo
     Dim bloco As Double
     Dim frete As Double
+    Dim adicionais As Double
     Dim serrada As Double
     Dim polimento As Double
     Dim m2 As Double
@@ -205,6 +206,7 @@ Function custoMaterialM2(valorBloco, valorFrete, valorSerrada, valorPolimento, q
     'Atribuiições das variaveis
     bloco = CDbl(valorBloco)
     frete = CDbl(valorFrete)
+    adicionais = CDbl(valoresAdicionais)
     serrada = CDbl(valorSerrada)
     polimento = CDbl(valorPolimento)
     m2 = CDbl(qtdM2)
@@ -215,7 +217,7 @@ Function custoMaterialM2(valorBloco, valorFrete, valorSerrada, valorPolimento, q
     End If
     
     'Custo do material
-    custoBloco = bloco + frete + serrada + polimento
+    custoBloco = bloco + frete + adicionais + serrada + polimento
     custoM2 = custoBloco / m2
     
     'Retorno custo por m²
