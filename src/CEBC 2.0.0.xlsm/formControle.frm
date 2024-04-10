@@ -284,7 +284,7 @@ Private Sub btnLTxtNovoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As I
 End Sub
 ' Botão btnLTxtEditarBloco tela estoque m³
 Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    ' Captura o id do item selecionado
+    ' Captura o id do item selecionado na listBox
     
     
     ' Muda abra da multPage para tela editar bloco
@@ -292,6 +292,15 @@ Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As
     
     ' Chama serviço para pesquisa do bloco
     
+    
+    ' Carregar os comboBox da tela
+    Call carregarTiposMateriais(Me.cbTipoMaterialEditar)
+    Call carregarPedreiras(Me.cbPedreiraEditar)
+    Call carregarSerrarias(Me.cbSerrariaEditar)
+    Call carregarPolideiras(Me.cbPolideiraEditar)
+    Call carregarEstoque(Me.cbEstoqueEditar)
+    Call carregarTemNota(Me.cbNotaBlocoEditar)
+    Call carregarCustoMedio(Me.cbCustoMedioEditar)
     
     ' Carrega os dados na tela editar bloco
     Call carregarDadosBlocoTelaEdicaoBloco ' Irá enviar o objeto Bloco para poder carregar os campos
@@ -497,21 +506,21 @@ Private Sub carregarDadosBlocoTelaEdicaoBloco() ' Irá receber o objeto Bloco par
     ' Descrição e dimensões finais
     txtIdBlocoEditar.Value = "37766-50793-MOON-LIGHT-BL"
     txtMaterialEditar.Value = "BLOCO MARMORE BRANCO CLASSICO"
-    cbTipoMaterialEditar.Value = "COMERCIAL SATAND"
+    Call selecaoItem("cbTipoMaterialEditar", "COMERCIAL SATAND")
     txtObsEditar.Value = "BLOCO COM CHAPAS QUEBRADAS SERÃO REPOSTAS POSTERIORMENTE"
-    cbPedreiraEditar.Value = "MINERAÇÃO VISTA LINDA"
-    cbSerrariaEditar.Value = "ELSON BABISQUE"
-    cbPolideiraEditar.Value = "SÃO ROQUE"
+    Call selecaoItem("cbPedreiraEditar", "MINERAÇÃO VISTA LINDA")
+    Call selecaoItem("cbSerrariaEditar", "ELSON BABISQUE")
+    Call selecaoItem("cbPolideiraEditar", "SÃO ROQUE")
     txtNBlocoPedreiraEditar.Value = "37766-50793-MOON-LIGHT-BL"
-    cbEstoqueEditar.Value = "CASA DO GRANITO"
+    Call selecaoItem("cbEstoqueEditar", "CASA DO GRANITO")
     txtDataCadastroEditar.Value = "22/02/2024"
     txtQtdM3blocoEditar.Value = "12,255"
     txtQtdM2SerradaEditar.Value = "359,5448"
     txtQtdM2PolimentoEditar.Value = "284,4578"
     txtTotalChapaBlocoEditar.Value = "71"
     cbStatusBlocoEditar.Value = "EM PROCESSO"
-    cbNotaBlocoEditar.Value = "SIM"
-    txtCodFreteBlocoEditar.Value = "359"
+    Call selecaoItem("cbNotaBlocoEditar", "SIM")
+    Call selecaoItem("cbCustoMedioEditar", "SIM")
     
     ' Dimensões bloco e médias chapas
     txtCompBrutaBlocoEditar.Value = "3,2550"
@@ -1093,14 +1102,31 @@ End Sub
 
 '-----------------------------------------------------------------CARREAGMENTO DOS COMBOBBOX-----------------------------------
 '                                                                 --------------------------
+' Seleção do item da comboBox
+Private Sub selecaoItem(nomeCmboBox As String, nomeSelecao As String)
+    ' Variaveis do metodo
+    Dim i As Integer
+    
+    ' Percorrer os itens da ComboBox
+    With formControle.Controls(nomeCmboBox)
+        For i = 0 To .ListCount - 1
+            If .list(i) = nomeSelecao Then
+                .ListIndex = i ' Seleciona o item desejado
+                Exit For
+            End If
+        Next i
+    End With
+End Sub
+
 ' Carrega a combobox de pedreira
-Private Sub carregarPedreiras(cbPedreiras As MSForms.ComboBox)
+Private Sub carregarPedreiras(cbPedreiras As MSForms.comboBox)
     ' limpa a lista para carregamento
     cbPedreiras.Clear
     
     ' Carregamento para lista
     cbPedreiras.AddItem "PEDREIRA 01"
     cbPedreiras.AddItem "PEDREIRA 02"
+    cbPedreiras.AddItem "MINERAÇÃO VISTA LINDA"
 '    ' for para carregamento
 '    For Each nomePedreira In pedreiras
 '
@@ -1116,13 +1142,15 @@ Private Sub carregarPedreiras(cbPedreiras As MSForms.ComboBox)
 '    Next nomePedreira
 End Sub
 ' Carrega a combobox de serraria
-Private Sub carregarSerrarias(cbSerrarias As MSForms.ComboBox)
+Private Sub carregarSerrarias(cbSerrarias As MSForms.comboBox)
     ' limpa a lista para carregamento
     cbSerrarias.Clear
     
     ' Carregamento para lista
     cbSerrarias.AddItem "SERRARIA 01"
     cbSerrarias.AddItem "SERRARIA 02"
+    cbSerrarias.AddItem "ELSON BABISQUE"
+    
 '    ' for para carregamento
 '    For Each nomePedreira In pedreiras
 '
@@ -1138,13 +1166,14 @@ Private Sub carregarSerrarias(cbSerrarias As MSForms.ComboBox)
 '    Next nomePedreira
 End Sub
 ' Carrega a combobox de tipo material
-Private Sub carregarTiposMateriais(cbTiposMateriais As MSForms.ComboBox)
+Private Sub carregarTiposMateriais(cbTiposMateriais As MSForms.comboBox)
     ' limpa a lista para carregamento
     cbTiposMateriais.Clear
     
     ' Carregamento para lista
     cbTiposMateriais.AddItem "TIPO 01"
     cbTiposMateriais.AddItem "TIPO 02"
+    cbTiposMateriais.AddItem "COMERCIAL SATAND"
 '    ' for para carregamento
 '    For Each nomePedreira In pedreiras
 '
@@ -1160,7 +1189,7 @@ Private Sub carregarTiposMateriais(cbTiposMateriais As MSForms.ComboBox)
 '    Next nomePedreira
 End Sub
 ' Carrega a combobox tem nota
-Private Sub carregarTemNota(cbTemNota As MSForms.ComboBox)
+Private Sub carregarTemNota(cbTemNota As MSForms.comboBox)
     ' limpa a lista para carregamento
     cbTemNota.Clear
     
@@ -1169,22 +1198,51 @@ Private Sub carregarTemNota(cbTemNota As MSForms.ComboBox)
     cbTemNota.AddItem "NÃO"
 End Sub
 ' Carrega a combobox de polideira
-Private Sub carregarPolideiras(cbPolideiras As MSForms.ComboBox)
+Private Sub carregarPolideiras(cbPolideiras As MSForms.comboBox)
     ' limpa a lista para carregamento
     cbPolideiras.Clear
     
     ' Carregamento para lista
     cbPolideiras.AddItem "POLIDEIRA 01"
     cbPolideiras.AddItem "POLIDEIRA 02"
+    cbPolideiras.AddItem "SÃO ROQUE"
 End Sub
 ' Carrega a combobox de tipo polimento
-Private Sub carregarTiposPolimento(cbTiposPolimento As MSForms.ComboBox)
+Private Sub carregarTiposPolimento(cbTiposPolimento As MSForms.comboBox)
     ' limpa a lista para carregamento
     cbTiposPolimento.Clear
     
     ' Carregamento para lista
     cbTiposPolimento.AddItem "TIPO 01"
     cbTiposPolimento.AddItem "TIPO 02"
+    cbTiposPolimento.AddItem "POLIDO"
+End Sub
+' Carrega a combobox de estoque carregarCustoMedio
+Private Sub carregarEstoque(cbTiposEstoque As MSForms.comboBox)
+    ' limpa a lista para carregamento
+    cbTiposEstoque.Clear
+    
+    ' Carregamento para lista
+    cbTiposEstoque.AddItem "CASA DO GRANITO"
+End Sub
+' Carrega a combobox de custo medio
+Private Sub carregarCustoMedio(cbCustoMedio As MSForms.comboBox)
+    ' limpa a lista para carregamento
+    cbCustoMedio.Clear
+    
+    ' Carregamento para lista
+    cbCustoMedio.AddItem "SIM"
+    cbCustoMedio.AddItem "NÃO"
+End Sub
+' Carrega a combobox de status
+Private Sub carregarStatus(cbStatus As MSForms.comboBox)
+    ' limpa a lista para carregamento
+    cbStatus.Clear
+    
+    ' Carregamento para lista
+    cbStatus.AddItem "STATUS 01"
+    cbStatus.AddItem "STATUS 02"
+    cbStatus.AddItem "EM PROCESSO"
 End Sub
 
 '-----------------------------------------------------------------CARREAGMENTO DAS LIST-----------------------------------
