@@ -649,6 +649,19 @@ End Sub
 Private Sub btnLTxtEditarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 6
+    
+    ' Chama serviço para pesquisa da chapa
+    
+    
+    ' Carrega os ComboBox da tela
+    Call carregarPolideiras(cbPolideiraChapa)
+    Call carregarTiposPolimento(cbTipoPolimentoChapa)
+    Call carregarTiposMateriais(cbTipoMaterialChapaC)
+    Call carregarEstoque(cbEstoqueChapaC)
+    Call carregarTiposMateriais(cbTiposMateriaisChapas)
+    
+    ' Carrega os dados na tela editar chapa
+    Call carregarDadosChapaTelaEdicaoChapa ' Irá enviar o objeto chapa para poder carregar os campos
 End Sub
 ' Botão btnLTxtTrocaEstoque tela estoque m²
 Private Sub btnLTxtTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -840,6 +853,42 @@ End Sub
 
 '-----------------------------------------------------------------TELA LANÇAMENTO E EDIÇÃO CHAPA-----------------------------------
 '                                                                 ------------------------------
+' Carrega os campos com os dados da chapa tela lançamento e edição chapa
+Private Sub carregarDadosChapaTelaEdicaoChapa() ' Irá receber o objeto Chapa para poder carregar os campos e algum campos do bloco
+    ' Dados bloco
+    txtIdBlocoPedreiraChapa.Value = "20745-MOON-LIGHT-BL"
+    txtDecricaoBlocoChapa.Value = "BLOCO BRANCO DALLAS MOON-LIGHT"
+    txtQtdDisponivelChapaBloco.Value = "71"
+    txtNBlocoPedreiraChapa.Value = "20745"
+    txtTipoMaterialChapa.Value = "EXTRA"
+    
+    ' Dados chapa
+    txtIdChapaSistema.Value = "20745-MOON-LIGHT-PO"
+    txtDescricaoChapa.Value = "BRANCO DALLAS MOON-LIGHT POLIDO"
+    txtEstoqueChapa.Value = "71"
+    
+    ' Dimensões e custos
+    Call selecaoItem("cbPolideiraChapa", "SÃO ROQUE")
+    Call selecaoItem("cbTipoPolimentoChapa", "POLIDO")
+    Call selecaoItem("cbTipoMaterialChapaC", "COMERCIAL SATAND")
+    Call selecaoItem("cbEstoqueChapaC", "CASA DO GRANITO")
+    txtCompLiquidoChapa.Value = "3,0000"
+    txtAlturaLiquidoChapa.Value = "2,0000"
+    txtQtdChapaC.Value = "71"
+    txtCompBrutoChapa.Value = "3,5000"
+    txtAlturaBrutaChapa.Value = "2,5000"
+    txtEspChapa.Value = "02"
+    txtQtsM2Chapa.Value = "426,0000"
+    txtCustoChapa.Value = "71,50"
+    txtTotalChapas.Value = "30.459,00"
+    
+    ' Tamanhos diferentes
+    ' Carrega lista com tamanhos das chapas
+    Call carregarListTamanhosChapas(ListTamanhosChapas) ' Irá enviar id chapa para carregamento
+   
+    ' Se Status do bloco for finalizado deixar visivel lBlocoFinalizadoChapa e cbAbrirParaEdicao e desabilitar todos os campos
+    
+End Sub
 ' Botão btnLImgCadastrarPolideiraChapa tela lançamento e edição chapa
 Private Sub btnLImgCadastrarPolideiraChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
@@ -1310,4 +1359,26 @@ Private Sub carregarList(lista As MSForms.ListBox)
 '        lTotalDia.Caption = listCadastradosHoje.List(listCadastradosHoje.ListCount - 1, 9)
 '    End If
 
+End Sub
+' Carrega a lista ListTamanhosChapas tela edicao chapa
+Private Sub carregarListTamanhosChapas(lista As MSForms.ListBox) ' Irá receber id chapa para carregamento
+    ' Limpar a ListBox
+    lista.Clear
+    
+    ' NOME CABEÇALHO BLOCOS       | TIPO  | ESP   | COMP  | ALT | M²  | QTD |
+    ' Tamanho do cabeçalho left   | 192,5 | 331,5 | 362,5 | 411 | 460 | 511 |
+    ' Tamanho do cabeçalho width  | 138,5 | 30    | 48    | 48  | 50  | 30  |
+    ' Tamanho das colunas da list
+    lista.ColumnWidths = "140,5;30;48;48;50;35;"
+
+    'Adiciona uma linha
+    lista.AddItem
+    
+    'Adiciona os dados do bloco
+    lista.list(lista.ListCount - 1, 0) = "COMERCIAL SATAND"
+    lista.list(lista.ListCount - 1, 1) = "02"
+    lista.list(lista.ListCount - 1, 2) = "3,0000"
+    lista.list(lista.ListCount - 1, 3) = "2,0000"
+    lista.list(lista.ListCount - 1, 4) = "146,0000"
+    lista.list(lista.ListCount - 1, 5) = "71"
 End Sub
