@@ -22,6 +22,16 @@ Dim botoesMenu() As clsLabel
 Dim botoesImg() As clsLabel
 Dim botoesText() As clsLabel
 Dim frameEfeito() As clsFrame
+
+' Variaveis de objetos
+Dim bloco As objBloco
+Dim chapa As objChapa
+Dim pedreira As objPedreira
+Dim polideira As objPolideira
+Dim serraria As objSerraria
+
+' Variaveis para manipulação
+Dim status() As String
 ' Inicialização do formControle
 Private Sub UserForm_Initialize()
     ' Variaveis para o metodo
@@ -38,6 +48,15 @@ Private Sub UserForm_Initialize()
     ReDim botoesImg(1 To Me.Controls.Count)
     ReDim botoesText(1 To Me.Controls.Count)
     ReDim frameEfeito(1 To Me.Controls.Count)
+    ReDim status(1 To 6)
+    
+    ' Atribuições da variaveis
+    status(1) = "PEDREIRA"
+    status(2) = "SERRADA"
+    status(3) = "ESTOQUE"
+    status(4) = "FECHADO"
+    status(5) = "CHAPAS BRUTAS"
+    status(6) = "EM PROCESSO"
     
     ' Separa os botões e frames
     For Each obj In Me.Controls
@@ -83,7 +102,7 @@ Private Sub UserForm_Initialize()
     ReDim Preserve botoesImg(1 To j)
     ReDim Preserve botoesText(1 To l)
     ReDim Preserve frameEfeito(1 To m)
-    
+        
     ' Retira os nomes de cima da multPage
     Me.MultiPageCEBC.Style = fmTabStyleNone
 End Sub
@@ -485,8 +504,34 @@ Private Sub btnLImgCadastroTipoMaterial_MouseDown(ByVal Button As Integer, ByVal
 End Sub
 ' Botão btnLTxtCadastrarBloco tela cadastrar bloco
 Private Sub btnLTxtCadastrarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    ' Variaveis do medoto
+    Dim nomeStatus As String
+    
+    ' Captura do status
+    If obPedreiraCB.Value = True Then
+        nomeStatus = status(1)
+    Else
+        nomeStatus = status(2)
+    End If
+    
+    ' Criação e atribuição do objeto pedreira
+    Set pedreira = New objPedreira
+    pedreira.carregarPedreira cbPedreira.Value
+    
+    ' Criação e atribuição do objeto serraria
+    Set serraria = New objSerraria
+    serraria.carregarSerraria cbSerrariaCB.Value
+    
+    ' Criação e atribuição do objeto bloco
+    Set bloco = New objBloco
+    bloco.carregarBlocoCadastro txtDataCadastro.Value, txtIdBlocoSistema.Value, pedreira, serraria, txtIdBloco.Value, _
+                                txtNomeBloco.Value, cbTipoMaterial.Value, cbNotaC.Value, nomeStatus, txtObsBlocoCB.Value, _
+                                txtCompBrutoBloco.Value, txtAlturaBlocoBruto.Value, txtLarguraBlocoBruto.Value, _
+                                txtComprimentoBloco.Value, txtAlturaBloco.Value, txtLarguraBloco.Value, txtAdicionais.Value, _
+                                txtValorFreteBloco.Value, txtValorM3.Value, txtTotalM3.Value, txtValorTotalBloco.Value
+    
     ' Chama Serviço
-    MsgBox "Chama Serviço cadastrar bloco, tela cadastrar bloco"
+    MsgBox bloco.idSistema & " - " & bloco.nomeMaterial
 End Sub
 ' Botão btnLTxtVoltarCadastroBloco tela cadastrar bloco
 Private Sub btnLTxtVoltarCadastroBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
