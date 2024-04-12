@@ -15,7 +15,7 @@ Public compBruto As String
 Public altBruto As String
 Public custo As String
 Public total As String
-Public tamanhos() As objTamanho
+'Public tamanhos() As objTamanho
 Public polideira As objPolideira
 Public tipoPolimento As objTipoPolimento
 

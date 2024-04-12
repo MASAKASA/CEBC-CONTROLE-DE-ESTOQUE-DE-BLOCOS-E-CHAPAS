@@ -23,6 +23,9 @@ Dim botoesImg() As clsLabel
 Dim botoesText() As clsLabel
 Dim frameEfeito() As clsFrame
 
+' Variaveis para manipulação
+Dim status() As String
+
 ' Variaveis de objetos
 Dim bloco As objBloco
 Dim chapa As objChapa
@@ -30,8 +33,6 @@ Dim pedreira As objPedreira
 Dim polideira As objPolideira
 Dim serraria As objSerraria
 
-' Variaveis para manipulação
-Dim status() As String
 ' Inicialização do formControle
 Private Sub UserForm_Initialize()
     ' Variaveis para o metodo
@@ -271,8 +272,7 @@ Private Sub opTodos_Click()
 End Sub
 ' Botão btnLTxtPesquisarBlocos tela estoque m³
 Private Sub btnLTxtPesquisarBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    ' Chama Serviço
-    MsgBox "Chama Serviço pesquiar, tela estoque m³"
+    Call serviceBloco.listarBlocosFilter
 End Sub
 ' Botão btnLTxtLimparFiltrosBlocos tela estoque m³
 Private Sub btnLTxtLimparFiltrosBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -303,14 +303,11 @@ Private Sub btnLTxtNovoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As I
 End Sub
 ' Botão btnLTxtEditarBloco tela estoque m³
 Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    ' Captura o id do item selecionado na listBox
-    
-    
     ' Muda abra da multPage para tela editar bloco
     Me.MultiPageCEBC.Value = 3
     
     ' Chama serviço para pesquisa do bloco
-    
+    Call serviceBloco.pesquisarPorId(Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Envia o id do bloco
     
     ' Carregar os comboBox da tela
     Call carregarTiposMateriais(Me.cbTipoMaterialEditar)
