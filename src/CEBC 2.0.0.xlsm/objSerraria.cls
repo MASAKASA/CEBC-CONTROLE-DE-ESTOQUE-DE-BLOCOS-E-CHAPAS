@@ -11,8 +11,14 @@ Option Explicit
 
 Public id As String
 Public nome As String
-' Construtor da serraria no cadastro de bloco
-Public Sub carregarSerraria(nomeserraria As String)
-    nome = nomeserraria
+
+' Construtor para cadastro
+Public Sub carregarSerrariaCadastro(nomeserraria As String)
+    Me.nome = nomeserraria
 End Sub
 
+' Construtor para manipulação
+Public Sub carregarSerrariaManipulacao(id As String, nomeserraria As String)
+    Me.id = id
+    Me.nome = nomeserraria
+End Sub

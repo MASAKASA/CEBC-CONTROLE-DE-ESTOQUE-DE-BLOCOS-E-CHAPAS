@@ -11,7 +11,6 @@ Option Explicit
 
 Public idSistema As String
 Public nomeMaterial As String
-Public tipoMaterial As String
 Public observacao As String
 Public numeroBlocoPedreira As String
 Public estoque As String
@@ -20,7 +19,6 @@ Public qtdM3 As String
 Public qtdM2Serrada As String
 Public qtdM2Polimento As String
 Public qtdChapas As String
-Public status As String
 Public nota As String
 Public consultarCustoMedio As String
 Public compBrutoBloco As String
@@ -47,15 +45,17 @@ Public valorTotalSerrada As String
 Public valorTotalPolimento As String
 Public custoMaterial As String
 Public valorTotalBloco As String
+Public status As objStatus
+Public tipoMaterial As objTipoMaterial
 Public pedreira As objPedreira
 Public serraria As objSerraria
 Public polideira As objPolideira
-' Construtor do bloco para cadastro
+' Construtor para cadastro
 Public Sub carregarBlocoCadastro(dataCadastro As String, idSistema As String, pedreira As objPedreira, serraria As objSerraria, _
-                        numeroBlocoPedreira As String, nomeMaterial As String, tipoMaterial As String, nota As String, status As String, _
-                        observacao As String, compBrutoBloco As String, altBrutoBloco As String, largBrutoBloco As String, _
-                        compLiquidoBloco As String, altLiquidoBloco As String, largLiquidoBloco As String, valoresAdicionais As String, _
-                        freteBloco As String, precoM3Bloco As String, qtdM3 As String, valorBloco As String)
+                        numeroBlocoPedreira As String, nomeMaterial As String, tipoMaterial As objTipoMaterial, nota As String, _
+                        status As objStatus, observacao As String, compBrutoBloco As String, altBrutoBloco As String, _
+                        largBrutoBloco As String, compLiquidoBloco As String, altLiquidoBloco As String, largLiquidoBloco As String, _
+                        valoresAdicionais As String, freteBloco As String, precoM3Bloco As String, qtdM3 As String, valorBloco As String)
     ' Atribuições
     Me.dataCadastro = dataCadastro
     Me.idSistema = idSistema
@@ -63,9 +63,9 @@ Public Sub carregarBlocoCadastro(dataCadastro As String, idSistema As String, pe
     Set Me.serraria = serraria
     Me.numeroBlocoPedreira = numeroBlocoPedreira
     Me.nomeMaterial = nomeMaterial
-    Me.tipoMaterial = tipoMaterial
+    Set Me.tipoMaterial = tipoMaterial
     Me.nota = nota
-    Me.status = status
+    Set Me.status = status
     Me.observacao = observacao
     Me.compBrutoBloco = compBrutoBloco
     Me.altBrutoBloco = altBrutoBloco
@@ -80,24 +80,24 @@ Public Sub carregarBlocoCadastro(dataCadastro As String, idSistema As String, pe
     Me.valorBloco = valorBloco
 End Sub
 
-' Construtor do bloco para edição
-Public Sub carregarBlocoEdicao(idSistema As String, nomeMaterial As String, tipoMaterial As String, _
-                        observacao As String, numeroBlocoPedreira As String, estoque As String, _
-                        dataCadastro As String, qtdM3 As String, qtdM2Serrada As String, qtdM2Polimento As String, _
-                        qtdChapas As String, status As String, nota As String, consultarCustoMedio As String, _
-                        compBrutoBloco As String, altBrutoBloco As String, largBrutoBloco As String, _
-                        compLiquidoBloco As String, altLiquidoBloco As String, largLiquidoBloco As String, _
-                        compBrutoChapaBruta As String, altBrutoChapaBruta As String, compLiquidoChapaBruta As String, _
-                        altLiquidoChapaBruta As String, compBrutoChapaPolida As String, altBrutoChapaPolida As String, _
-                        compLiquidoChapaPolida As String, altLiquidoChapaPolida As String, valorBloco As String, _
-                        precoM3Bloco As String, freteBloco As String, valorMetroSerrada As String, valorMetroPolimento As String, _
+' Construtor para manipulação
+Public Sub carregarBlocoEdicao(idSistema As String, nomeMaterial As String, observacao As String, _
+                        numeroBlocoPedreira As String, estoque As String, dataCadastro As String, _
+                        qtdM3 As String, qtdM2Serrada As String, qtdM2Polimento As String, qtdChapas As String, _
+                        nota As String, consultarCustoMedio As String, compBrutoBloco As String, _
+                        altBrutoBloco As String, largBrutoBloco As String, compLiquidoBloco As String, _
+                        altLiquidoBloco As String, largLiquidoBloco As String, compBrutoChapaBruta As String, _
+                        altBrutoChapaBruta As String, compLiquidoChapaBruta As String, altLiquidoChapaBruta As String, _
+                        compBrutoChapaPolida As String, altBrutoChapaPolida As String, compLiquidoChapaPolida As String, _
+                        altLiquidoChapaPolida As String, valorBloco As String, precoM3Bloco As String, _
+                        freteBloco As String, valorMetroSerrada As String, valorMetroPolimento As String, _
                         valoresAdicionais As String, valorTotalSerrada As String, valorTotalPolimento As String, _
-                        custoMaterial As String, valorTotalBloco As String, pedreira As objPedreira, _
-                        serraria As objSerraria, polideira As objPolideira)
+                        custoMaterial As String, valorTotalBloco As String, status As objStatus, _
+                        tipoMaterial As objTipoMaterial, pedreira As objPedreira, serraria As objSerraria, _
+                        polideira As objPolideira)
     ' Atribuições
     Me.idSistema = idSistema
     Me.nomeMaterial = nomeMaterial
-    Me.tipoMaterial = tipoMaterial
     Me.observacao = observacao
     Me.numeroBlocoPedreira = numeroBlocoPedreira
     Me.estoque = estoque
@@ -106,7 +106,6 @@ Public Sub carregarBlocoEdicao(idSistema As String, nomeMaterial As String, tipo
     Me.qtdM2Serrada = qtdM2Serrada
     Me.qtdM2Polimento = qtdM2Polimento
     Me.qtdChapas = qtdChapas
-    Me.status = status
     Me.nota = nota
     Me.consultarCustoMedio = consultarCustoMedio
     Me.compBrutoBloco = compBrutoBloco
@@ -133,6 +132,8 @@ Public Sub carregarBlocoEdicao(idSistema As String, nomeMaterial As String, tipo
     Me.valorTotalPolimento = valorTotalPolimento
     Me.custoMaterial = custoMaterial
     Me.valorTotalBloco = valorTotalBloco
+    Set Me.status = status
+    Set Me.tipoMaterial = tipoMaterial
     Set Me.pedreira = pedreira
     Set Me.serraria = serraria
     Set Me.polideira = polideira
