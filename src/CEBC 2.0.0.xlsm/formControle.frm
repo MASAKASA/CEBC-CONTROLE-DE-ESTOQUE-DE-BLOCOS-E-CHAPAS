@@ -307,7 +307,7 @@ Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As
     Me.MultiPageCEBC.Value = 3
     
     ' Chama serviço para pesquisa do bloco
-    Call serviceBloco.pesquisarPorId(Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Envia o id do bloco
+    Set bloco = serviceBloco.pesquisarPorId("01") ' Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Envia o id do bloco
     
     ' Carregar os comboBox da tela
     Call carregarTiposMateriais(Me.cbTipoMaterialEditar)
@@ -319,7 +319,7 @@ Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As
     Call carregarCustoMedio(Me.cbCustoMedioEditar)
     
     ' Carrega os dados na tela editar bloco
-    Call carregarDadosBlocoTelaEdicaoBloco ' Irá enviar o objeto Bloco para poder carregar os campos
+    Call carregarDadosBlocoTelaEdicaoBloco(bloco)
 End Sub
 ' Botão btnLTxtADDEstoque tela estoque m³
 Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -544,63 +544,70 @@ End Sub
 '-----------------------------------------------------------------TELA EDITAR BLOCO-----------------------------------
 '                                                                 -----------------
 ' Carrega os campos com os dados do bloco tela editar bloco
-Private Sub carregarDadosBlocoTelaEdicaoBloco() ' Irá receber o objeto Bloco para poder carregar os campos
+Private Sub carregarDadosBlocoTelaEdicaoBloco(bloco As objBloco)
     ' Descrição e dimensões finais
-    txtIdBlocoEditar.Value = "37766-50793-MOON-LIGHT-BL"
-    txtMaterialEditar.Value = "BLOCO MARMORE BRANCO CLASSICO"
-    Call selecaoItem("cbTipoMaterialEditar", "COMERCIAL SATAND")
-    txtObsEditar.Value = "BLOCO COM CHAPAS QUEBRADAS SERÃO REPOSTAS POSTERIORMENTE"
-    Call selecaoItem("cbPedreiraEditar", "MINERAÇÃO VISTA LINDA")
-    Call selecaoItem("cbSerrariaEditar", "ELSON BABISQUE")
-    Call selecaoItem("cbPolideiraEditar", "SÃO ROQUE")
-    txtNBlocoPedreiraEditar.Value = "37766-50793-MOON-LIGHT-BL"
-    Call selecaoItem("cbEstoqueEditar", "CASA DO GRANITO")
-    txtDataCadastroEditar.Value = "22/02/2024"
-    txtQtdM3blocoEditar.Value = "12,255"
-    txtQtdM2SerradaEditar.Value = "359,5448"
-    txtQtdM2PolimentoEditar.Value = "284,4578"
-    txtTotalChapaBlocoEditar.Value = "71"
-    cbStatusBlocoEditar.Value = "EM PROCESSO"
-    Call selecaoItem("cbNotaBlocoEditar", "SIM")
-    Call selecaoItem("cbCustoMedioEditar", "SIM")
+    txtIdBlocoEditar.Value = bloco.idSistema
+    txtMaterialEditar.Value = bloco.nomeMaterial
+    Call selecaoItem("cbTipoMaterialEditar", bloco.tipoMaterial.nome)
+    txtObsEditar.Value = bloco.observacao
+    Call selecaoItem("cbPedreiraEditar", bloco.pedreira.nome)
+    Call selecaoItem("cbSerrariaEditar", bloco.serraria.nome)
+    Call selecaoItem("cbPolideiraEditar", bloco.polideira.nome)
+    txtNBlocoPedreiraEditar.Value = bloco.numeroBlocoPedreira
+    Call selecaoItem("cbEstoqueEditar", bloco.estoque)
+    txtDataCadastroEditar.Value = bloco.dataCadastro
+    txtQtdM3blocoEditar.Value = bloco.qtdM3
+    txtQtdM2SerradaEditar.Value = bloco.qtdM2Serrada
+    txtQtdM2PolimentoEditar.Value = bloco.qtdM2Polimento
+    txtTotalChapaBlocoEditar.Value = bloco.qtdChapas
+    cbStatusBlocoEditar.Value = bloco.status.nome
+    Call selecaoItem("cbNotaBlocoEditar", bloco.nota)
+    Call selecaoItem("cbCustoMedioEditar", bloco.consultarCustoMedio)
     
     ' Dimensões bloco e médias chapas
-    txtCompBrutaBlocoEditar.Value = "3,2550"
-    txtAltBrutaBlocoEditar.Value = "2,0500"
-    txtLArgBrutaBlocoEditar.Value = "1,9500"
-    txtCompLiquidoBlocoEditar.Value = "2,755"
-    txtAltLiquidoBlocoEditar.Value = "1,550"
-    txtLArgLiquidoBlocoEditar.Value = "1,450"
-    txtCompBrutaBrutoChapaEditar.Value = "3,0000"
-    txtAltBrutaBrutoChapaEditar.Value = "2,0000"
-    txtCompBrutaliquidoChapaEditar.Value = "2,9500"
-    txtAltBrutaLiquidoChapaEditar.Value = "1,9500"
-    txtCompPolidaBrutoChapaEditar.Value = "2,9000"
-    txtAltPolidaBrutoChapaEditar.Value = "1,9000"
-    txtCompPolidaLiquidoChapaEditar.Value = "2,8000"
-    txtAltPolidaLiquidaChapaEditar.Value = "1,8000"
+    txtCompBrutaBlocoEditar.Value = bloco.compBrutoBloco
+    txtAltBrutaBlocoEditar.Value = bloco.altBrutoBloco
+    txtLArgBrutaBlocoEditar.Value = bloco.largBrutoBloco
+    txtCompLiquidoBlocoEditar.Value = bloco.compLiquidoBloco
+    txtAltLiquidoBlocoEditar.Value = bloco.altLiquidoBloco
+    txtLArgLiquidoBlocoEditar.Value = bloco.largLiquidoBloco
+    txtCompBrutaBrutoChapaEditar.Value = bloco.compBrutoChapaBruta
+    txtAltBrutaBrutoChapaEditar.Value = bloco.altBrutoChapaBruta
+    txtCompBrutaliquidoChapaEditar.Value = bloco.compLiquidoChapaBruta
+    txtAltBrutaLiquidoChapaEditar.Value = bloco.altBrutoChapaBruta
+    txtCompPolidaBrutoChapaEditar.Value = bloco.compBrutoChapaPolida
+    txtAltPolidaBrutoChapaEditar.Value = bloco.altBrutoChapaPolida
+    txtCompPolidaLiquidoChapaEditar.Value = bloco.compLiquidoChapaPolida
+    txtAltPolidaLiquidaChapaEditar.Value = bloco.altBrutoChapaPolida
     
     ' Valores
-    txtValoBlocoEditar.Value = "103.986,56"
-    txtPrecoBlocoEditar.Value = "1.5000,00"
-    txtFreteBlocoEditar.Value = "12.500,00"
-    txtValorSerradaEditar.Value = "24,00"
-    txtValorPolimentoEditar.Value = "11,00"
-    txtValorADDImpostosEditar.Value = "15.000,00"
-    txtTotalSerradaEditar.Value = "11.000,00"
-    txtTotalPolimentoEditar.Value = "9.000,00"
+    txtValoBlocoEditar.Value = bloco.valorBloco
+    txtPrecoBlocoEditar.Value = bloco.precoM3Bloco
+    txtFreteBlocoEditar.Value = bloco.freteBloco
+    txtValorSerradaEditar.Value = bloco.valorMetroSerrada
+    txtValorPolimentoEditar.Value = bloco.valorMetroPolimento
+    txtValorADDImpostosEditar.Value = bloco.valoresAdicionais
+    txtTotalSerradaEditar.Value = bloco.valorTotalSerrada
+    txtTotalPolimentoEditar.Value = bloco.valorTotalPolimento
     
     ' Custos
-    txtCustoMaterialBlocoEditar.Value = "135,50"
-    txtTotalM2PolimentoBlocoEditar.Value = "284,4578"
-    txtTotalBlocoEditar.Value = "25.956,65"
+    txtCustoMaterialBlocoEditar.Value = bloco.custoMaterial
+    txtTotalM2PolimentoBlocoEditar.Value = bloco.qtdM2Polimento
+    txtTotalBlocoEditar.Value = bloco.valorTotalBloco
     
     ' Se Status do bloco for finalizado deixar visivel lBlocoFinalizado e cbAbrirBlocoEditar e desabilitar todos os campos
-    
+    If bloco.status.nome = "FECHADO" Then
+        cbAbrirBlocoEditar.Visible = True
+        lBlocoFinalizado.Visible = True
+    End If
 End Sub
 ' Habilita e desabilita campos para edição tela editar bloco
 Private Sub cbAbrirBlocoEditar_Click()
-
+    If cbAbrirBlocoEditar.Value = True Then
+        Call habilitaCamposBlocoEditar
+    Else
+        Call desabilitaCamposBlocoEditar
+    End If
 End Sub
 ' Botão btnLTxtSalvarEdicaoBloco tela editar bloco
 Private Sub btnLTxtSalvarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -1105,6 +1112,111 @@ End Sub
 Private Sub btnLTxtListUsuarioLog_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço carrega lista com log dos usuários, tela usuarios"
+End Sub
+
+'-----------------------------------------------------------------DESABILITA  E HABILITA CAMPOS-----------------------------------
+'                                                                 -----------------------------
+' Desabilita campos da tela editar bloco
+Private Sub desabilitaCamposBlocoEditar()
+    txtIdBlocoEditar.Visible = False
+    txtMaterialEditar.Visible = False
+    cbTipoMaterialEditar.Visible = False
+    txtObsEditar.Visible = False
+    cbPedreiraEditar.Visible = False
+    cbSerrariaEditar.Visible = False
+    cbPolideiraEditar.Visible = False
+    txtNBlocoPedreiraEditar.Visible = False
+    cbEstoqueEditar.Visible = False
+    txtDataCadastroEditar.Visible = False
+    txtQtdM3blocoEditar.Visible = False
+    txtQtdM2SerradaEditar.Visible = False
+    txtQtdM2PolimentoEditar.Visible = False
+    txtTotalChapaBlocoEditar.Visible = False
+    cbStatusBlocoEditar.Visible = False
+    cbNotaBlocoEditar.Visible = False
+    cbCustoMedioEditar.Visible = False
+    
+    ' Dimensões bloco e médias chapas
+    txtCompBrutaBlocoEditar.Visible = False
+    txtAltBrutaBlocoEditar.Visible = False
+    txtLArgBrutaBlocoEditar.Visible = False
+    txtCompLiquidoBlocoEditar.Visible = False
+    txtAltLiquidoBlocoEditar.Visible = False
+    txtLArgLiquidoBlocoEditar.Visible = False
+    txtCompBrutaBrutoChapaEditar.Visible = False
+    txtAltBrutaBrutoChapaEditar.Visible = False
+    txtCompBrutaliquidoChapaEditar.Visible = False
+    txtAltBrutaLiquidoChapaEditar.Visible = False
+    txtCompPolidaBrutoChapaEditar.Visible = False
+    txtAltPolidaBrutoChapaEditar.Visible = False
+    txtCompPolidaLiquidoChapaEditar.Visible = False
+    txtAltPolidaLiquidaChapaEditar.Visible = False
+    
+    ' Valores
+    txtValoBlocoEditar.Visible = False
+    txtPrecoBlocoEditar.Visible = False
+    txtFreteBlocoEditar.Visible = False
+    txtValorSerradaEditar.Visible = False
+    txtValorPolimentoEditar.Visible = False
+    txtValorADDImpostosEditar.Visible = False
+    txtTotalSerradaEditar.Visible = False
+    txtTotalPolimentoEditar.Visible = False
+    
+    ' Custos
+    txtCustoMaterialBlocoEditar.Visible = False
+    txtTotalM2PolimentoBlocoEditar.Visible = False
+    txtTotalBlocoEditar.Visible = False
+End Sub
+' Habilita campos da tela editar bloco
+Private Sub habilitaCamposBlocoEditar()
+    txtIdBlocoEditar.Visible = True
+    txtMaterialEditar.Visible = True
+    cbTipoMaterialEditar.Visible = True
+    txtObsEditar.Visible = True
+    cbPedreiraEditar.Visible = True
+    cbSerrariaEditar.Visible = True
+    cbPolideiraEditar.Visible = True
+    txtNBlocoPedreiraEditar.Visible = True
+    cbEstoqueEditar.Visible = True
+    txtDataCadastroEditar.Visible = True
+    txtQtdM3blocoEditar.Visible = True
+    txtQtdM2SerradaEditar.Visible = True
+    txtQtdM2PolimentoEditar.Visible = True
+    txtTotalChapaBlocoEditar.Visible = True
+    cbStatusBlocoEditar.Visible = True
+    cbNotaBlocoEditar.Visible = True
+    cbCustoMedioEditar.Visible = True
+    
+    ' Dimensões bloco e médias chapas
+    txtCompBrutaBlocoEditar.Visible = True
+    txtAltBrutaBlocoEditar.Visible = True
+    txtLArgBrutaBlocoEditar.Visible = True
+    txtCompLiquidoBlocoEditar.Visible = True
+    txtAltLiquidoBlocoEditar.Visible = True
+    txtLArgLiquidoBlocoEditar.Visible = True
+    txtCompBrutaBrutoChapaEditar.Visible = True
+    txtAltBrutaBrutoChapaEditar.Visible = True
+    txtCompBrutaliquidoChapaEditar.Visible = True
+    txtAltBrutaLiquidoChapaEditar.Visible = True
+    txtCompPolidaBrutoChapaEditar.Visible = True
+    txtAltPolidaBrutoChapaEditar.Visible = True
+    txtCompPolidaLiquidoChapaEditar.Visible = True
+    txtAltPolidaLiquidaChapaEditar.Visible = True
+    
+    ' Valores
+    txtValoBlocoEditar.Visible = True
+    txtPrecoBlocoEditar.Visible = True
+    txtFreteBlocoEditar.Visible = True
+    txtValorSerradaEditar.Visible = True
+    txtValorPolimentoEditar.Visible = True
+    txtValorADDImpostosEditar.Visible = True
+    txtTotalSerradaEditar.Visible = True
+    txtTotalPolimentoEditar.Visible = True
+    
+    ' Custos
+    txtCustoMaterialBlocoEditar.Visible = False
+    txtTotalM2PolimentoBlocoEditar.Visible = False
+    txtTotalBlocoEditar.Visible = False
 End Sub
 
 '-----------------------------------------------------------------LIMPAR CAMPOS-----------------------------------

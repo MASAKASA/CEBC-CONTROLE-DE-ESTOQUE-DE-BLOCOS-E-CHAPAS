@@ -138,10 +138,45 @@ Public Sub carregarBlocoEdicao(idSistema As String, nomeMaterial As String, obse
     Set Me.serraria = serraria
     Set Me.polideira = polideira
 End Sub
+' Gets e sets
+Public Function getStatus() As objStatus
+    getStatus = status
+End Function
 
+Public Function setStatus(status As objStatus)
+    Set Me.status = status
+End Function
+Public Function getPedreira() As objPedreira
+    getPedreira = pedreira
+End Function
 
+Public Function setPedreira(pedreira As objPedreira)
+    Set Me.pedreira = pedreira
+End Function
 
+Public Function getSerraria() As objSerraria
+    getSerraria = serraria
+End Function
 
+Public Function setSerraria(serraria As objSerraria)
+    Set Me.serraria = serraria
+End Function
+
+Public Function getPolideira() As objPolideira
+    getPolideira = polideira
+End Function
+
+Public Function setPolideira(polideira As objPolideira)
+    Set Me.polideira = polideira
+End Function
+
+Public Function getTipoMaterial() As objTipoMaterial
+    getTipoMaterial = tipoMaterial
+End Function
+
+Public Function setTipoMaterial(tipoMaterial As objTipoMaterial)
+    Set Me.tipoMaterial = tipoMaterial
+End Function
 
 
 

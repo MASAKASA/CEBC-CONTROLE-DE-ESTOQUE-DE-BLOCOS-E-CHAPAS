@@ -1,9 +1,12 @@
 Attribute VB_Name = "serviceBloco"
 Option Explicit
 
-' Cadastra e edita objeto
-Function cadastrarEEditar()
+Dim bloco As objBloco
 
+' Cadastra e edita objeto
+Function cadastrarEEditar(bloco As objBloco)
+    Call daoBloco.cadastrarEEditar(bloco)
+    
 End Function
 
 ' Exclui objeto
@@ -13,9 +16,9 @@ End Function
 
 ' Pesquisa objeto por id
 Function pesquisarPorId(id As String) As objBloco
-    Call daoBloco.pesquisarPorId
+    Set bloco = daoBloco.pesquisarPorId
     
-    'pesquisarPorId
+    Set pesquisarPorId = bloco
 End Function
 
 ' Pesquisa objeto por nome
@@ -25,5 +28,5 @@ End Function
 
 ' Pesquisa objeto
 Function listarBlocosFilter()
-    Call daoBloco.listarBlocosFilter
+    'Call daoBloco.listarBlocosFilter
 End Function

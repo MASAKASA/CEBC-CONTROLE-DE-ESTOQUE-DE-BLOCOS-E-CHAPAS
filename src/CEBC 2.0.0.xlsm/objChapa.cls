@@ -15,15 +15,16 @@ Public compBruto As String
 Public altBruto As String
 Public custo As String
 Public total As String
-'Public tamanhos() As objTamanho
+Public tamanhos As New Collection
 Public polideira As objPolideira
 Public tipoPolimento As objTipoPolimento
+Private tamanho As objTamanho
+Private tipoMaterial As objTipoMaterial
 
 ' Construtor para cadastro
 Public Sub carregarChapaCadastro(nomeMaterial As String, compBruto As String, _
                         altBruto As String, custo As String, total As String, _
-                        tamanhos() As objTamanho, polideira As objPolideira, _
-                        tipoPolimento As objTipoPolimento)
+                        polideira As objPolideira, tipoPolimento As objTipoPolimento)
 
     ' Atribuições
     Me.nomeMaterial = nomeMaterial
@@ -31,7 +32,6 @@ Public Sub carregarChapaCadastro(nomeMaterial As String, compBruto As String, _
     Me.altBruto = altBruto
     Me.custo = custo
     Me.total = total
-    Set Me.tamanhos() = tamanhos
     Set Me.polideira = polideira
     Set Me.tipoPolimento = tipoPolimento
 End Sub
@@ -39,8 +39,7 @@ End Sub
 ' Construtor para manipulção
 Public Sub carregarChapaManipulacao(idSistema As String, nomeMaterial As String, _
                         compBruto As String, altBruto As String, custo As String, _
-                        total As String, tamanhos() As objTamanho, polideira As objPolideira, _
-                        tipoPolimento As objTipoPolimento)
+                        total As String, polideira As objPolideira, tipoPolimento As objTipoPolimento)
 
     ' Atribuições
     Me.idSistema = idSistema
@@ -49,8 +48,20 @@ Public Sub carregarChapaManipulacao(idSistema As String, nomeMaterial As String,
     Me.altBruto = altBruto
     Me.custo = custo
     Me.total = total
-    Set Me.tamanhos() = tamanhos
     Set Me.polideira = polideira
     Set Me.tipoPolimento = tipoPolimento
 End Sub
 
+' Adiciona os tamanhos das chapas
+Public Sub addTamanhos(comp As String, alt As String, qtdM2 As String, qtdEstoque As String, esp As String, _
+            tipoMaterial As objTipoMaterial)
+    ' Atribuições
+    Me.tamanho = New objTamanho
+    Set Me.tipoMaterial = objTipoMaterial
+    
+    ' Criação do objeto
+    tamanho.carregarTamanhoCadastro comp, alt, qtdM2, qtdEstoque, esp, tipoMaterial
+    
+    ' Adição do tamanho
+    tamanhos.Add tamanho
+End Sub

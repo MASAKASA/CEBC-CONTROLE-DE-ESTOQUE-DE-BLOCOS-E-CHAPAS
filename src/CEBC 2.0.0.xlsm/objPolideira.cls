@@ -20,5 +20,5 @@ End Sub
 ' Construtor para manipulação
 Public Sub carregarPolideiraManipulacao(id As String, nomePolideira As String)
     Me.id = id
-    Me.nome = polideira
+    Me.nome = nomePolideira
 End Sub
