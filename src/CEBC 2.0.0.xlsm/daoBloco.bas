@@ -1,6 +1,7 @@
 Attribute VB_Name = "daoBloco"
 Option Explicit
 
+Private listaBlocos As Collection
 Private bloco As objBloco
 Dim pedreira As objPedreira
 Dim serraria As objSerraria
@@ -15,19 +16,20 @@ Function cadastrarEEditar(bloco As objBloco)
 End Function
 
 ' Exclui objeto
-Function excluir()
+Function excluir(id As String)
 
 End Function
 
 ' Pesquisa objeto por id
-Function pesquisarPorId() As objBloco
+Function pesquisarPorId(id As String) As Collection
     ' Criação e atribuição dos objetos
-    Set bloco = New objBloco
-    Set pedreira = New objPedreira
-    Set serraria = New objSerraria
-    Set polideira = New objPolideira
-    Set status = New objStatus
-    Set tipoMaterial = New objTipoMaterial
+    Set bloco = ObjectFactory.factoryBloco(bloco)
+    Set pedreira = ObjectFactory.factoryPedreira(pedreira)
+    Set serraria = ObjectFactory.factorySerraria(serraria)
+    Set polideira = ObjectFactory.factoryPolideira(polideira)
+    Set status = ObjectFactory.factoryStatus(status)
+    Set tipoMaterial = ObjectFactory.factoryTipoMaterial(tipoMaterial)
+    Set listaBlocos = ObjectFactory.factoryLista(listaBlocos)
     
     ' Pesquisa e atribuições dos objetos
     pedreira.carregarPedreiraManipulacao "01", "MINERAÇÃO VISTA LINDA"
@@ -81,16 +83,20 @@ Function pesquisarPorId() As objBloco
     bloco.setStatus status
     bloco.setTipoMaterial tipoMaterial
     
-    Set pesquisarPorId = bloco
+    listaBlocos.Add bloco
+    
+    Set pesquisarPorId = listaBlocos
 End Function
 
 ' Pesquisa objeto por nome
-Function pesquisarPorNome()
-
+Function pesquisarPorNome(nome As String) As Collection
+    Set listaBlocos = New Collection
+    
+    Set pesquisarPorNome = listaBlocos
 End Function
 
 ' Pesquisa objeto
-Function listarBlocosFilter()
+Function listarBlocosFilter() As Collection
     ' Chama Serviço
     MsgBox "Retorna pesquiar"
 End Function

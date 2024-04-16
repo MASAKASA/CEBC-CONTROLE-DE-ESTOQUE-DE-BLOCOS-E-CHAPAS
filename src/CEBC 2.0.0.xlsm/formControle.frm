@@ -25,6 +25,7 @@ Dim frameEfeito() As clsFrame
 
 ' Variaveis para manipulação
 Dim status() As String
+Dim listaObjeto As Collection
 
 ' Variaveis de objetos
 Dim bloco As objBloco
@@ -272,7 +273,7 @@ Private Sub opTodos_Click()
 End Sub
 ' Botão btnLTxtPesquisarBlocos tela estoque m³
 Private Sub btnLTxtPesquisarBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    Call serviceBloco.listarBlocosFilter
+    Call daoBloco.listarBlocosFilter
 End Sub
 ' Botão btnLTxtLimparFiltrosBlocos tela estoque m³
 Private Sub btnLTxtLimparFiltrosBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -307,7 +308,7 @@ Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As
     Me.MultiPageCEBC.Value = 3
     
     ' Chama serviço para pesquisa do bloco
-    Set bloco = serviceBloco.pesquisarPorId("01") ' Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Envia o id do bloco
+    Set listaObjeto = daoBloco.pesquisarPorId("01") ' Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Envia o id do bloco
     
     ' Carregar os comboBox da tela
     Call carregarTiposMateriais(Me.cbTipoMaterialEditar)
@@ -319,7 +320,7 @@ Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As
     Call carregarCustoMedio(Me.cbCustoMedioEditar)
     
     ' Carrega os dados na tela editar bloco
-    Call carregarDadosBlocoTelaEdicaoBloco(bloco)
+    Call carregarDadosBlocoTelaEdicaoBloco(listaObjeto)
 End Sub
 ' Botão btnLTxtADDEstoque tela estoque m³
 Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -544,62 +545,67 @@ End Sub
 '-----------------------------------------------------------------TELA EDITAR BLOCO-----------------------------------
 '                                                                 -----------------
 ' Carrega os campos com os dados do bloco tela editar bloco
-Private Sub carregarDadosBlocoTelaEdicaoBloco(bloco As objBloco)
-    ' Descrição e dimensões finais
-    txtIdBlocoEditar.Value = bloco.idSistema
-    txtMaterialEditar.Value = bloco.nomeMaterial
-    Call selecaoItem("cbTipoMaterialEditar", bloco.tipoMaterial.nome)
-    txtObsEditar.Value = bloco.observacao
-    Call selecaoItem("cbPedreiraEditar", bloco.pedreira.nome)
-    Call selecaoItem("cbSerrariaEditar", bloco.serraria.nome)
-    Call selecaoItem("cbPolideiraEditar", bloco.polideira.nome)
-    txtNBlocoPedreiraEditar.Value = bloco.numeroBlocoPedreira
-    Call selecaoItem("cbEstoqueEditar", bloco.estoque)
-    txtDataCadastroEditar.Value = bloco.dataCadastro
-    txtQtdM3blocoEditar.Value = bloco.qtdM3
-    txtQtdM2SerradaEditar.Value = bloco.qtdM2Serrada
-    txtQtdM2PolimentoEditar.Value = bloco.qtdM2Polimento
-    txtTotalChapaBlocoEditar.Value = bloco.qtdChapas
-    cbStatusBlocoEditar.Value = bloco.status.nome
-    Call selecaoItem("cbNotaBlocoEditar", bloco.nota)
-    Call selecaoItem("cbCustoMedioEditar", bloco.consultarCustoMedio)
+Private Sub carregarDadosBlocoTelaEdicaoBloco(listaObjeto As Collection)
     
-    ' Dimensões bloco e médias chapas
-    txtCompBrutaBlocoEditar.Value = bloco.compBrutoBloco
-    txtAltBrutaBlocoEditar.Value = bloco.altBrutoBloco
-    txtLArgBrutaBlocoEditar.Value = bloco.largBrutoBloco
-    txtCompLiquidoBlocoEditar.Value = bloco.compLiquidoBloco
-    txtAltLiquidoBlocoEditar.Value = bloco.altLiquidoBloco
-    txtLArgLiquidoBlocoEditar.Value = bloco.largLiquidoBloco
-    txtCompBrutaBrutoChapaEditar.Value = bloco.compBrutoChapaBruta
-    txtAltBrutaBrutoChapaEditar.Value = bloco.altBrutoChapaBruta
-    txtCompBrutaliquidoChapaEditar.Value = bloco.compLiquidoChapaBruta
-    txtAltBrutaLiquidoChapaEditar.Value = bloco.altBrutoChapaBruta
-    txtCompPolidaBrutoChapaEditar.Value = bloco.compBrutoChapaPolida
-    txtAltPolidaBrutoChapaEditar.Value = bloco.altBrutoChapaPolida
-    txtCompPolidaLiquidoChapaEditar.Value = bloco.compLiquidoChapaPolida
-    txtAltPolidaLiquidaChapaEditar.Value = bloco.altBrutoChapaPolida
-    
-    ' Valores
-    txtValoBlocoEditar.Value = bloco.valorBloco
-    txtPrecoBlocoEditar.Value = bloco.precoM3Bloco
-    txtFreteBlocoEditar.Value = bloco.freteBloco
-    txtValorSerradaEditar.Value = bloco.valorMetroSerrada
-    txtValorPolimentoEditar.Value = bloco.valorMetroPolimento
-    txtValorADDImpostosEditar.Value = bloco.valoresAdicionais
-    txtTotalSerradaEditar.Value = bloco.valorTotalSerrada
-    txtTotalPolimentoEditar.Value = bloco.valorTotalPolimento
-    
-    ' Custos
-    txtCustoMaterialBlocoEditar.Value = bloco.custoMaterial
-    txtTotalM2PolimentoBlocoEditar.Value = bloco.qtdM2Polimento
-    txtTotalBlocoEditar.Value = bloco.valorTotalBloco
-    
-    ' Se Status do bloco for finalizado deixar visivel lBlocoFinalizado e cbAbrirBlocoEditar e desabilitar todos os campos
-    If bloco.status.nome = "FECHADO" Then
-        cbAbrirBlocoEditar.Visible = True
-        lBlocoFinalizado.Visible = True
-    End If
+    ' Exibir o resultado da pesquisa
+    For Each bloco In listaObjeto
+     
+        ' Descrição e dimensões finais
+        txtIdBlocoEditar.Value = bloco.idSistema
+        txtMaterialEditar.Value = bloco.nomeMaterial
+        Call selecaoItem("cbTipoMaterialEditar", bloco.tipoMaterial.nome)
+        txtObsEditar.Value = bloco.observacao
+        Call selecaoItem("cbPedreiraEditar", bloco.pedreira.nome)
+        Call selecaoItem("cbSerrariaEditar", bloco.serraria.nome)
+        Call selecaoItem("cbPolideiraEditar", bloco.polideira.nome)
+        txtNBlocoPedreiraEditar.Value = bloco.numeroBlocoPedreira
+        Call selecaoItem("cbEstoqueEditar", bloco.estoque)
+        txtDataCadastroEditar.Value = bloco.dataCadastro
+        txtQtdM3blocoEditar.Value = bloco.qtdM3
+        txtQtdM2SerradaEditar.Value = bloco.qtdM2Serrada
+        txtQtdM2PolimentoEditar.Value = bloco.qtdM2Polimento
+        txtTotalChapaBlocoEditar.Value = bloco.qtdChapas
+        cbStatusBlocoEditar.Value = bloco.status.nome
+        Call selecaoItem("cbNotaBlocoEditar", bloco.nota)
+        Call selecaoItem("cbCustoMedioEditar", bloco.consultarCustoMedio)
+        
+        ' Dimensões bloco e médias chapas
+        txtCompBrutaBlocoEditar.Value = bloco.compBrutoBloco
+        txtAltBrutaBlocoEditar.Value = bloco.altBrutoBloco
+        txtLArgBrutaBlocoEditar.Value = bloco.largBrutoBloco
+        txtCompLiquidoBlocoEditar.Value = bloco.compLiquidoBloco
+        txtAltLiquidoBlocoEditar.Value = bloco.altLiquidoBloco
+        txtLArgLiquidoBlocoEditar.Value = bloco.largLiquidoBloco
+        txtCompBrutaBrutoChapaEditar.Value = bloco.compBrutoChapaBruta
+        txtAltBrutaBrutoChapaEditar.Value = bloco.altBrutoChapaBruta
+        txtCompBrutaliquidoChapaEditar.Value = bloco.compLiquidoChapaBruta
+        txtAltBrutaLiquidoChapaEditar.Value = bloco.altBrutoChapaBruta
+        txtCompPolidaBrutoChapaEditar.Value = bloco.compBrutoChapaPolida
+        txtAltPolidaBrutoChapaEditar.Value = bloco.altBrutoChapaPolida
+        txtCompPolidaLiquidoChapaEditar.Value = bloco.compLiquidoChapaPolida
+        txtAltPolidaLiquidaChapaEditar.Value = bloco.altBrutoChapaPolida
+        
+        ' Valores
+        txtValoBlocoEditar.Value = bloco.valorBloco
+        txtPrecoBlocoEditar.Value = bloco.precoM3Bloco
+        txtFreteBlocoEditar.Value = bloco.freteBloco
+        txtValorSerradaEditar.Value = bloco.valorMetroSerrada
+        txtValorPolimentoEditar.Value = bloco.valorMetroPolimento
+        txtValorADDImpostosEditar.Value = bloco.valoresAdicionais
+        txtTotalSerradaEditar.Value = bloco.valorTotalSerrada
+        txtTotalPolimentoEditar.Value = bloco.valorTotalPolimento
+        
+        ' Custos
+        txtCustoMaterialBlocoEditar.Value = bloco.custoMaterial
+        txtTotalM2PolimentoBlocoEditar.Value = bloco.qtdM2Polimento
+        txtTotalBlocoEditar.Value = bloco.valorTotalBloco
+        
+        ' Se Status do bloco for finalizado deixar visivel lBlocoFinalizado e cbAbrirBlocoEditar e desabilitar todos os campos
+        If bloco.status.nome = "FECHADO" Then
+            cbAbrirBlocoEditar.Visible = True
+            lBlocoFinalizado.Visible = True
+        End If
+    Next bloco
 End Sub
 ' Habilita e desabilita campos para edição tela editar bloco
 Private Sub cbAbrirBlocoEditar_Click()
