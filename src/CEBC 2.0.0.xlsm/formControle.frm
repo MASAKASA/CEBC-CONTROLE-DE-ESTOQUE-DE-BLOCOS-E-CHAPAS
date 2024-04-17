@@ -308,7 +308,7 @@ Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As
     Me.MultiPageCEBC.Value = 3
     
     ' Chama serviço para pesquisa do bloco
-    Set listaObjeto = daoBloco.pesquisarPorId("01") ' Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Envia o id do bloco
+    Set bloco = daoBloco.pesquisarPorId(Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Envia o id do bloco
     
     ' Carregar os comboBox da tela
     Call carregarTiposMateriais(Me.cbTipoMaterialEditar)
@@ -320,7 +320,7 @@ Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As
     Call carregarCustoMedio(Me.cbCustoMedioEditar)
     
     ' Carrega os dados na tela editar bloco
-    Call carregarDadosBlocoTelaEdicaoBloco(listaObjeto)
+    Call carregarDadosBlocoTelaEdicaoBloco(bloco)
 End Sub
 ' Botão btnLTxtADDEstoque tela estoque m³
 Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -545,67 +545,60 @@ End Sub
 '-----------------------------------------------------------------TELA EDITAR BLOCO-----------------------------------
 '                                                                 -----------------
 ' Carrega os campos com os dados do bloco tela editar bloco
-Private Sub carregarDadosBlocoTelaEdicaoBloco(listaObjeto As Collection)
-    
+Private Sub carregarDadosBlocoTelaEdicaoBloco(bloco As objBloco)
     ' Exibir o resultado da pesquisa
-    For Each bloco In listaObjeto
-     
-        ' Descrição e dimensões finais
-        txtIdBlocoEditar.Value = bloco.idSistema
-        txtMaterialEditar.Value = bloco.nomeMaterial
-        Call selecaoItem("cbTipoMaterialEditar", bloco.tipoMaterial.nome)
-        txtObsEditar.Value = bloco.observacao
-        Call selecaoItem("cbPedreiraEditar", bloco.pedreira.nome)
-        Call selecaoItem("cbSerrariaEditar", bloco.serraria.nome)
-        Call selecaoItem("cbPolideiraEditar", bloco.polideira.nome)
-        txtNBlocoPedreiraEditar.Value = bloco.numeroBlocoPedreira
-        Call selecaoItem("cbEstoqueEditar", bloco.estoque)
-        txtDataCadastroEditar.Value = bloco.dataCadastro
-        txtQtdM3blocoEditar.Value = bloco.qtdM3
-        txtQtdM2SerradaEditar.Value = bloco.qtdM2Serrada
-        txtQtdM2PolimentoEditar.Value = bloco.qtdM2Polimento
-        txtTotalChapaBlocoEditar.Value = bloco.qtdChapas
-        cbStatusBlocoEditar.Value = bloco.status.nome
-        Call selecaoItem("cbNotaBlocoEditar", bloco.nota)
-        Call selecaoItem("cbCustoMedioEditar", bloco.consultarCustoMedio)
-        
-        ' Dimensões bloco e médias chapas
-        txtCompBrutaBlocoEditar.Value = bloco.compBrutoBloco
-        txtAltBrutaBlocoEditar.Value = bloco.altBrutoBloco
-        txtLArgBrutaBlocoEditar.Value = bloco.largBrutoBloco
-        txtCompLiquidoBlocoEditar.Value = bloco.compLiquidoBloco
-        txtAltLiquidoBlocoEditar.Value = bloco.altLiquidoBloco
-        txtLArgLiquidoBlocoEditar.Value = bloco.largLiquidoBloco
-        txtCompBrutaBrutoChapaEditar.Value = bloco.compBrutoChapaBruta
-        txtAltBrutaBrutoChapaEditar.Value = bloco.altBrutoChapaBruta
-        txtCompBrutaliquidoChapaEditar.Value = bloco.compLiquidoChapaBruta
-        txtAltBrutaLiquidoChapaEditar.Value = bloco.altBrutoChapaBruta
-        txtCompPolidaBrutoChapaEditar.Value = bloco.compBrutoChapaPolida
-        txtAltPolidaBrutoChapaEditar.Value = bloco.altBrutoChapaPolida
-        txtCompPolidaLiquidoChapaEditar.Value = bloco.compLiquidoChapaPolida
-        txtAltPolidaLiquidaChapaEditar.Value = bloco.altBrutoChapaPolida
-        
-        ' Valores
-        txtValoBlocoEditar.Value = bloco.valorBloco
-        txtPrecoBlocoEditar.Value = bloco.precoM3Bloco
-        txtFreteBlocoEditar.Value = bloco.freteBloco
-        txtValorSerradaEditar.Value = bloco.valorMetroSerrada
-        txtValorPolimentoEditar.Value = bloco.valorMetroPolimento
-        txtValorADDImpostosEditar.Value = bloco.valoresAdicionais
-        txtTotalSerradaEditar.Value = bloco.valorTotalSerrada
-        txtTotalPolimentoEditar.Value = bloco.valorTotalPolimento
-        
-        ' Custos
-        txtCustoMaterialBlocoEditar.Value = bloco.custoMaterial
-        txtTotalM2PolimentoBlocoEditar.Value = bloco.qtdM2Polimento
-        txtTotalBlocoEditar.Value = bloco.valorTotalBloco
-        
-        ' Se Status do bloco for finalizado deixar visivel lBlocoFinalizado e cbAbrirBlocoEditar e desabilitar todos os campos
-        If bloco.status.nome = "FECHADO" Then
-            cbAbrirBlocoEditar.Visible = True
-            lBlocoFinalizado.Visible = True
-        End If
-    Next bloco
+    ' Descrição e dimensões finais
+    txtIdBlocoEditar.Value = bloco.idSistema
+    txtMaterialEditar.Value = bloco.nomeMaterial
+    cbTipoMaterialEditar.Value = bloco.tipoMaterial.nome
+    txtObsEditar.Value = bloco.observacao
+    cbPedreiraEditar.Value = bloco.pedreira.nome
+    cbSerrariaEditar.Value = bloco.serraria.nome
+    cbPolideiraEditar.Value = bloco.polideira.nome
+    txtNBlocoPedreiraEditar.Value = bloco.numeroBlocoPedreira
+    cbEstoqueEditar.Value = bloco.estoque.nome
+    txtDataCadastroEditar.Value = bloco.dataCadastro
+    txtQtdM3blocoEditar.Value = Util.formatarComPontos(Format(bloco.qtdM3, "0.0000"))
+    txtQtdM2SerradaEditar.Value = Util.formatarComPontos(Format(bloco.qtdM2Serrada, "0.0000"))
+    txtQtdM2PolimentoEditar.Value = Util.formatarComPontos(Format(bloco.qtdM2Polimento, "0.0000"))
+    txtTotalChapaBlocoEditar.Value = bloco.qtdChapas
+    cbStatusBlocoEditar.Value = bloco.status.nome
+    cbNotaBlocoEditar.Value = bloco.nota
+    cbCustoMedioEditar.Value = bloco.consultarCustoMedio
+    ' Dimensões bloco e médias chapas
+    txtCompBrutaBlocoEditar.Value = Util.formatarComPontos(Format(bloco.compBrutoBloco, "0.0000"))
+    txtAltBrutaBlocoEditar.Value = Util.formatarComPontos(Format(bloco.altBrutoBloco, "0.0000"))
+    txtLArgBrutaBlocoEditar.Value = Util.formatarComPontos(Format(bloco.largBrutoBloco, "0.0000"))
+    txtCompLiquidoBlocoEditar.Value = Util.formatarComPontos(Format(bloco.compLiquidoBloco, "0.0000"))
+    txtAltLiquidoBlocoEditar.Value = Util.formatarComPontos(Format(bloco.altLiquidoBloco, "0.0000"))
+    txtLArgLiquidoBlocoEditar.Value = Util.formatarComPontos(Format(bloco.largLiquidoBloco, "0.0000"))
+    txtCompBrutaBrutoChapaEditar.Value = Util.formatarComPontos(Format(bloco.compBrutoChapaBruta, "0.0000"))
+    txtAltBrutaBrutoChapaEditar.Value = Util.formatarComPontos(Format(bloco.altBrutoChapaBruta, "0.0000"))
+    txtCompBrutaliquidoChapaEditar.Value = Util.formatarComPontos(Format(bloco.compLiquidoChapaBruta, "0.0000"))
+    txtAltBrutaLiquidoChapaEditar.Value = Util.formatarComPontos(Format(bloco.altBrutoChapaBruta, "0.0000"))
+    txtCompPolidaBrutoChapaEditar.Value = Util.formatarComPontos(Format(bloco.compBrutoChapaPolida, "0.0000"))
+    txtAltPolidaBrutoChapaEditar.Value = Util.formatarComPontos(Format(bloco.altBrutoChapaPolida, "0.0000"))
+    txtCompPolidaLiquidoChapaEditar.Value = Util.formatarComPontos(Format(bloco.compLiquidoChapaPolida, "0.0000"))
+    txtAltPolidaLiquidaChapaEditar.Value = Util.formatarComPontos(Format(bloco.altBrutoChapaPolida, "0.0000"))
+    ' Valores
+    txtValoBlocoEditar.Value = Util.formatarComPontos(Format(bloco.valorBloco, "0.00"))
+    txtPrecoBlocoEditar.Value = Util.formatarComPontos(Format(bloco.precoM3Bloco, "0.00"))
+    txtFreteBlocoEditar.Value = Util.formatarComPontos(Format(bloco.freteBloco, "0.00"))
+    txtValorSerradaEditar.Value = Util.formatarComPontos(Format(bloco.valorMetroSerrada, "0.00"))
+    txtValorPolimentoEditar.Value = Util.formatarComPontos(Format(bloco.valorMetroPolimento, "0.00"))
+    txtValorADDImpostosEditar.Value = Util.formatarComPontos(Format(bloco.valoresAdicionais, "0.00"))
+    txtTotalSerradaEditar.Value = Util.formatarComPontos(Format(bloco.valorTotalSerrada, "0.00"))
+    txtTotalPolimentoEditar.Value = Util.formatarComPontos(Format(bloco.valorTotalPolimento, "0.00"))
+    ' Custos
+    txtCustoMaterialBlocoEditar.Value = Util.formatarComPontos(Format(bloco.custoMaterial, "0.00"))
+    txtTotalM2PolimentoBlocoEditar.Value = Util.formatarComPontos(Format(bloco.qtdM2Polimento, "0.00"))
+    txtTotalBlocoEditar.Value = Util.formatarComPontos(Format(bloco.valorTotalBloco, "0.00"))
+    
+    ' Se Status do bloco for finalizado deixar visivel lBlocoFinalizado e cbAbrirBlocoEditar e desabilitar todos os campos
+    If bloco.status.nome = "FECHADO" Then
+        cbAbrirBlocoEditar.Visible = True
+        lBlocoFinalizado.Visible = True
+    End If
 End Sub
 ' Habilita e desabilita campos para edição tela editar bloco
 Private Sub cbAbrirBlocoEditar_Click()
@@ -1315,7 +1308,6 @@ End Sub
 Private Sub selecaoItem(nomeCmboBox As String, nomeSelecao As String)
     ' Variaveis do metodo
     Dim i As Integer
-    
     ' Percorrer os itens da ComboBox
     With formControle.Controls(nomeCmboBox)
         For i = 0 To .ListCount - 1
@@ -1335,7 +1327,7 @@ Private Sub carregarPedreiras(cbPedreiras As MSForms.comboBox)
     ' Carregamento para lista
     cbPedreiras.AddItem "PEDREIRA 01"
     cbPedreiras.AddItem "PEDREIRA 02"
-    cbPedreiras.AddItem "MINERAÇÃO VISTA LINDA"
+    cbPedreiras.AddItem "BRUNO DAGRAM"
 '    ' for para carregamento
 '    For Each nomePedreira In pedreiras
 '
@@ -1358,7 +1350,7 @@ Private Sub carregarSerrarias(cbSerrarias As MSForms.comboBox)
     ' Carregamento para lista
     cbSerrarias.AddItem "SERRARIA 01"
     cbSerrarias.AddItem "SERRARIA 02"
-    cbSerrarias.AddItem "ELSON BABISQUE"
+    cbSerrarias.AddItem "AVULSO"
     
 '    ' for para carregamento
 '    For Each nomePedreira In pedreiras
@@ -1382,7 +1374,7 @@ Private Sub carregarTiposMateriais(cbTiposMateriais As MSForms.comboBox)
     ' Carregamento para lista
     cbTiposMateriais.AddItem "TIPO 01"
     cbTiposMateriais.AddItem "TIPO 02"
-    cbTiposMateriais.AddItem "COMERCIAL SATAND"
+    cbTiposMateriais.AddItem "EXTRA"
 '    ' for para carregamento
 '    For Each nomePedreira In pedreiras
 '
@@ -1500,7 +1492,7 @@ Private Sub carregarList(lista As MSForms.ListBox)
             lista.AddItem
             
             'Adiciona os dados do bloco
-            lista.list(lista.ListCount - 1, 0) = "37766-50793-MOON-LIGHT-BL"
+            lista.list(lista.ListCount - 1, 0) = "08-PEROLA-BL"
             lista.list(lista.ListCount - 1, 1) = "BLOCO BRANCO DALLAS MOON-LIGHT"
             lista.list(lista.ListCount - 1, 2) = "3,0000"
             lista.list(lista.ListCount - 1, 3) = "2,0000"

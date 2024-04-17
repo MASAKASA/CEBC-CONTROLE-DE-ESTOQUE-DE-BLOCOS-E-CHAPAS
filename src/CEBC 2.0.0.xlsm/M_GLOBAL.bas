@@ -5,40 +5,56 @@ Option Explicit
 Global INICIAR_RELOGIO As Boolean
 
 ' Variaveis para manipulação de banco de dados
-Global BD As New ADODB.Connection
-Global rs As New ADODB.Recordset
-Global ARQ As String
-Global CS As String
-Global SENHA_BD As String
-' Sub para abrir a conexão com banco de dados
-Sub conctarBanco()
+Global CONEXAO_BD As New ADODB.Connection
 
-    ' SENHA_BD = "MAsa0608#"
+' Abrir a conexão com banco de dados
+Sub conctarBanco()
+    ' Variaveis do metodo
+    Dim caminhoBD As String
+    Dim cs As String
+    Dim senhaBD As String
+       
+    ' senhaBD = "MAsa0608#"
     ' Caminho onde esta o banco de dados
-    ARQ = ThisWorkbook.Path & "\BD\" & "BD_CEBC.accdb;"
+    caminhoBD = ThisWorkbook.Path & "\BD\" & "BD_CEBC_2.0.0.accdb;"
     
     ' String de conexão com banco de dados
-    CS = "Provider=Microsoft.ACE.OLEDB.12.0;" _
-        & "Data Source=" & ARQ _
+    cs = "Provider=Microsoft.ACE.OLEDB.12.0;" _
+        & "Data Source=" & caminhoBD _
         & "Persist Security Info=False"
         
         ' Provider=Microsoft.ACE.OLEDB.12.0;Data Source=G:\Meu Drive\SEU DENIS\CEBC - CONTROLE DE ESTOQUE DE BLOCOS E CHAPAS\BD\BD_CEBC.accdb;
         ' Jet OLEDB:Database Password=MAsa0608#;
-   
-    ' Comando para abrir a conexão com banco de dados
-    BD.Open CS
-End Sub
-' Sub para fechar a conexão com banco de dados
-Sub fecharConexaoBanco()
-    BD.Close
-End Sub
-'Sub para fechar Recordset
-Sub fecharRecordset()
-    'If de verificação se esta aberto
-    If Not rs Is Nothing Then
-        rs.Close
-        Set rs = Nothing
+        
+    ' Verifica se a conexão já existe
+    If Not CONEXAO_BD Is Nothing Then
+        ' Verifica se a conexão está aberta
+        If CONEXAO_BD.State = 1 Then ' 1 representa adStateOpen
+            ' A conexão está aberta não faz nada
+            Exit Sub
+        Else
+            ' Abre a conexão com banco de dados
+            CONEXAO_BD.Open cs
+        End If
+    Else
+        ' Abre a conexão com banco de dados
+        CONEXAO_BD.Open cs
     End If
 End Sub
+
+' Fechar a conexão com banco de dados
+Sub fecharConexaoBanco()
+    ' Verifica se a conexão já existe
+    If Not CONEXAO_BD Is Nothing Then
+        ' Verifica se a conexão está aberta
+        If CONEXAO_BD.State = 1 Then ' 1 representa adStateOpen
+            ' Fecha a conexão com banco de dados
+            CONEXAO_BD.Close
+            ' Libera espaço na memoria
+            Set CONEXAO_BD = Nothing
+        End If
+    End If
+End Sub
+
 
     

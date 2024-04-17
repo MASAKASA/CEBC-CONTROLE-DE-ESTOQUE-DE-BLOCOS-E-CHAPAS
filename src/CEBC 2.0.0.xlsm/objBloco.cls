@@ -13,7 +13,6 @@ Public idSistema As String
 Public nomeMaterial As String
 Public observacao As String
 Public numeroBlocoPedreira As String
-Public estoque As String
 Public dataCadastro As String
 Public qtdM3 As String
 Public qtdM2Serrada As String
@@ -45,6 +44,7 @@ Public valorTotalSerrada As String
 Public valorTotalPolimento As String
 Public custoMaterial As String
 Public valorTotalBloco As String
+Public estoque As objEstoque
 Public status As objStatus
 Public tipoMaterial As objTipoMaterial
 Public pedreira As objPedreira
@@ -53,7 +53,7 @@ Public polideira As objPolideira
 ' Construtor para cadastro
 Public Sub carregarBlocoCadastro(dataCadastro As String, idSistema As String, pedreira As objPedreira, serraria As objSerraria, _
                         numeroBlocoPedreira As String, nomeMaterial As String, tipoMaterial As objTipoMaterial, nota As String, _
-                        status As objStatus, observacao As String, compBrutoBloco As String, altBrutoBloco As String, _
+                        status As objStatus, observacao As String, compBrutoBloco As String, altBrutoBloco As String, estoque As objEstoque, _
                         largBrutoBloco As String, compLiquidoBloco As String, altLiquidoBloco As String, largLiquidoBloco As String, _
                         valoresAdicionais As String, freteBloco As String, precoM3Bloco As String, qtdM3 As String, valorBloco As String)
     ' Atribuições
@@ -61,6 +61,7 @@ Public Sub carregarBlocoCadastro(dataCadastro As String, idSistema As String, pe
     Me.idSistema = idSistema
     Set Me.pedreira = pedreira
     Set Me.serraria = serraria
+    Set Me.estoque = estoque
     Me.numeroBlocoPedreira = numeroBlocoPedreira
     Me.nomeMaterial = nomeMaterial
     Set Me.tipoMaterial = tipoMaterial
@@ -82,7 +83,7 @@ End Sub
 
 ' Construtor para manipulação
 Public Sub carregarBlocoEdicao(idSistema As String, nomeMaterial As String, observacao As String, _
-                        numeroBlocoPedreira As String, estoque As String, dataCadastro As String, _
+                        numeroBlocoPedreira As String, estoque As objEstoque, dataCadastro As String, _
                         qtdM3 As String, qtdM2Serrada As String, qtdM2Polimento As String, qtdChapas As String, _
                         nota As String, consultarCustoMedio As String, compBrutoBloco As String, _
                         altBrutoBloco As String, largBrutoBloco As String, compLiquidoBloco As String, _
@@ -100,7 +101,6 @@ Public Sub carregarBlocoEdicao(idSistema As String, nomeMaterial As String, obse
     Me.nomeMaterial = nomeMaterial
     Me.observacao = observacao
     Me.numeroBlocoPedreira = numeroBlocoPedreira
-    Me.estoque = estoque
     Me.dataCadastro = dataCadastro
     Me.qtdM3 = qtdM3
     Me.qtdM2Serrada = qtdM2Serrada
@@ -132,6 +132,7 @@ Public Sub carregarBlocoEdicao(idSistema As String, nomeMaterial As String, obse
     Me.valorTotalPolimento = valorTotalPolimento
     Me.custoMaterial = custoMaterial
     Me.valorTotalBloco = valorTotalBloco
+    Set Me.estoque = estoque
     Set Me.status = status
     Set Me.tipoMaterial = tipoMaterial
     Set Me.pedreira = pedreira
@@ -178,6 +179,13 @@ Public Function setTipoMaterial(tipoMaterial As objTipoMaterial)
     Set Me.tipoMaterial = tipoMaterial
 End Function
 
+Public Function getEstoque() As objEstoque
+    getEstoque = estoque
+End Function
+
+Public Function setEstoque(estoque As objEstoque)
+    Set Me.estoque = estoque
+End Function
 
 
 
