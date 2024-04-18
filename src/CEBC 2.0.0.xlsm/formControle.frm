@@ -22,6 +22,7 @@ Dim botoesMenu() As clsLabel
 Dim botoesImg() As clsLabel
 Dim botoesText() As clsLabel
 Dim frameEfeito() As clsFrame
+Dim errorStyle As clsErrorStyle
 
 ' Variaveis para manipulação
 Dim status() As String
@@ -45,12 +46,16 @@ Private Sub UserForm_Initialize()
     Dim nameObj As String
     Dim nameObjInicio As String
     
+    ' Carrega tradução do sistema
+    Call M_TRADUCAO.carregarTraducaoErros
+    
     ' Resevando espaço em memoria para manipulação das variaveis
     ReDim botoesMenu(1 To Me.Controls.Count)
     ReDim botoesImg(1 To Me.Controls.Count)
     ReDim botoesText(1 To Me.Controls.Count)
     ReDim frameEfeito(1 To Me.Controls.Count)
     ReDim status(1 To 6)
+    Set errorStyle = New clsErrorStyle
     
     ' Atribuições da variaveis
     status(1) = "PEDREIRA"
@@ -124,9 +129,6 @@ Private Sub btnLMenuBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Inte
     Call carregarSerrarias(Me.cbSerrariaBlocoPesquisa)
     Call carregarTemNota(Me.cbTemNota)
     
-    ' Carregar a list
-    Call carregarList(Me.ListEstoqueM3)
-    
     ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 1
 End Sub
@@ -135,9 +137,6 @@ Private Sub btnLMenuChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Inte
     ' Carregar os comboBox da tela
     Call carregarPolideiras(Me.cbPolideiraChapaPesquisa)
     Call carregarTiposPolimento(Me.cbTipoPolimentoPesquisa)
-    
-    ' Carregar a list
-    Call carregarList(Me.ListEstoqueChapas)
     
     ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 4
@@ -185,6 +184,13 @@ Private Sub txtNomeArquivoEstoqueBlocos_Change()
 End Sub
 ' Efeito ao sair da caixa txtNomeArquivoEstoqueBlocos de texto tela estoque m³
 Private Sub txtNomeArquivoEstoqueBlocos_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    If txtNomeArquivoEstoqueBlocos.Value = "" Then
+        lDigiteNomeArquivoM3.Visible = False
+        lDigiteNomeArquivoM3Explemplo.Visible = True
+    End If
+End Sub
+' Efeito para quando sair do foco de txtNomeArquivoEstoqueBlocos de texto tela estoque m³
+Private Sub fTiraEfeitoBotoesExportarBlocosM3_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     If txtNomeArquivoEstoqueBlocos.Value = "" Then
         lDigiteNomeArquivoM3.Visible = False
         lDigiteNomeArquivoM3Explemplo.Visible = True
@@ -273,7 +279,112 @@ Private Sub opTodos_Click()
 End Sub
 ' Botão btnLTxtPesquisarBlocos tela estoque m³
 Private Sub btnLTxtPesquisarBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    Call daoBloco.listarBlocosFilter
+    ' Variaveis do metodo
+    Dim listaBlocos As Collection
+    Dim dataInicial As String
+    Dim dataFinal As String
+    Dim idBlocoPedreira As String
+    Dim descricaoBloco As String
+    Dim pedreiraBloco As String
+    Dim serrariaBloco As String
+    Dim temNota As String
+    Dim statusPedreira As String
+    Dim statusSerraria As String
+    Dim statusChapasBrutas As String
+    Dim statusEmProcesso As String
+    Dim statusEstoque As String
+    Dim statusFechado As String
+    
+    ' Formata a data inicial
+    If txtDataInicioBlocoPesquisa.Value = "" Or Len(txtDataInicioBlocoPesquisa.Value) < 10 Then
+        txtDataInicioBlocoPesquisa.Value = M_METODOS_GLOBAL.dataInicial
+    End If
+
+    ' Formata a data final
+    If txtDataFinalBlocoPesquisa.Value = "" Or Len(txtDataFinalBlocoPesquisa.Value) < 10 Then
+        txtDataFinalBlocoPesquisa.Value = M_METODOS_GLOBAL.dataFinal
+    End If
+    
+    'Validando a data
+    If IsDate(txtDataInicioBlocoPesquisa.Value) = False Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtDataInicioBlocoPesquisa, ADICIONE_DATA_MENSAGEM, ADICIONE_DATA_TITULO
+        'Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtDataInicioBlocoPesquisa
+
+    'Validando a data
+    If IsDate(txtDataFinalBlocoPesquisa.Value) = False Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtDataFinalBlocoPesquisa, ADICIONE_DATA_MENSAGEM, ADICIONE_DATA_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtDataFinalBlocoPesquisa
+    
+    'Atribuição das variaveies
+    dataInicial = txtDataInicioBlocoPesquisa.Value
+    dataFinal = txtDataFinalBlocoPesquisa.Value
+    idBlocoPedreira = txtIdBlocoPesquisa.Value
+    descricaoBloco = txtMaterialBlocoPesquisa.Value
+    pedreiraBloco = cbPedreiraBlocoPesquisa.Value
+    serrariaBloco = cbSerrariaBlocoPesquisa.Value
+    temNota = cbTemNota.Value
+    
+    'Status filter
+    statusPedreira = ""
+    statusSerraria = ""
+    statusChapasBrutas = ""
+    statusEmProcesso = ""
+    statusEstoque = ""
+    statusFechado = ""
+    
+    'Status para pesquisa e formatação
+    If chbPedreida.Value = True Then
+        statusPedreira = chbPedreida.Caption
+    End If
+    
+    If chbSerraria.Value = True Then
+        statusSerraria = chbSerraria.Caption
+    End If
+    
+    If chbChapasBrutas.Value = True Then
+        statusChapasBrutas = chbChapasBrutas.Caption
+    End If
+    
+    If chbEmProcesso.Value = True Then
+        statusEmProcesso = chbEmProcesso.Caption
+    End If
+    
+    If chbEstoque.Value = True Then
+        statusEstoque = chbEstoque.Caption
+    End If
+    
+    If chbFechado.Value = True Then
+        statusFechado = chbFechado.Caption
+    End If
+            
+    'Mensagem para o usuario escolher algum Status
+    If chbPedreida.Value = False And chbSerraria.Value = False And chbChapasBrutas.Value = False _
+            And chbEmProcesso.Value = False And chbEstoque.Value = False And chbFechado.Value = False Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleOptionButton obPedreiraESerrada, ADICIONE_STATUS_MENSAGEM, ADICIONE_STATUS_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleOptionButton obPedreiraESerrada
+    
+    ' Faz pesquisa com filtros no banco de dados e retoeno uma lista
+    Set listaBlocos = daoBloco.listarBlocosFilter(dataInicial, dataFinal, idBlocoPedreira, _
+            descricaoBloco, pedreiraBloco, serrariaBloco, temNota, statusPedreira, statusSerraria, _
+            statusChapasBrutas, statusEmProcesso, statusEstoque, statusFechado)
+            
+    ' Carrega a lista
+    Call carregarList(ListEstoqueM3, listaBlocos)
 End Sub
 ' Botão btnLTxtLimparFiltrosBlocos tela estoque m³
 Private Sub btnLTxtLimparFiltrosBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -304,6 +415,15 @@ Private Sub btnLTxtNovoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As I
 End Sub
 ' Botão btnLTxtEditarBloco tela estoque m³
 Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    ' Verifica se tem algum item selecionado
+    If Me.ListEstoqueM3.ListIndex = -1 Then
+        ' Mensagem usuário
+        'Mensagem de cadastro realizado com sucesso
+        MsgBox "Selecione um item da lista!", vbInformation, "Nada selecioando"
+        Exit Sub
+    End If
+    
+    
     ' Muda abra da multPage para tela editar bloco
     Me.MultiPageCEBC.Value = 3
     
@@ -558,41 +678,41 @@ Private Sub carregarDadosBlocoTelaEdicaoBloco(bloco As objBloco)
     txtNBlocoPedreiraEditar.Value = bloco.numeroBlocoPedreira
     cbEstoqueEditar.Value = bloco.estoque.nome
     txtDataCadastroEditar.Value = bloco.dataCadastro
-    txtQtdM3blocoEditar.Value = Util.formatarComPontos(Format(bloco.qtdM3, "0.0000"))
-    txtQtdM2SerradaEditar.Value = Util.formatarComPontos(Format(bloco.qtdM2Serrada, "0.0000"))
-    txtQtdM2PolimentoEditar.Value = Util.formatarComPontos(Format(bloco.qtdM2Polimento, "0.0000"))
+    txtQtdM3blocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.qtdM3, "0.0000"))
+    txtQtdM2SerradaEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.qtdM2Serrada, "0.0000"))
+    txtQtdM2PolimentoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.qtdM2Polimento, "0.0000"))
     txtTotalChapaBlocoEditar.Value = bloco.qtdChapas
     cbStatusBlocoEditar.Value = bloco.status.nome
     cbNotaBlocoEditar.Value = bloco.nota
     cbCustoMedioEditar.Value = bloco.consultarCustoMedio
     ' Dimensões bloco e médias chapas
-    txtCompBrutaBlocoEditar.Value = Util.formatarComPontos(Format(bloco.compBrutoBloco, "0.0000"))
-    txtAltBrutaBlocoEditar.Value = Util.formatarComPontos(Format(bloco.altBrutoBloco, "0.0000"))
-    txtLArgBrutaBlocoEditar.Value = Util.formatarComPontos(Format(bloco.largBrutoBloco, "0.0000"))
-    txtCompLiquidoBlocoEditar.Value = Util.formatarComPontos(Format(bloco.compLiquidoBloco, "0.0000"))
-    txtAltLiquidoBlocoEditar.Value = Util.formatarComPontos(Format(bloco.altLiquidoBloco, "0.0000"))
-    txtLArgLiquidoBlocoEditar.Value = Util.formatarComPontos(Format(bloco.largLiquidoBloco, "0.0000"))
-    txtCompBrutaBrutoChapaEditar.Value = Util.formatarComPontos(Format(bloco.compBrutoChapaBruta, "0.0000"))
-    txtAltBrutaBrutoChapaEditar.Value = Util.formatarComPontos(Format(bloco.altBrutoChapaBruta, "0.0000"))
-    txtCompBrutaliquidoChapaEditar.Value = Util.formatarComPontos(Format(bloco.compLiquidoChapaBruta, "0.0000"))
-    txtAltBrutaLiquidoChapaEditar.Value = Util.formatarComPontos(Format(bloco.altBrutoChapaBruta, "0.0000"))
-    txtCompPolidaBrutoChapaEditar.Value = Util.formatarComPontos(Format(bloco.compBrutoChapaPolida, "0.0000"))
-    txtAltPolidaBrutoChapaEditar.Value = Util.formatarComPontos(Format(bloco.altBrutoChapaPolida, "0.0000"))
-    txtCompPolidaLiquidoChapaEditar.Value = Util.formatarComPontos(Format(bloco.compLiquidoChapaPolida, "0.0000"))
-    txtAltPolidaLiquidaChapaEditar.Value = Util.formatarComPontos(Format(bloco.altBrutoChapaPolida, "0.0000"))
+    txtCompBrutaBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.compBrutoBloco, "0.0000"))
+    txtAltBrutaBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.altBrutoBloco, "0.0000"))
+    txtLArgBrutaBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.largBrutoBloco, "0.0000"))
+    txtCompLiquidoBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.compLiquidoBloco, "0.0000"))
+    txtAltLiquidoBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.altLiquidoBloco, "0.0000"))
+    txtLArgLiquidoBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.largLiquidoBloco, "0.0000"))
+    txtCompBrutaBrutoChapaEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.compBrutoChapaBruta, "0.0000"))
+    txtAltBrutaBrutoChapaEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.altBrutoChapaBruta, "0.0000"))
+    txtCompBrutaliquidoChapaEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.compLiquidoChapaBruta, "0.0000"))
+    txtAltBrutaLiquidoChapaEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.altBrutoChapaBruta, "0.0000"))
+    txtCompPolidaBrutoChapaEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.compBrutoChapaPolida, "0.0000"))
+    txtAltPolidaBrutoChapaEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.altBrutoChapaPolida, "0.0000"))
+    txtCompPolidaLiquidoChapaEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.compLiquidoChapaPolida, "0.0000"))
+    txtAltPolidaLiquidaChapaEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.altBrutoChapaPolida, "0.0000"))
     ' Valores
-    txtValoBlocoEditar.Value = Util.formatarComPontos(Format(bloco.valorBloco, "0.00"))
-    txtPrecoBlocoEditar.Value = Util.formatarComPontos(Format(bloco.precoM3Bloco, "0.00"))
-    txtFreteBlocoEditar.Value = Util.formatarComPontos(Format(bloco.freteBloco, "0.00"))
-    txtValorSerradaEditar.Value = Util.formatarComPontos(Format(bloco.valorMetroSerrada, "0.00"))
-    txtValorPolimentoEditar.Value = Util.formatarComPontos(Format(bloco.valorMetroPolimento, "0.00"))
-    txtValorADDImpostosEditar.Value = Util.formatarComPontos(Format(bloco.valoresAdicionais, "0.00"))
-    txtTotalSerradaEditar.Value = Util.formatarComPontos(Format(bloco.valorTotalSerrada, "0.00"))
-    txtTotalPolimentoEditar.Value = Util.formatarComPontos(Format(bloco.valorTotalPolimento, "0.00"))
+    txtValoBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.valorBloco, "0.00"))
+    txtPrecoBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.precoM3Bloco, "0.00"))
+    txtFreteBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.freteBloco, "0.00"))
+    txtValorSerradaEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.valorMetroSerrada, "0.00"))
+    txtValorPolimentoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.valorMetroPolimento, "0.00"))
+    txtValorADDImpostosEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.valoresAdicionais, "0.00"))
+    txtTotalSerradaEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.valorTotalSerrada, "0.00"))
+    txtTotalPolimentoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.valorTotalPolimento, "0.00"))
     ' Custos
-    txtCustoMaterialBlocoEditar.Value = Util.formatarComPontos(Format(bloco.custoMaterial, "0.00"))
-    txtTotalM2PolimentoBlocoEditar.Value = Util.formatarComPontos(Format(bloco.qtdM2Polimento, "0.00"))
-    txtTotalBlocoEditar.Value = Util.formatarComPontos(Format(bloco.valorTotalBloco, "0.00"))
+    txtCustoMaterialBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.custoMaterial, "0.00"))
+    txtTotalM2PolimentoBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.qtdM2Polimento, "0.00"))
+    txtTotalBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(bloco.valorTotalBloco, "0.00"))
     
     ' Se Status do bloco for finalizado deixar visivel lBlocoFinalizado e cbAbrirBlocoEditar e desabilitar todos os campos
     If bloco.status.nome = "FECHADO" Then
@@ -642,6 +762,13 @@ Private Sub txtNomeArquivoEstoqueChapas_Change()
 End Sub
 ' Efeito ao sair da caixa txtNomeArquivoEstoqueChapas de texto tela estoque m²
 Private Sub txtNomeArquivoEstoqueChapas_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    If txtNomeArquivoEstoqueChapas.Value = "" Then
+        lDigiteNomeArquivoM2.Visible = False
+        lDigiteNomeArquivoM2Explemplo.Visible = True
+    End If
+End Sub
+' Efeito para quando sair do foco de txtNomeArquivoEstoqueChapas de texto tela estoque m²
+Private Sub fTiraEfeitoBotoesExportarChapasM2_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     If txtNomeArquivoEstoqueChapas.Value = "" Then
         lDigiteNomeArquivoM2.Visible = False
         lDigiteNomeArquivoM2Explemplo.Visible = True
@@ -1449,68 +1576,62 @@ End Sub
 '-----------------------------------------------------------------CARREAGMENTO DAS LIST-----------------------------------
 '                                                                 ---------------------
 ' Carrega a lista
-Private Sub carregarList(lista As MSForms.ListBox)
-'    'Variaveis do metodo
-'    Dim Data As String
-'    Dim listaBlocos As Variant
-'    Dim totalDia As Double
-'    Dim tamanhoLista As Integer
-'    Dim i As Long
+Private Sub carregarList(ListBox As MSForms.ListBox, listaObjetos As Collection)
+   'Variaveis do metodo
+    Dim objeto As objBloco
+    Dim i As Integer
+    Dim qtdChapas As Integer
     
-'    'Formata a data
-'    Data = Util.ConverterFormatoData(txtDataCadastro.Value)
-'
-'    'Criando Coleção para manipulaçã
-'    listaBlocos = BlocosDAO.listarBlocosEntreDatas(Data, Data)
-
     ' Limpar a ListBox
-    lista.Clear
+    ListBox.Clear
     
     ' NOME CABEÇALHO CHAPAS       | COD | DECRCIÇÃO | QTD  | COMP  | ALT  | M²    | TIPO     | ESP | VALOR | TOTAL |
     ' NOME CABEÇALHO BLOCOS       | COD | DECRCIÇÃO | COMP | ALT   | LARG | QTD   | VALOR M³ | ADD | FRETE | TOTAL |
     ' Tamanho do cabeçalho left   | 7   | 193       | 444  | 496,5 | 549  | 601,5 | 654      | 745 | 820,5 | 896   |
     ' Tamanho do cabeçalho width  | 185 | 250       | 52   | 52    | 52   | 52    | 90       | 75  | 75    | 74,5  |
     ' Tamanho das colunas da list
-    lista.ColumnWidths = "185;250;52;52;52;52;90;75;75;74;"
-
-'    'Captura o tamanho da matriz
-'    tamanhoLista = TamanhoDaMatriz(listaBlocos)
+    ListBox.ColumnWidths = "185;250;52;52;52;52;90;75;75;74;"
     
-'    'Sem não tiver dados
-'    If listaBlocos(1, 1) = "SEM DADOS" Then
-'
-'        'Seta valor na label
-'        lTotalDia = "0,00"
-'        lTotalDia.Caption = Format(totalDia, "0.00")
-'
-'    Else
-    
-'        'Adiciona os dados na ListBox
-'        For i = 1 To tamanhoLista
-    
+    'Verifica se tem algum dado a pesquisa
+    If listaObjetos.Count = -1 Or listaObjetos.Count = 0 Then ' Se não tiver dados
+        'Mensagem de retorno
+        errorStyle.SemDadosError SEM_DADOS_MENSAGEM, SEM_DADOS_TITULO
+    Else
+        ' Loop através dos itens da coleção
+        For i = 1 To listaObjetos.Count
+            ' Seta o ojeto
+            Set objeto = listaObjetos(i)
+            
             'Adiciona uma linha
-            lista.AddItem
+            ListBox.AddItem
             
             'Adiciona os dados do bloco
-            lista.list(lista.ListCount - 1, 0) = "08-PEROLA-BL"
-            lista.list(lista.ListCount - 1, 1) = "BLOCO BRANCO DALLAS MOON-LIGHT"
-            lista.list(lista.ListCount - 1, 2) = "3,0000"
-            lista.list(lista.ListCount - 1, 3) = "2,0000"
-            lista.list(lista.ListCount - 1, 4) = "2,0000"
-            lista.list(lista.ListCount - 1, 5) = "71"
-            lista.list(lista.ListCount - 1, 6) = "1.500,00"
-            lista.list(lista.ListCount - 1, 7) = "15.000,00"
-            lista.list(lista.ListCount - 1, 8) = "5.000,00"
-            lista.list(lista.ListCount - 1, 9) = "150.000,00"
-                
-'            'Soma o total do dia
-'            lTotalDia = lTotalDia + Util.formatarComPontos(Format(Util.calcularValorBloco(CStr(listaBlocos(i, 11)), _
-'                CStr(listaBlocos(i, 9))), "0.00"))
-'        Next i
-    
-'        lTotalDia.Caption = listCadastradosHoje.List(listCadastradosHoje.ListCount - 1, 9)
-'    End If
-
+            ListBox.list(ListBox.ListCount - 1, 0) = objeto.idSistema
+            ListBox.list(ListBox.ListCount - 1, 1) = objeto.nomeMaterial
+            ListBox.list(ListBox.ListCount - 1, 2) = _
+                                    M_METODOS_GLOBAL.formatarComPontos(Format(objeto.compLiquidoBloco, "0.0000"))
+            ListBox.list(ListBox.ListCount - 1, 3) = _
+                                    M_METODOS_GLOBAL.formatarComPontos(Format(objeto.altLiquidoBloco, "0.0000"))
+            ListBox.list(ListBox.ListCount - 1, 4) = _
+                                    M_METODOS_GLOBAL.formatarComPontos(Format(objeto.largLiquidoBloco, "0.0000"))
+            ListBox.list(ListBox.ListCount - 1, 5) = objeto.qtdChapas
+            ListBox.list(ListBox.ListCount - 1, 6) = _
+                                    M_METODOS_GLOBAL.formatarComPontos(Format(objeto.precoM3Bloco, "0.00"))
+            ListBox.list(ListBox.ListCount - 1, 7) = _
+                                    M_METODOS_GLOBAL.formatarComPontos(Format(objeto.valoresAdicionais, "0.00"))
+            ListBox.list(ListBox.ListCount - 1, 8) = _
+                                    M_METODOS_GLOBAL.formatarComPontos(Format(objeto.freteBloco, "0.00"))
+            ListBox.list(ListBox.ListCount - 1, 9) = _
+                                    M_METODOS_GLOBAL.formatarComPontos(Format(objeto.valorBloco, "0.00"))
+            
+            ' Total de blocos pesquisados
+            lQtdBlocos.Caption = i
+            ' Soma a qtd de chapas
+            qtdChapas = qtdChapas + CInt(objeto.qtdChapas)
+        Next i
+        ' Total de chapas
+        lQtdChapas.Caption = qtdChapas
+    End If
 End Sub
 ' Carrega a lista ListTamanhosChapas tela edicao chapa
 Private Sub carregarListTamanhosChapas(lista As MSForms.ListBox) ' Irá receber id chapa para carregamento
@@ -1529,8 +1650,8 @@ Private Sub carregarListTamanhosChapas(lista As MSForms.ListBox) ' Irá receber i
     'Adiciona os dados do bloco
     lista.list(lista.ListCount - 1, 0) = "COMERCIAL SATAND"
     lista.list(lista.ListCount - 1, 1) = "02"
-    lista.list(lista.ListCount - 1, 2) = "3,0000"
-    lista.list(lista.ListCount - 1, 3) = "2,0000"
-    lista.list(lista.ListCount - 1, 4) = "146,0000"
+    lista.list(lista.ListCount - 1, 2) = M_METODOS_GLOBAL.formatarComPontos(Format("3,0000", "0.0000"))
+    lista.list(lista.ListCount - 1, 3) = M_METODOS_GLOBAL.formatarComPontos(Format("2,0000", "0.0000"))
+    lista.list(lista.ListCount - 1, 4) = M_METODOS_GLOBAL.formatarComPontos(Format("146,0000", "0.0000"))
     lista.list(lista.ListCount - 1, 5) = "71"
 End Sub

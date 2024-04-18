@@ -11,7 +11,6 @@ Option Explicit
 
 Public WithEvents efeitoFrame As MSForms.Frame
 Attribute efeitoFrame.VB_VarHelpID = -1
-
 ' Efeito fontes do menu
 Public menuFontSizeSmall As Integer
 

@@ -1,25 +1,6 @@
 Attribute VB_Name = "ObjectFactory"
 Option Explicit
 
-' Objetos
-Private bloco As objBloco
-Private chapa As objChapa
-Private destino As objDestino
-Private motorista As objMotoista
-Private pedreira As objPedreira
-Private polideira As objPolideira
-Private serraria As objSerraria
-Private status As objStatus
-Private tamanho As objTamanho
-Private tipoMaterial As objTipoMaterial
-Private tipoPolimento As objTipoPolimento
-Private estoque As objEstoque
-' Listas
-Private lista As Collection
-' Recordset
-Private rsBloco As ADODB.Recordset
-Private rsAuxiliar As ADODB.Recordset
-
 ' Criação da instância da rsAuxiliar
 Public Function factoryRsBloco(rsBloco As ADODB.Recordset) As ADODB.Recordset
     ' Verificação se a instância já foi criada
@@ -63,129 +44,129 @@ End Function
 ' Criação da instância da lista
 Public Function factoryLista(variavelLista As Collection) As Collection
     ' Verificação se a instância já foi criada
-    If lista Is Nothing Then
-        Set lista = New Collection
+    If variavelLista Is Nothing Then
+        Set variavelLista = New Collection
     End If
     ' Retorna a instância
-    Set factoryLista = lista
+    Set factoryLista = variavelLista
 End Function
 
 ' Criação da instância de bloco
 Public Function factoryBloco(variavelBloco As objBloco) As objBloco
     ' Verificação se a instância já foi criada
-    If bloco Is Nothing Then
-        Set bloco = New objBloco
+    If variavelBloco Is Nothing Then
+        Set variavelBloco = New objBloco
     End If
     ' Retorna a instância
-    Set factoryBloco = bloco
+    Set factoryBloco = variavelBloco
 End Function
 
 ' Criação da instância de chapa
 Public Function factoryChapa(variavelChapa As objChapa) As objChapa
     ' Verificação se a instância já foi criada
-    If chapa Is Nothing Then
-        Set chapa = New objChapa
+    If variavelChapa Is Nothing Then
+        Set variavelChapa = New objChapa
     End If
     ' Retorna a instância
-    Set factoryChapa = chapa
+    Set factoryChapa = variavelChapa
 End Function
 
 ' Criação da instância de destino
 Public Function factoryDestino(variavelDestino As objDestino) As objDestino
     ' Verificação se a instância já foi criada
-    If destino Is Nothing Then
-        Set destino = New objDestino
+    If variavelDestino Is Nothing Then
+        Set variavelDestino = New objDestino
     End If
     ' Retorna a instância
-    Set factoryDestino = destino
+    Set factoryDestino = variavelDestino
 End Function
 
 ' Criação da instância de motorista
 Public Function factoryMotorista(variavelMotorista As objMotoista) As objMotoista
     ' Verificação se a instância já foi criada
-    If motorista Is Nothing Then
-        Set motorista = New objMotoista
+    If variavelMotorista Is Nothing Then
+        Set variavelMotorista = New objMotoista
     End If
     ' Retorna a instância
-    Set factoryMotorista = motorista
+    Set factoryMotorista = variavelMotorista
 End Function
 
 ' Criação da instância de pedreira
 Public Function factoryPedreira(variavelPedreira As objPedreira) As objPedreira
     ' Verificação se a instância já foi criada
-    If pedreira Is Nothing Then
-        Set pedreira = New objPedreira
+    If variavelPedreira Is Nothing Then
+        Set variavelPedreira = New objPedreira
     End If
     ' Retorna a instância
-    Set factoryPedreira = pedreira
+    Set factoryPedreira = variavelPedreira
 End Function
 
 ' Criação da instância de polideira
 Public Function factoryPolideira(variavelPolideira As objPolideira) As objPolideira
     ' Verificação se a instância já foi criada
-    If polideira Is Nothing Then
-        Set polideira = New objPolideira
+    If variavelPolideira Is Nothing Then
+        Set variavelPolideira = New objPolideira
     End If
     ' Retorna a instância
-    Set factoryPolideira = polideira
+    Set factoryPolideira = variavelPolideira
 End Function
 
 ' Criação da instância de serraria
 Public Function factorySerraria(variavelSerraria As objSerraria) As objSerraria
     ' Verificação se a instância já foi criada
-    If serraria Is Nothing Then
-        Set serraria = New objSerraria
+    If variavelSerraria Is Nothing Then
+        Set variavelSerraria = New objSerraria
     End If
     ' Retorna a instância
-    Set factorySerraria = serraria
+    Set factorySerraria = variavelSerraria
 End Function
 
 ' Criação da instância de status
 Public Function factoryStatus(variavelStatus As objStatus) As objStatus
     ' Verificação se a instância já foi criada
-    If status Is Nothing Then
-        Set status = New objStatus
+    If variavelStatus Is Nothing Then
+        Set variavelStatus = New objStatus
     End If
     ' Retorna a instância
-    Set factoryStatus = status
+    Set factoryStatus = variavelStatus
 End Function
 
 ' Criação da instância de tamanho
 Public Function factoryTamanho(variavelTamanho As objTamanho) As objTamanho
     ' Verificação se a instância já foi criada
-    If tamanho Is Nothing Then
-        Set tamanho = New objTamanho
+    If variavelTamanho Is Nothing Then
+        Set variavelTamanho = New objTamanho
     End If
     ' Retorna a instância
-    Set factoryTamanho = tamanho
+    Set factoryTamanho = variavelTamanho
 End Function
 
 ' Criação da instância de tamanho
 Public Function factoryTipoMaterial(variavelTipoMaterial As objTipoMaterial) As objTipoMaterial
     ' Verificação se a instância já foi criada
-    If tipoMaterial Is Nothing Then
-        Set tipoMaterial = New objTipoMaterial
+    If variavelTipoMaterial Is Nothing Then
+        Set variavelTipoMaterial = New objTipoMaterial
     End If
     ' Retorna a instância
-    Set factoryTipoMaterial = tipoMaterial
+    Set factoryTipoMaterial = variavelTipoMaterial
 End Function
 
 ' Criação da instância de tamanho
 Public Function factoryTipoPolimento(variavelTipoPolimento As objTipoPolimento) As objTipoPolimento
     ' Verificação se a instância já foi criada
-    If tipoPolimento Is Nothing Then
-        Set tipoPolimento = New objTipoPolimento
+    If variavelTipoPolimento Is Nothing Then
+        Set variavelTipoPolimento = New objTipoPolimento
     End If
     ' Retorna a instância
-    Set factoryTipoPolimento = tipoPolimento
+    Set factoryTipoPolimento = variavelTipoPolimento
 End Function
 
 ' Criação da instância de estoque
 Public Function factoryEstoque(variavelEstoque As objEstoque) As objEstoque
     ' Verificação se a instância já foi criada
-    If estoque Is Nothing Then
-        Set estoque = New objEstoque
+    If variavelEstoque Is Nothing Then
+        Set variavelEstoque = New objEstoque
     End If
     ' Retorna a instância
-    Set factoryEstoque = estoque
+    Set factoryEstoque = variavelEstoque
 End Function
