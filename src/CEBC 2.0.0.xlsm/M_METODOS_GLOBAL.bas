@@ -1,12 +1,19 @@
 Attribute VB_Name = "M_METODOS_GLOBAL"
+' Retorna caminho patrão para salvar estoque blocos em pdf
+Function caminhoSalvarEstoqueBlocos() As String
+    CAMINHO_SALVAR_ESTOQUE_BLOCOS = ThisWorkbook.Path & "\PDF ESTOQUE BLOCOS\"
+    caminhoSalvarEstoqueBlocos = CAMINHO_SALVAR_ESTOQUE_BLOCOS
+End Function
 ' Retorna data inicial patrão
 Function dataInicial() As String
-    dataInicial = "01/01/2000"
+    DATA_INICIO = "01/01/2000"
+    dataInicial = DATA_INICIO
 End Function
 
 ' Retorna data funal patrão
 Function dataFinal() As String
-    dataFinal = "31/12/2031"
+    DATA_FINAL = "31/12/2031"
+    dataFinal = DATA_FINAL
 End Function
 
 ' Formata a data

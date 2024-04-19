@@ -385,6 +385,9 @@ Private Sub btnLTxtPesquisarBlocos_MouseDown(ByVal Button As Integer, ByVal Shif
             
     ' Carrega a lista
     Call carregarList(ListEstoqueM3, listaBlocos)
+    
+    ' Libera espeço na memoria
+    Set listaBlocos = Nothing
 End Sub
 ' Botão btnLTxtLimparFiltrosBlocos tela estoque m³
 Private Sub btnLTxtLimparFiltrosBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -393,8 +396,46 @@ Private Sub btnLTxtLimparFiltrosBlocos_MouseDown(ByVal Button As Integer, ByVal 
 End Sub
 ' Botão btnLImgExportarEstoqueM3 tela estoque m³
 Private Sub btnLImgExportarEstoqueM3_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    ' Chama Serviço
-    MsgBox "Chama Serviço exportar estoque m³, tela estoque m³"
+    ' Variaveis do metodo
+    Dim idsParaPesquisa As Collection
+    Dim id As String
+    Dim i As Integer
+    
+    ' Verifica se tem dados na lista
+    If Me.ListEstoqueM3.ListCount > 0 Then
+        ' Reatribui espaço na memoria para variavel
+        Set idsParaPesquisa = ObjectFactory.factoryLista(idsParaPesquisa)
+    Else
+        ' Mensagem de erro
+        errorStyle.SemDadosError LIST_SEM_DADOS_MENSAGEM, LIST_SEM_DADOS_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    
+    ' Verifica se foi digitado nome para o arquivo
+    If txtNomeArquivoEstoqueBlocos.Value = "" Or txtNomeArquivoEstoqueBlocos.Value = " " Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtNomeArquivoEstoqueBlocos, ARQUIVO_SEM_NOME_MENSAGEM, ARQUIVO_SEM_NOME_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+     errorStyle.sairErrorStyleTextBox txtNomeArquivoEstoqueBlocos
+    
+    ' Captura ids da lista
+    For i = 0 To Me.ListEstoqueM3.ListCount - 1
+        idsParaPesquisa.Add Me.ListEstoqueM3.list(i, 0)
+    Next i
+    
+    ' Pesquisa os ids
+    Set listaObjeto = daoBloco.pesquisarPorIdsVariados(idsParaPesquisa)
+    
+    ' Exporta em pdf
+    Call ExportarArquivos.exportarEstoqueBloco(listaObjeto, txtNomeArquivoEstoqueBlocos.Value)
+    
+    ' Libera espeço na memoria
+    Set idsParaPesquisa = Nothing
+    Set listaObjeto = Nothing
 End Sub
 ' Botão btnLTxtNovoBloco tela estoque m³
 Private Sub btnLTxtNovoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
