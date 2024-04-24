@@ -13,12 +13,12 @@ Public id As String
 Public nome As String
 
 ' Construtor para cadastro
-Public Sub carregarSerrariaCadastro(nomeserraria As String)
-    Me.nome = nomeserraria
+Public Sub carregarSerrariaCadastro(nomeSerraria As String)
+    Me.nome = nomeSerraria
 End Sub
 
 ' Construtor para manipulação
-Public Sub carregarSerrariaManipulacao(id As String, nomeserraria As String)
+Public Sub carregarSerrariaManipulacao(id As String, nomeSerraria As String)
     Me.id = id
-    Me.nome = nomeserraria
+    Me.nome = nomeSerraria
 End Sub

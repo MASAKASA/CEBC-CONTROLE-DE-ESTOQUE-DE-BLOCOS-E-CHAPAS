@@ -1,6 +1,8 @@
 Attribute VB_Name = "daoPedreira"
 Option Explicit
 
+Private pedreira As objPedreira
+
 ' Cadastra e edita objeto
 Function cadastrarEEditar()
 
@@ -17,8 +19,34 @@ Function pesquisarPorId()
 End Function
 
 ' Pesquisa objeto por nome
-Function pesquisarPorNome()
-
+Function pesquisarPorNome(nomePedreira As String) As objPedreira
+    ' String para consultas
+    Dim rs As ADODB.Recordset
+    Dim strSql As String
+    
+    ' Criação e atribuição do objeto
+    Set pedreira = ObjectFactory.factoryPedreira(pedreira)
+    
+    ' String para consulta
+    strSql = "SELECT * FROM Pedreiras" _
+        & " WHERE Nome_Pedreira = '" & nomePedreira & "';"
+        
+    'Abrindo conexão com banco
+    Call conctarBanco
+    ' Consulta banco
+    rs.Open strSql, BD, adOpenKeyset, adLockReadOnly
+    
+    While Not rsBloco.EOF
+        pedreira.id = rs.Fields("Id_Pedreira").Value
+        pedreira.nome = rs.Fields("Nome_Pedreira").Value
+    Wend
+    
+    'Fechar conexão com banco
+    Call fecharConexaoBanco
+    ' Retorno
+    Set pesquisarPorNome = pedreira
+    ' Libera espaço na memoria
+    Set pedreira = Nothing
 End Function
 
 ' Pesquisa objeto

@@ -1,6 +1,8 @@
 Attribute VB_Name = "daoSerrada"
 Option Explicit
 
+Private serraria As objSerraria
+
 ' Cadastra e edita objeto
 Function cadastrarEEditar()
 
@@ -17,8 +19,34 @@ Function pesquisarPorId()
 End Function
 
 ' Pesquisa objeto por nome
-Function pesquisarPorNome()
-
+Function pesquisarPorNome(nomeSerraria As String) As objSerraria
+    ' String para consultas
+    Dim rs As ADODB.Recordset
+    Dim strSql As String
+    
+    ' Criação e atribuição do objeto
+    Set serraria = ObjectFactory.factorySerraria(serraria)
+    
+    ' String para consulta
+    strSql = "SELECT * FROM Serrarias" _
+        & " WHERE Nome_Serraria = '" & nomeSerraria & "';"
+        
+    'Abrindo conexão com banco
+    Call conctarBanco
+    ' Consulta banco
+    rs.Open strSql, BD, adOpenKeyset, adLockReadOnly
+    
+    While Not rs.EOF
+        serraria.id = rs.Fields("Id_Serraria").Value
+        serraria.nome = rs.Fields("Nome_Serraria").Value
+    Wend
+    
+    'Fechar conexão com banco
+    Call fecharConexaoBanco
+    ' Retorno
+    Set pesquisarPorNome = polideira
+    ' Libera espaço na memoria
+    Set serraria = Nothing
 End Function
 
 ' Pesquisa objeto

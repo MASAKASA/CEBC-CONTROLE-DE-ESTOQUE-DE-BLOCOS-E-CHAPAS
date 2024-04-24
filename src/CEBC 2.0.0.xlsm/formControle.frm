@@ -826,20 +826,14 @@ Private Sub btnLTxtCadastrarBloco_MouseDown(ByVal Button As Integer, ByVal Shift
     ' Verifica a confirmação do usário para poder cadastrar
     If resposta = vbYes Then
         ' Criação dos objetos
-        Set pedreira = ObjectFactory.factoryPedreira(pedreira)
-        Set serraria = ObjectFactory.factorySerraria(serraria)
-        Set tipoMaterial = ObjectFactory.factoryTipoMaterial(tipoMaterial)
-        Set statusObj = ObjectFactory.factoryStatus(statusObj)
-        Set estoque = ObjectFactory.factoryEstoque(estoque)
+        Set pedreira = daoPedreira.pesquisarPorNome(cbPedreira.Value)
+        Set serraria = daoSerrada.pesquisarPorNome(cbSerrariaCB.Value)
+        Set tipoMaterial = daoTipoMaterial.pesquisarPorNome(cbTipoMaterial.Value)
+        Set statusObj = daoStatus.pesquisarPorNome(nomeStatus)
+        Set estoque = daoEstoqueM3.pesquisarPorNome("CASA DO GRANITO")
         Set bloco = ObjectFactory.factoryBloco(bloco)
         Set blocoPesquisa = ObjectFactory.factoryBloco(blocoPesquisa)
-        
-        ' Atribuições
-        pedreira.nome = cbPedreira.Value
-        serraria.nome = cbSerrariaCB.Value
-        tipoMaterial.nome = cbTipoMaterial.Value
-        statusObj.nome = nomeStatus
-        estoque.nome = "CASA DO GRANITO"
+        ' Criação do objeto
         bloco.carregarBlocoCadastro txtDataCadastro.Value, txtIdBlocoSistema.Value, pedreira, serraria, txtIdBloco.Value, _
                                     nomeMaterial, tipoMaterial, cbNotaC.Value, statusObj, txtObsBlocoCB.Value, _
                                     txtCompBrutoBloco.Value, txtAlturaBlocoBruto.Value, txtLarguraBlocoBruto.Value, _
@@ -849,6 +843,7 @@ Private Sub btnLTxtCadastrarBloco_MouseDown(ByVal Button As Integer, ByVal Shift
         
         ' Chama serviço para cadastrar do bloco
         Call daoBloco.cadastrarEEditar(bloco)
+        
         ' verifica se foi um cadastro ou edição para personalisar as mensagens
         If cadastro = True Then
             ' Verifica se bloco foi cadastrado

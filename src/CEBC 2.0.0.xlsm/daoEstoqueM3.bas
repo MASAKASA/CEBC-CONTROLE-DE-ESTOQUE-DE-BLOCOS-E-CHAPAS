@@ -1,7 +1,6 @@
-Attribute VB_Name = "daoTamanho"
+Attribute VB_Name = "daoEstoqueM3"
 Option Explicit
 
-Private tamanho As objTamanho
 ' Cadastra e edita objeto
 Function cadastrarEEditar()
 
@@ -18,8 +17,9 @@ Function pesquisarPorId()
 End Function
 
 ' Pesquisa objeto por nome
-Function pesquisarPorNome()
-    
+Function pesquisarPorNome(nomeEstoqueM3 As String) As objEstoque
+
+    Set pesquisarPorNome = New objEstoque
 End Function
 
 ' Pesquisa objeto

@@ -13,7 +13,231 @@ Private estoque As objEstoque
 ' Cadastra e edita objeto
 Function cadastrarEEditar(bloco As objBloco)
 
+    ' String para consultas
+    Dim rsBloco As ADODB.Recordset ' Recordset para consulta principal
+    Dim rsAuxiliar As ADODB.Recordset ' Recordset para consulta
+    Dim fkObject As Variant ' fk para consultas extras
+    Dim strSql As String ' String para consultas
+    Dim campos() As String
+    Dim valoresCamposBloco As String
+    Dim cadastro As Boolean
+    Dim i As Long
+    
+    ' Seta true em cadastro
+    cadastro = True
+    
+    'Faz a consulta para saber se o código do bloco já exite
+    strSql = "SELECT * FROM blocos WHERE Id_Bloco = '" & bloco.idSistema & "';"
+    
+    ' Abrindo conexão com banco
+    Call conctarBanco
+    
+    ' Criando e abrindo Recordset para consulta
+    Set rsAuxiliar = ObjectFactory.factoryRsAuxiliar(rsAuxiliar)
+    ' Abrindo Recordset para consulta
+    rsAuxiliar.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
+    ' Retorno da consulta
+    While Not rsAuxiliar.EOF
+        ' Seta false porquê vai ser uma edição
+        cadastro = False
+        
+        rsAuxiliar.MoveNext
+    Wend
+    ' Libera recurso Recordset
+    rsAuxiliar.Close
+    Set rsAuxiliar = Nothing
+    
+    ' Direciona para os comandos certos de cadastro ou edição
+    If cadastro = True Then ' Se cadastro
+        ' Confere se tem uma serraria ou não
+        If bloco.serraria.nome = "" Then ' Cadastro sem Serraria
+            ' Realoca espaço da variavel
+            ReDim campos(1 To 21)
+            ' Colocando vingulas, Parenteses e  arpas simples os valores
+            campos(1) = "('" & bloco.idSistema & "', "
+            campos(2) = "'" & bloco.nomeMaterial & "', "
+            campos(3) = "'" & bloco.valoresAdicionais & "', "
+            campos(4) = "'" & bloco.valorTotalBloco & "', "
+            campos(5) = "'" & bloco.precoM3Bloco & "', "
+            campos(6) = "'" & bloco.qtdM3 & "', "
+            campos(7) = "'" & bloco.numeroBlocoPedreira & "', "
+            campos(8) = "'" & bloco.largLiquidoBloco & "', "
+            campos(9) = "'" & bloco.altLiquidoBloco & "', "
+            campos(10) = "'" & bloco.compLiquidoBloco & "', "
+            campos(11) = "'" & bloco.dataCadastro & "', "
+            campos(12) = "'" & bloco.observacao & "', "
+            campos(13) = bloco.tipoMaterial.id & ", "
+            campos(14) = "'" & bloco.freteBloco & ", "
+            campos(15) = bloco.estoque.id & ", "
+            campos(16) = bloco.pedreira.id & ", "
+            campos(17) = bloco.status.id & ", "
+            campos(18) = "'" & bloco.compBrutoBloco & ", "
+            campos(19) = "'" & bloco.altBrutoBloco & ", "
+            campos(20) = "'" & bloco.largBrutoBloco & ", "
+            campos(21) = "'" & bloco.nota & "');"
+            
+            'Concatenando os valores
+            For i = 1 To 21
+                valoresCamposBloco = valoresCamposBloco & campos(i)
+            Next i
 
+            'Concatenando comando SQL e cadastrando bloco no banco de dados
+            strSql = "INSERT INTO Blocos ( Id_Bloco, Descricao, Valores_Adicionais, Preço_Bloco, valor_M3, " _
+                & "Quantidade_M3, Id_bloco_Pedreira, Larg_Liquida_Bloco, Alt_Liquida_Bloco, Comp_Liquida_Bloco, " _
+                & "Data_cadastro, Observacao, Fk_Tipo_Material, Valor_Frete, Fk_Estoque, Fk_Pedreira, Fk_Status, " _
+                & "Comp_Bruto_Bloco, Alt_Bruto_Bloco, Bloco, Tem_Nota ) VALUES " & valoresCamposBloco
+            
+            rsBloco.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
+            
+        Else ' Cadastro sem Serraria
+            ' Realoca espaço da variavel
+            ReDim campos(1 To 22)
+            ' Colocando vingulas, Parenteses e  arpas simples os valores
+            campos(1) = "('" & bloco.idSistema & "', "
+            campos(2) = "'" & bloco.nomeMaterial & "', "
+            campos(3) = "'" & bloco.valoresAdicionais & "', "
+            campos(4) = "'" & bloco.valorTotalBloco & "', "
+            campos(5) = "'" & bloco.precoM3Bloco & "', "
+            campos(6) = "'" & bloco.qtdM3 & "', "
+            campos(7) = "'" & bloco.numeroBlocoPedreira & "', "
+            campos(8) = "'" & bloco.largLiquidoBloco & "', "
+            campos(9) = "'" & bloco.altLiquidoBloco & "', "
+            campos(10) = "'" & bloco.compLiquidoBloco & "', "
+            campos(11) = "'" & bloco.dataCadastro & "', "
+            campos(12) = "'" & bloco.observacao & "', "
+            campos(13) = bloco.tipoMaterial.id & ", "
+            campos(14) = "'" & bloco.freteBloco & ", "
+            campos(15) = bloco.estoque.id & ", "
+            campos(16) = bloco.pedreira.id & ", "
+            campos(17) = bloco.status.id & ", "
+            campos(18) = bloco.serraria.id & ", "
+            campos(19) = "'" & bloco.compBrutoBloco & ", "
+            campos(20) = "'" & bloco.altBrutoBloco & ", "
+            campos(21) = "'" & bloco.largBrutoBloco & ", "
+            campos(22) = "'" & bloco.nota & "');"
+            
+            'Concatenando os valores
+            For i = 1 To 21
+                valoresCamposBloco = valoresCamposBloco & campos(i)
+            Next i
+
+            'Concatenando comando SQL e cadastrando bloco no banco de dados
+            strSql = "INSERT INTO Blocos ( Id_Bloco, Descricao, Valores_Adicionais, Preço_Bloco, valor_M3, " _
+                & "Quantidade_M3, Id_bloco_Pedreira, Larg_Liquida_Bloco, Alt_Liquida_Bloco, Comp_Liquida_Bloco, " _
+                & "Data_cadastro, Observacao, Fk_Tipo_Material, Valor_Frete, Fk_Estoque, Fk_Pedreira, Fk_Status, " _
+                & "Fk_Serraria, Comp_Bruto_Bloco, Alt_Bruto_Bloco, Bloco, Tem_Nota ) VALUES " & valoresCamposBloco
+            
+            rsBloco.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
+        End If
+    Else ' Se edição
+        ' Verifica se tem polideira e serraria
+        If bloco.serraria.nome <> "" And bloco.polideira.nome <> "" Then
+            ' Edição do bloco com serraria e polideira
+            strSql = "UPDATE Blocos SET Descricao = '" & bloco.nomeMaterial & "', " _
+                & "Observacao = '" & bloco.observacao & "', Id_bloco_Pedreira = '" & bloco.numeroBlocoPedreira & "', " _
+                & "Data_cadastro = '" & bloco.dataCadastro & "', Quantidade_M3 = '" & bloco.qtdM3 & "', " _
+                & "Quantidade_Serrada_M2 = '" & bloco.qtdM2Serrada & "', Quantidade_Polimento_M2 = '" & bloco.qtdM2Polimento & "', " _
+                & "Total_chapas = '" & bloco.qtdChapas & "', Tem_Nota = '" & bloco.nota & "', " _
+                & "Custo_Medio = '" & bloco.consultarCustoMedio & "', Comp_Bruto_Bloco = '" & bloco.compBrutoBloco & "', " _
+                & "Alt_Bruto_Bloco = '" & bloco.altBrutoBloco & "', Larg_Bruto_Bloco = '" & bloco.largBrutoBloco & "', " _
+                & "Comp_Liquida_Bloco = '" & bloco.compLiquidoBloco & "', Alt_Liquida_Bloco = '" & bloco.altLiquidoBloco & "', " _
+                & "Larg_Liquida_Bloco = '" & bloco.largLiquidoBloco & "', Comp_Bruto_Chapa_Bruta = '" & bloco.compBrutoChapaBruta & "', " _
+                & "Alt_Bruto_Chapa_Bruta = '" & bloco.altBrutoChapaBruta & "', Comp_Liquido_Chapa_Bruta = '" & bloco.compLiquidoChapaBruta & "', " _
+                & "Alt_Liquido_Chapa_Bruta = '" & bloco.altBrutoChapaBruta & "', Comp_Bruto_Chapa_Polida = '" & bloco.compBrutoChapaPolida & "', " _
+                & "Alt_Bruto_Chapa_Polida = '" & bloco.altBrutoChapaPolida & "', Comp_Liquido_Chapa_Polida = '" & bloco.compLiquidoChapaBruta & "', " _
+                & "Alt_Liquido_Chapa_Polida = '" & bloco.altLiquidoChapaPolida & "', Valores_Adicionais = '" & bloco.valoresAdicionais & "', " _
+                & "Preço_Bloco = '" & bloco.valorBloco & "', Valor_M3 = '" & bloco.precoM3Bloco & "', " _
+                & "Valor_Frete = '" & bloco.freteBloco & "', Custo_Serrada_M2 = '" & bloco.valorMetroSerrada & "', " _
+                & "Custo_Polimento_M2 = '" & bloco.valorMetroPolimento & "', Valor_Serrada = '" & bloco.valorTotalSerrada & "', " _
+                & "Valor_Polimento = '" & bloco.valorTotalPolimento & "', Custo_Material = '" & bloco.custoMaterial & "', " _
+                & "Custo_Total = '" & bloco.valorTotalBloco & "', Fk_Tipo_Material = '" & bloco.tipoMaterial.id & "', " _
+                & "Fk_Pedreira = '" & bloco.pedreira.id & "', Fk_Estoque = '" & bloco.estoque.id & "', " _
+                & "Fk_Polideira = '" & bloco.polideira.id & "', Fk_Serraria = '" & bloco.serraria.id & "', " _
+                & "Fk_Status = '" & bloco.status.id & "' WHERE Id_Bloco = '" & bloco.idSistema & "';"
+                
+            rsBloco.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
+        ElseIf bloco.serraria.nome = "" And bloco.polideira.nome = "" Then
+            ' Edição do bloco sem serraria e polideira
+            strSql = "UPDATE Blocos SET Descricao = '" & bloco.nomeMaterial & "', " _
+                & "Observacao = '" & bloco.observacao & "', Id_bloco_Pedreira = '" & bloco.numeroBlocoPedreira & "', " _
+                & "Data_cadastro = '" & bloco.dataCadastro & "', Quantidade_M3 = '" & bloco.qtdM3 & "', " _
+                & "Quantidade_Serrada_M2 = '" & bloco.qtdM2Serrada & "', Quantidade_Polimento_M2 = '" & bloco.qtdM2Polimento & "', " _
+                & "Total_chapas = '" & bloco.qtdChapas & "', Tem_Nota = '" & bloco.nota & "', " _
+                & "Custo_Medio = '" & bloco.consultarCustoMedio & "', Comp_Bruto_Bloco = '" & bloco.compBrutoBloco & "', " _
+                & "Alt_Bruto_Bloco = '" & bloco.altBrutoBloco & "', Larg_Bruto_Bloco = '" & bloco.largBrutoBloco & "', " _
+                & "Comp_Liquida_Bloco = '" & bloco.compLiquidoBloco & "', Alt_Liquida_Bloco = '" & bloco.altLiquidoBloco & "', " _
+                & "Larg_Liquida_Bloco = '" & bloco.largLiquidoBloco & "', Comp_Bruto_Chapa_Bruta = '" & bloco.compBrutoChapaBruta & "', " _
+                & "Alt_Bruto_Chapa_Bruta = '" & bloco.altBrutoChapaBruta & "', Comp_Liquido_Chapa_Bruta = '" & bloco.compLiquidoChapaBruta & "', " _
+                & "Alt_Liquido_Chapa_Bruta = '" & bloco.altBrutoChapaBruta & "', Comp_Bruto_Chapa_Polida = '" & bloco.compBrutoChapaPolida & "', " _
+                & "Alt_Bruto_Chapa_Polida = '" & bloco.altBrutoChapaPolida & "', Comp_Liquido_Chapa_Polida = '" & bloco.compLiquidoChapaBruta & "', " _
+                & "Alt_Liquido_Chapa_Polida = '" & bloco.altLiquidoChapaPolida & "', Valores_Adicionais = '" & bloco.valoresAdicionais & "', " _
+                & "Preço_Bloco = '" & bloco.valorBloco & "', Valor_M3 = '" & bloco.precoM3Bloco & "', " _
+                & "Valor_Frete = '" & bloco.freteBloco & "', Custo_Serrada_M2 = '" & bloco.valorMetroSerrada & "', " _
+                & "Custo_Polimento_M2 = '" & bloco.valorMetroPolimento & "', Valor_Serrada = '" & bloco.valorTotalSerrada & "', " _
+                & "Valor_Polimento = '" & bloco.valorTotalPolimento & "', Custo_Material = '" & bloco.custoMaterial & "', " _
+                & "Custo_Total = '" & bloco.valorTotalBloco & "', Fk_Tipo_Material = '" & bloco.tipoMaterial.id & "', " _
+                & "Fk_Pedreira = '" & bloco.pedreira.id & "', Fk_Estoque = '" & bloco.estoque.id & "', " _
+                & "Fk_Status = '" & bloco.status.id & "' WHERE Id_Bloco = '" & bloco.idSistema & "';"
+                
+            rsBloco.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
+        ElseIf bloco.serraria.nome = "" Then
+            ' Edição do bloco só com serraria
+            strSql = "UPDATE Blocos SET Descricao = '" & bloco.nomeMaterial & "', " _
+                & "Observacao = '" & bloco.observacao & "', Id_bloco_Pedreira = '" & bloco.numeroBlocoPedreira & "', " _
+                & "Data_cadastro = '" & bloco.dataCadastro & "', Quantidade_M3 = '" & bloco.qtdM3 & "', " _
+                & "Quantidade_Serrada_M2 = '" & bloco.qtdM2Serrada & "', Quantidade_Polimento_M2 = '" & bloco.qtdM2Polimento & "', " _
+                & "Total_chapas = '" & bloco.qtdChapas & "', Tem_Nota = '" & bloco.nota & "', " _
+                & "Custo_Medio = '" & bloco.consultarCustoMedio & "', Comp_Bruto_Bloco = '" & bloco.compBrutoBloco & "', " _
+                & "Alt_Bruto_Bloco = '" & bloco.altBrutoBloco & "', Larg_Bruto_Bloco = '" & bloco.largBrutoBloco & "', " _
+                & "Comp_Liquida_Bloco = '" & bloco.compLiquidoBloco & "', Alt_Liquida_Bloco = '" & bloco.altLiquidoBloco & "', " _
+                & "Larg_Liquida_Bloco = '" & bloco.largLiquidoBloco & "', Comp_Bruto_Chapa_Bruta = '" & bloco.compBrutoChapaBruta & "', " _
+                & "Alt_Bruto_Chapa_Bruta = '" & bloco.altBrutoChapaBruta & "', Comp_Liquido_Chapa_Bruta = '" & bloco.compLiquidoChapaBruta & "', " _
+                & "Alt_Liquido_Chapa_Bruta = '" & bloco.altBrutoChapaBruta & "', Comp_Bruto_Chapa_Polida = '" & bloco.compBrutoChapaPolida & "', " _
+                & "Alt_Bruto_Chapa_Polida = '" & bloco.altBrutoChapaPolida & "', Comp_Liquido_Chapa_Polida = '" & bloco.compLiquidoChapaBruta & "', " _
+                & "Alt_Liquido_Chapa_Polida = '" & bloco.altLiquidoChapaPolida & "', Valores_Adicionais = '" & bloco.valoresAdicionais & "', " _
+                & "Preço_Bloco = '" & bloco.valorBloco & "', Valor_M3 = '" & bloco.precoM3Bloco & "', " _
+                & "Valor_Frete = '" & bloco.freteBloco & "', Custo_Serrada_M2 = '" & bloco.valorMetroSerrada & "', " _
+                & "Custo_Polimento_M2 = '" & bloco.valorMetroPolimento & "', Valor_Serrada = '" & bloco.valorTotalSerrada & "', " _
+                & "Valor_Polimento = '" & bloco.valorTotalPolimento & "', Custo_Material = '" & bloco.custoMaterial & "', " _
+                & "Custo_Total = '" & bloco.valorTotalBloco & "', Fk_Tipo_Material = '" & bloco.tipoMaterial.id & "', " _
+                & "Fk_Pedreira = '" & bloco.pedreira.id & "', Fk_Estoque = '" & bloco.estoque.id & "', " _
+                & "', Fk_Serraria = '" & bloco.serraria.id & "', " _
+                & "Fk_Status = '" & bloco.status.id & "' WHERE Id_Bloco = '" & bloco.idSistema & "';"
+                
+            rsBloco.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
+        ElseIf bloco.polideira.nome = "" Then
+            ' Edição do bloco só com polideira
+            strSql = "UPDATE Blocos SET Descricao = '" & bloco.nomeMaterial & "', " _
+                & "Observacao = '" & bloco.observacao & "', Id_bloco_Pedreira = '" & bloco.numeroBlocoPedreira & "', " _
+                & "Data_cadastro = '" & bloco.dataCadastro & "', Quantidade_M3 = '" & bloco.qtdM3 & "', " _
+                & "Quantidade_Serrada_M2 = '" & bloco.qtdM2Serrada & "', Quantidade_Polimento_M2 = '" & bloco.qtdM2Polimento & "', " _
+                & "Total_chapas = '" & bloco.qtdChapas & "', Tem_Nota = '" & bloco.nota & "', " _
+                & "Custo_Medio = '" & bloco.consultarCustoMedio & "', Comp_Bruto_Bloco = '" & bloco.compBrutoBloco & "', " _
+                & "Alt_Bruto_Bloco = '" & bloco.altBrutoBloco & "', Larg_Bruto_Bloco = '" & bloco.largBrutoBloco & "', " _
+                & "Comp_Liquida_Bloco = '" & bloco.compLiquidoBloco & "', Alt_Liquida_Bloco = '" & bloco.altLiquidoBloco & "', " _
+                & "Larg_Liquida_Bloco = '" & bloco.largLiquidoBloco & "', Comp_Bruto_Chapa_Bruta = '" & bloco.compBrutoChapaBruta & "', " _
+                & "Alt_Bruto_Chapa_Bruta = '" & bloco.altBrutoChapaBruta & "', Comp_Liquido_Chapa_Bruta = '" & bloco.compLiquidoChapaBruta & "', " _
+                & "Alt_Liquido_Chapa_Bruta = '" & bloco.altBrutoChapaBruta & "', Comp_Bruto_Chapa_Polida = '" & bloco.compBrutoChapaPolida & "', " _
+                & "Alt_Bruto_Chapa_Polida = '" & bloco.altBrutoChapaPolida & "', Comp_Liquido_Chapa_Polida = '" & bloco.compLiquidoChapaBruta & "', " _
+                & "Alt_Liquido_Chapa_Polida = '" & bloco.altLiquidoChapaPolida & "', Valores_Adicionais = '" & bloco.valoresAdicionais & "', " _
+                & "Preço_Bloco = '" & bloco.valorBloco & "', Valor_M3 = '" & bloco.precoM3Bloco & "', " _
+                & "Valor_Frete = '" & bloco.freteBloco & "', Custo_Serrada_M2 = '" & bloco.valorMetroSerrada & "', " _
+                & "Custo_Polimento_M2 = '" & bloco.valorMetroPolimento & "', Valor_Serrada = '" & bloco.valorTotalSerrada & "', " _
+                & "Valor_Polimento = '" & bloco.valorTotalPolimento & "', Custo_Material = '" & bloco.custoMaterial & "', " _
+                & "Custo_Total = '" & bloco.valorTotalBloco & "', Fk_Tipo_Material = '" & bloco.tipoMaterial.id & "', " _
+                & "Fk_Pedreira = '" & bloco.pedreira.id & "', Fk_Estoque = '" & bloco.estoque.id & "', " _
+                & "Fk_Polideira = '" & bloco.polideira.id & "'," _
+                & "Fk_Status = '" & bloco.status.id & "' WHERE Id_Bloco = '" & bloco.idSistema & "';"
+                
+            rsBloco.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
+        End If
+    End If
+    
+    ' Libera recurso Recordset
+    rsBloco.Close
+    Set rsBloco = Nothing
+    'Fechando conexão com banco
+    Call fecharConexaoBanco
 End Function
 
 ' Exclui objeto
