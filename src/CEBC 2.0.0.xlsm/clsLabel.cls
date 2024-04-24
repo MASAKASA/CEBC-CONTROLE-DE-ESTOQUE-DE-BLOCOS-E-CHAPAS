@@ -38,8 +38,9 @@ Private Sub efeitoBotoesMenu_MouseDown(ByVal Button As Integer, ByVal Shift As I
     '       PRINCIPAL(QUE É A DO BOTÃO)
     '
     '   2 - SE CASO TROCAR A CORES E EFEITOS DOS BOTÕES DO MENU, IR NO
-    '       MOUSEDOWN DO BOTÃO ADDESTOQUE NA TELA ESTOQUE M3 PARA TROCAR
-    '       AS CONFIGURAÇÃO DO BOTÕES BLOCO E CHAPA DO MENU
+    '       MOUSEDOWN DO BOTÃO ADDESTOQUE NA TELA ESTOQUE M3, NO BOTÃO
+    '       VOLTAR NA TELA CHAPA PARA TROCAR AS CONFIGURAÇÃO DO BOTÕES
+    '       BLOCO E CHAPA DO MENU
     
     ' Atribuicoes
     rMenuOnClick = 200

@@ -17,7 +17,7 @@ Public WithEvents efeitoOptionButton As MSForms.OptionButton
 Attribute efeitoOptionButton.VB_VarHelpID = -1
 
 ' Pesquisa sem dados
-Public Sub SemDadosError(mensagemError As String, tituloError As String)
+Public Sub Informativo(mensagemError As String, tituloError As String)
     'Mensagem de erro
     MsgBox mensagemError, vbInformation, tituloError
 End Sub

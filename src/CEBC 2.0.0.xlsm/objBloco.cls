@@ -53,8 +53,8 @@ Public polideira As objPolideira
 ' Construtor para cadastro
 Public Sub carregarBlocoCadastro(dataCadastro As String, idSistema As String, pedreira As objPedreira, serraria As objSerraria, _
                         numeroBlocoPedreira As String, nomeMaterial As String, tipoMaterial As objTipoMaterial, nota As String, _
-                        status As objStatus, observacao As String, compBrutoBloco As String, altBrutoBloco As String, estoque As objEstoque, _
-                        largBrutoBloco As String, compLiquidoBloco As String, altLiquidoBloco As String, largLiquidoBloco As String, _
+                        status As objStatus, observacao As String, compBrutoBloco As String, altBrutoBloco As String, largBrutoBloco As String, _
+                        compLiquidoBloco As String, altLiquidoBloco As String, largLiquidoBloco As String, estoque As objEstoque, _
                         valoresAdicionais As String, freteBloco As String, precoM3Bloco As String, qtdM3 As String, valorBloco As String)
     ' Atribuições
     Me.dataCadastro = dataCadastro

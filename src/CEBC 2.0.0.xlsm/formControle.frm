@@ -25,6 +25,7 @@ Dim frameEfeito() As clsFrame
 Dim errorStyle As clsErrorStyle
 
 ' Variaveis para manipulação
+Dim paginaAnterior As Integer
 Dim status() As String
 Dim listaObjeto As Collection
 
@@ -34,6 +35,9 @@ Dim chapa As objChapa
 Dim pedreira As objPedreira
 Dim polideira As objPolideira
 Dim serraria As objSerraria
+Dim tipoMaterial As objTipoMaterial
+Dim statusObj As objStatus
+Dim estoque As objEstoque
 
 ' Inicialização do formControle
 Private Sub UserForm_Initialize()
@@ -48,6 +52,9 @@ Private Sub UserForm_Initialize()
     
     ' Carrega tradução do sistema
     Call M_TRADUCAO.carregarTraducaoErros
+    
+    ' Seta pagina
+    paginaAnterior = 0
     
     ' Resevando espaço em memoria para manipulação das variaveis
     ReDim botoesMenu(1 To Me.Controls.Count)
@@ -131,6 +138,10 @@ Private Sub btnLMenuBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Inte
     
     ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 1
+    ' Seta pagina anterior
+    paginaAnterior = 0
+    ' Seta o foco
+    txtMaterialBlocoPesquisa.SetFocus
 End Sub
 ' Efeito para clique nas label btnLMenuChapa do menu
 Private Sub btnLMenuChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -140,11 +151,15 @@ Private Sub btnLMenuChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Inte
     
     ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 4
+    ' Seta o foco
+    txtMaterialChapaPesquisa.SetFocus
 End Sub
 ' Efeito para clique nas label btnLMenuDespachar do menu
 Private Sub btnLMenuDespachar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 8
+    ' Seta o foco
+    cbMotorista.SetFocus
 End Sub
 ' Efeito para clique nas label btnLMenuCarrago do menu
 Private Sub btnLMenuCarrago_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -407,7 +422,7 @@ Private Sub btnLImgExportarEstoqueM3_MouseDown(ByVal Button As Integer, ByVal Sh
         Set idsParaPesquisa = ObjectFactory.factoryLista(idsParaPesquisa)
     Else
         ' Mensagem de erro
-        errorStyle.SemDadosError LIST_SEM_DADOS_MENSAGEM, LIST_SEM_DADOS_TITULO
+        errorStyle.Informativo LIST_SEM_DADOS_MENSAGEM, LIST_SEM_DADOS_TITULO
         ' Para o fluxo do sistema para a correção
         Exit Sub
     End If
@@ -439,6 +454,13 @@ Private Sub btnLImgExportarEstoqueM3_MouseDown(ByVal Button As Integer, ByVal Sh
 End Sub
 ' Botão btnLTxtNovoBloco tela estoque m³
 Private Sub btnLTxtNovoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = 2
+    ' Seta número de pagina para poder voltar
+    paginaAnterior = 1
+    ' Seta o foco
+    cbPedreira.SetFocus
+    
     ' Coloca data atual na txtDataCadastro na tela cadastro de bloco
     txtDataCadastro.Value = Date
     
@@ -448,11 +470,11 @@ Private Sub btnLTxtNovoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As I
     Call carregarTiposMateriais(Me.cbTipoMaterial)
     Call carregarTemNota(Me.cbNotaC)
     
-    ' Chama metodo para carregar lista e blocos cadastros do dia atual
-    Call carregarList(Me.listCadastradosHoje)
+    ' Pesquisa blocos cadastrado no dia atual
+    Set listaObjeto = daoBloco.listarBlocosFilter(Date, Date, "", "", "", "", "", "", "", "", "", "", "")
     
-    'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 2
+    ' Chama metodo para carregar lista e blocos cadastros do dia atual
+    Call carregarList(Me.listCadastradosHoje, listaObjeto)
 End Sub
 ' Botão btnLTxtEditarBloco tela estoque m³
 Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -464,9 +486,10 @@ Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As
         Exit Sub
     End If
     
-    
     ' Muda abra da multPage para tela editar bloco
     Me.MultiPageCEBC.Value = 3
+    ' Seta o foco
+    txtMaterialEditar.SetFocus
     
     ' Chama serviço para pesquisa do bloco
     Set bloco = daoBloco.pesquisarPorId(Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Envia o id do bloco
@@ -502,6 +525,10 @@ Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As 
     
     'Muda abra da multPage
     Me.MultiPageCEBC.Value = 6
+    ' Seta número de pagina para poder voltar
+    paginaAnterior = 1
+    ' Seta o foco
+    cbPolideiraChapa.SetFocus
 End Sub
 
 '-----------------------------------------------------------------TELA CADASTRO DE BLOCOS-----------------------------------
@@ -512,7 +539,7 @@ Private Sub txtIdBloco_Change()
     txtIdBloco.Value = UCase(txtIdBloco.Value)
     
     ' Cria o código para o sistema
-    txtIdBlocoSistema.Value = txtIdBloco & "-" & Util.ExtrairUltimaPalavra(txtNomeBloco.Value) & "-BL"
+    txtIdBlocoSistema.Value = txtIdBloco & "-" & M_METODOS_GLOBAL.ExtrairUltimaPalavra(txtNomeBloco.Value) & "-BL"
     
     ' Deixa em branco o codigo se as variaveis forem vazias
     If txtIdBloco.Value = "" And txtNomeBloco.Value = "" Then
@@ -525,7 +552,7 @@ Private Sub txtNomeBloco_Change()
     txtNomeBloco.Value = UCase(txtNomeBloco.Value)
     
     ' Cria o código para o sistema
-    txtIdBlocoSistema.Value = txtIdBloco & "-" & Util.ExtrairUltimaPalavra(txtNomeBloco.Value) & "-BL"
+    txtIdBlocoSistema.Value = txtIdBloco & "-" & M_METODOS_GLOBAL.ExtrairUltimaPalavra(txtNomeBloco.Value) & "-BL"
     
     ' Deixa em branco o codigo se as variaveis forem vazias
     If txtIdBloco.Value = "" And txtNomeBloco.Value = "" Then
@@ -540,7 +567,7 @@ End Sub
 ' txtComprimentoBloco tela cadastro de bloco
 Private Sub txtComprimentoBloco_Change()
     ' Define o resultado no TextBox
-    txtComprimentoBloco.Value = Util.formatarMetros(txtComprimentoBloco.Value)
+    txtComprimentoBloco.Value = M_METODOS_GLOBAL.formatarMetros(txtComprimentoBloco.Value)
     
     ' Seta o valor no comprimento bruto
     txtCompBrutoBloco.Value = txtComprimentoBloco.Value
@@ -549,17 +576,17 @@ Private Sub txtComprimentoBloco_Change()
     txtComprimentoBloco.SelStart = Len(txtComprimentoBloco.Value)
     
     ' Retorna valor calculado e formatado
-    txtTotalM3.Value = Util.formatarComPontos(Format(Util.calcularM3(txtComprimentoBloco.Value, _
+    txtTotalM3.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularM3(txtComprimentoBloco.Value, _
             txtAlturaBloco.Value, txtLarguraBloco.Value), "0.0000"))
 
     ' Retorna valor calculado e formatado
-    txtValorTotalBloco.Value = Util.formatarComPontos(Format(Util.calcularValorBloco(txtValorM3.Value, _
-            txtTotalM3.Value), "0.00"))
+    txtValorTotalBloco.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorBloco( _
+            txtValorM3.Value, txtTotalM3.Value), "0.00"))
 End Sub
 ' txtAlturaBloco tela cadastro de bloco
 Private Sub txtAlturaBloco_Change()
     ' Define o resultado no TextBox
-    txtAlturaBloco.Value = Util.formatarMetros(txtAlturaBloco.Value)
+    txtAlturaBloco.Value = M_METODOS_GLOBAL.formatarMetros(txtAlturaBloco.Value)
     
     ' Seta o valor na altura bruto
     txtAlturaBlocoBruto.Value = txtAlturaBloco.Value
@@ -568,17 +595,17 @@ Private Sub txtAlturaBloco_Change()
     txtAlturaBloco.SelStart = Len(txtAlturaBloco.Value)
     
     ' Retorna valor calculado e formatado
-    txtTotalM3.Value = Util.formatarComPontos(Format(Util.calcularM3(txtComprimentoBloco.Value, _
+    txtTotalM3.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularM3(txtComprimentoBloco.Value, _
             txtAlturaBloco.Value, txtLarguraBloco.Value), "0.0000"))
 
     ' Retorna valor calculado e formatado
-    txtValorTotalBloco.Value = Util.formatarComPontos(Format(Util.calcularValorBloco(txtValorM3.Value, _
+    txtValorTotalBloco.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorBloco(txtValorM3.Value, _
             txtTotalM3.Value), "0.00"))
 End Sub
 ' txtLarguraBloco tela cadastro de bloco
 Private Sub txtLarguraBloco_Change()
     ' Define o resultado no TextBox
-    txtLarguraBloco.Value = Util.formatarMetros(txtLarguraBloco.Value)
+    txtLarguraBloco.Value = M_METODOS_GLOBAL.formatarMetros(txtLarguraBloco.Value)
     
     ' Seta o valor na altura bruto
     txtLarguraBlocoBruto.Value = txtLarguraBloco.Value
@@ -587,17 +614,17 @@ Private Sub txtLarguraBloco_Change()
     txtLarguraBloco.SelStart = Len(txtLarguraBloco.Value)
     
     ' Retorna valor calculado e formatado
-    txtTotalM3.Value = Util.formatarComPontos(Format(Util.calcularM3(txtComprimentoBloco.Value, _
+    txtTotalM3.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularM3(txtComprimentoBloco.Value, _
             txtAlturaBloco.Value, txtLarguraBloco.Value), "0.0000"))
 
     ' Retorna valor calculado e formatado
-    txtValorTotalBloco.Value = Util.formatarComPontos(Format(Util.calcularValorBloco(txtValorM3.Value, _
-            txtTotalM3.Value), "0.00"))
+    txtValorTotalBloco.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorBloco( _
+            txtValorM3.Value, txtTotalM3.Value), "0.00"))
 End Sub
 ' txtCompBrutoBloco tela cadastro de bloco
 Private Sub txtCompBrutoBloco_Change()
     ' Define o resultado no TextBox
-    txtCompBrutoBloco.Value = Util.formatarMetros(txtCompBrutoBloco.Value)
+    txtCompBrutoBloco.Value = M_METODOS_GLOBAL.formatarMetros(txtCompBrutoBloco.Value)
     
     ' Move o cursor para o final do TextBox
     txtCompBrutoBloco.SelStart = Len(txtCompBrutoBloco.Value)
@@ -605,7 +632,7 @@ End Sub
 ' txtAlturaBlocoBruto tela cadastro de bloco
 Private Sub txtAlturaBlocoBruto_Change()
     ' Define o resultado no TextBox
-    txtAlturaBlocoBruto.Value = Util.formatarMetros(txtAlturaBlocoBruto.Value)
+    txtAlturaBlocoBruto.Value = M_METODOS_GLOBAL.formatarMetros(txtAlturaBlocoBruto.Value)
     
     ' Move o cursor para o final do TextBox
     txtAlturaBlocoBruto.SelStart = Len(txtAlturaBlocoBruto.Value)
@@ -613,7 +640,7 @@ End Sub
 ' txtLarguraBlocoBruto tela cadastro de bloco
 Private Sub txtLarguraBlocoBruto_Change()
     ' Define o resultado no TextBox
-    txtLarguraBlocoBruto.Value = Util.formatarMetros(txtLarguraBlocoBruto.Value)
+    txtLarguraBlocoBruto.Value = M_METODOS_GLOBAL.formatarMetros(txtLarguraBlocoBruto.Value)
     
     ' Move o cursor para o final do TextBox
     txtLarguraBlocoBruto.SelStart = Len(txtLarguraBlocoBruto.Value)
@@ -621,7 +648,7 @@ End Sub
 ' txtAdicionais tela cadastro de bloco
 Private Sub txtAdicionais_Change()
     ' Define o resultado no TextBox
-    txtAdicionais.Value = Util.formatarValor(txtAdicionais.Value)
+    txtAdicionais.Value = M_METODOS_GLOBAL.formatarValor(txtAdicionais.Value)
     
     ' Move o cursor para o final do TextBox
     txtAdicionais.SelStart = Len(txtAdicionais.Value)
@@ -629,7 +656,7 @@ End Sub
 ' txtValorFreteBloco tela cadastro de bloco
 Private Sub txtValorFreteBloco_Change()
     ' Define o resultado no TextBox
-    txtValorFreteBloco.Value = Util.formatarValor(txtValorFreteBloco.Value)
+    txtValorFreteBloco.Value = M_METODOS_GLOBAL.formatarValor(txtValorFreteBloco.Value)
 
     ' Move o cursor para o final do TextBox
     txtValorFreteBloco.SelStart = Len(txtValorFreteBloco.Value)
@@ -637,14 +664,14 @@ End Sub
 ' txtValorM3 tela cadastro de bloco
 Private Sub txtValorM3_Change()
     ' Define o resultado no TextBox
-    txtValorM3.Value = Util.formatarValor(txtValorM3.Value)
+    txtValorM3.Value = M_METODOS_GLOBAL.formatarValor(txtValorM3.Value)
     
     ' Move o cursor para o final do TextBox
     txtValorM3.SelStart = Len(txtValorM3.Value)
 
     ' Retorna valor calculado e formatado
-    txtValorTotalBloco.Value = Util.formatarComPontos(Format(Util.calcularValorBloco(txtValorM3.Value, _
-            txtTotalM3.Value), "0.00"))
+    txtValorTotalBloco.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorBloco( _
+            txtValorM3.Value, txtTotalM3.Value), "0.00"))
 End Sub
 ' Botão btnLImgCadastrarPedreira tela cadastrar bloco
 Private Sub btnLImgCadastrarPedreira_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -664,7 +691,14 @@ End Sub
 ' Botão btnLTxtCadastrarBloco tela cadastrar bloco
 Private Sub btnLTxtCadastrarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Variaveis do medoto
+    Dim blocoPesquisa As objBloco
+    Dim resposta As VbMsgBoxResult ' Variavel para confirmação na hora de cadastrar
     Dim nomeStatus As String
+    Dim nomeMaterial As String
+    Dim cadastro As Boolean
+    
+    ' Patrão true
+    cadastro = True
     
     ' Captura do status
     If obPedreiraCB.Value = True Then
@@ -673,29 +707,195 @@ Private Sub btnLTxtCadastrarBloco_MouseDown(ByVal Button As Integer, ByVal Shift
         nomeStatus = status(2)
     End If
     
-    ' Criação e atribuição do objeto pedreira
-    Set pedreira = New objPedreira
-    pedreira.carregarPedreira cbPedreira.Value
+    ' Validações
+    nomeMaterial = "BLOCO " & txtNomeBloco.Value
     
-    ' Criação e atribuição do objeto serraria
-    Set serraria = New objSerraria
-    serraria.carregarSerraria cbSerrariaCB.Value
+    ' Verifica o Status
+    If obSerrariaCB.Value = True Then
+        If cbSerrariaCB.Value = "" Or cbSerrariaCB.Value = " " Then
+            ' Deixa visivel o erro com mensagens
+            errorStyle.EntrarErrorStyleComboBox cbSerrariaCB, STATUS_SERRARIA_MENSAGEM, STATUS_SERRARIA_TITULO
+            ' Para o fluxo do sistema para a correção
+            Exit Sub
+        End If
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleComboBox cbSerrariaCB
     
-    ' Criação e atribuição do objeto bloco
-    Set bloco = New objBloco
-    bloco.carregarBlocoCadastro txtDataCadastro.Value, txtIdBlocoSistema.Value, pedreira, serraria, txtIdBloco.Value, _
-                                txtNomeBloco.Value, cbTipoMaterial.Value, cbNotaC.Value, nomeStatus, txtObsBlocoCB.Value, _
-                                txtCompBrutoBloco.Value, txtAlturaBlocoBruto.Value, txtLarguraBlocoBruto.Value, _
-                                txtComprimentoBloco.Value, txtAlturaBloco.Value, txtLarguraBloco.Value, txtAdicionais.Value, _
-                                txtValorFreteBloco.Value, txtValorM3.Value, txtTotalM3.Value, txtValorTotalBloco.Value
+    ' Verifica o Pedreira
+    If cbPedreira.Value = "" Or cbPedreira.Value = " " Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleComboBox cbPedreira, NOME_PEDREIRA_MENSAGEM, NOME_PEDREIRA_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleComboBox cbPedreira
     
-    ' Chama Serviço
-    MsgBox bloco.idSistema & " - " & bloco.nomeMaterial
+    ' Verifica o Número do bloco na pedreira
+    If txtIdBloco.Value = "" Or txtIdBloco.Value = " " Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtIdBloco, NUMERO_BLOCO_PEDREIRA_MENSAGEM, NUMERO_BLOCO_PEDREIRA_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtIdBloco
+    
+    ' Verifica nome do bloco
+    If txtNomeBloco.Value = "" Or txtNomeBloco.Value = " " Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtNomeBloco, NOME_BLOCO_MENSAGEM, NOME_BLOCO_PEDREIRA_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtNomeBloco
+    
+    ' Verifica o tipo do material
+    If cbTipoMaterial.Value = "" Or cbTipoMaterial.Value = " " Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleComboBox cbTipoMaterial, TIPO_MATERIAL_MENSAGEM, TIPO_MATERIAL_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleComboBox cbTipoMaterial
+    
+    ' Verifica tem nota
+    If cbNotaC.Value = "" Or cbNotaC.Value = " " Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleComboBox cbNotaC, TEM_NOTA_MENSAGEM, TEM_NOTA_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleComboBox cbNotaC
+    
+    ' Verifica o comprimento
+    If txtComprimentoBloco.Value = "" Or txtComprimentoBloco.Value = "0,0000" Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtComprimentoBloco, COMP_BLOCO_MENSAGEM, COMP_BLOCO_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtComprimentoBloco
+    
+    ' Verifica o altura
+    If txtAlturaBloco.Value = "" Or txtAlturaBloco.Value = "0,0000" Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtAlturaBloco, ALT_BLOCO_MENSAGEM, ALT_BLOCO_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtAlturaBloco
+    
+    ' Verifica o largura
+    If txtLarguraBloco.Value = "" Or txtLarguraBloco.Value = "0,0000" Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtLarguraBloco, LARG_BLOCO_MENSAGEM, LARG_BLOCO_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtLarguraBloco
+    
+    ' Verifica o valor do m³
+    If txtValorM3.Value = "" Or txtValorM3.Value = "0,0000" Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtValorM3, VALOR_M3_MENSAGEM, VALOR_M3_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtValorM3
+    
+    ' Verifica se um cadastrado ou edição
+    Set blocoPesquisa = daoBloco.pesquisarPorId(txtIdBlocoSistema.Value)
+    If blocoPesquisa.idSistema = txtIdBlocoSistema.Value Then
+        ' Troca patrão para false
+        cadastro = False
+        resposta = vbYes
+    Else
+        ' Mensagem de confirmação
+        resposta = MsgBox(CONFIRMACAO_CADASTRO_MENSAGEM, vbQuestion + vbYesNo, CONFIRMACAO_CADASTRO_TITULO)
+    End If
+    
+    ' Verifica a confirmação do usário para poder cadastrar
+    If resposta = vbYes Then
+        ' Criação dos objetos
+        Set pedreira = ObjectFactory.factoryPedreira(pedreira)
+        Set serraria = ObjectFactory.factorySerraria(serraria)
+        Set tipoMaterial = ObjectFactory.factoryTipoMaterial(tipoMaterial)
+        Set statusObj = ObjectFactory.factoryStatus(statusObj)
+        Set estoque = ObjectFactory.factoryEstoque(estoque)
+        Set bloco = ObjectFactory.factoryBloco(bloco)
+        Set blocoPesquisa = ObjectFactory.factoryBloco(blocoPesquisa)
+        
+        ' Atribuições
+        pedreira.nome = cbPedreira.Value
+        serraria.nome = cbSerrariaCB.Value
+        tipoMaterial.nome = cbTipoMaterial.Value
+        statusObj.nome = nomeStatus
+        estoque.nome = "CASA DO GRANITO"
+        bloco.carregarBlocoCadastro txtDataCadastro.Value, txtIdBlocoSistema.Value, pedreira, serraria, txtIdBloco.Value, _
+                                    nomeMaterial, tipoMaterial, cbNotaC.Value, statusObj, txtObsBlocoCB.Value, _
+                                    txtCompBrutoBloco.Value, txtAlturaBlocoBruto.Value, txtLarguraBlocoBruto.Value, _
+                                    txtComprimentoBloco.Value, txtAlturaBloco.Value, txtLarguraBloco.Value, estoque, _
+                                    txtAdicionais.Value, txtValorFreteBloco.Value, txtValorM3.Value, txtTotalM3.Value, _
+                                    txtValorTotalBloco.Value
+        
+        ' Chama serviço para cadastrar do bloco
+        Call daoBloco.cadastrarEEditar(bloco)
+        ' verifica se foi um cadastro ou edição para personalisar as mensagens
+        If cadastro = True Then
+            ' Verifica se bloco foi cadastrado
+            Set blocoPesquisa = daoBloco.pesquisarPorId(bloco.idSistema)
+            If blocoPesquisa.idSistema = txtIdBlocoSistema.Value Then
+                'Mensagem de cadastro realizado com sucesso. Mensagem de erro utilizada para sucesso na operação
+                errorStyle.Informativo CADASTRO_CONFIRMADO_MENSAGEM, CADASTRO_CONFIRMADO_TITULO
+                ' Limpa os campos
+                Call limparCamposCadastroBlocos
+                ' Recarregar a lista com blocos cadastrados hoje
+                ' Pesquisa blocos cadastrado no dia atual
+                Set listaObjeto = daoBloco.listarBlocosFilter(Date, Date, "", "", "", "", "", "", "", "", "", "", "")
+                
+                ' Chama metodo para carregar lista e blocos cadastros do dia atual
+                Call carregarList(Me.listCadastradosHoje, listaObjeto)
+            Else
+                'Mensagem de cadastro realizado com sucesso. Mensagem de erro utilizada para sucesso na operação
+                errorStyle.Informativo ERRO_DESCONHECIDO_MENSAGEM, ERRO_DESCONHECIDO_TITULO
+            End If
+        Else
+            ' Mensagem de sucesso na edição
+            errorStyle.Informativo SUCESSO_EDICAO_MENSAGEM, SUCESSO_EDICAO_TITULO
+        End If
+
+        ' Libera espaço da memoria
+        Set pedreira = Nothing
+        Set serraria = Nothing
+        Set tipoMaterial = Nothing
+        Set statusObj = Nothing
+        Set estoque = Nothing
+        Set bloco = Nothing
+        Set blocoPesquisa = Nothing
+    Else
+        ' Coloque o código a ser executado se o usuário clicar em "Não" aqui.
+        errorStyle.Informativo ACAO_CANCELADA_MENSAGEM, ACAO_CANCELADA_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa o cursor no cbPedreira para proximo cadastro
+    cbPedreira.SetFocus
 End Sub
 ' Botão btnLTxtVoltarCadastroBloco tela cadastrar bloco
 Private Sub btnLTxtVoltarCadastroBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    ' Muda abra da multPage - tela estoque ³
-    Me.MultiPageCEBC.Value = 1
+    ' Muda abra da multPage - tela estoque m³
+    Me.MultiPageCEBC.Value = paginaAnterior
+    ' Seta o foco
+    txtMaterialBlocoPesquisa.SetFocus
 End Sub
 ' Botão btnLTextLimparCadastroBloco tela cadastrar bloco
 Private Sub btnLTxtLimparCadastroBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -773,12 +973,16 @@ End Sub
 Private Sub btnLTxtSalvarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     'Chama Serviço
     MsgBox "Chama Serviço editar bloco, tela editar bloco"
+    ' Seta o foco
+    txtMaterialEditar.SetFocus
 End Sub
 ' Botão btnLTxtVoltarEdicaoBloco tela editar bloco
 Private Sub btnLTxtVoltarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 1
+    ' Seta o foco
+    txtMaterialBlocoPesquisa.SetFocus
 End Sub
 
 '-----------------------------------------------------------------TELA ESTOQUE M²-----------------------------------
@@ -834,6 +1038,8 @@ End Sub
 Private Sub btnLTxtPesquisarChapas_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço pesquisar chapa, tela estoque m²"
+    ' Seta o foco
+    txtMaterialChapaPesquisa.SetFocus
 End Sub
 ' Botão btnLTxtLimparFiltrosChapas tela estoque m²
 Private Sub btnLTxtLimparFiltrosChapas_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -860,11 +1066,17 @@ Private Sub btnLTxtNovoAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As 
     
     'Muda abra da multPage
     Me.MultiPageCEBC.Value = 5
+    ' Seta o foco
+    txtIdBlocoAvulso.SetFocus
 End Sub
 ' Botão btnLTxtEditarChapa tela estoque m²
 Private Sub btnLTxtEditarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 6
+    ' Seta número de pagina para poder voltar
+    paginaAnterior = 4
+    ' Seta o foco
+    cbPolideiraChapa.SetFocus
     
     ' Chama serviço para pesquisa da chapa
     
@@ -883,6 +1095,8 @@ End Sub
 Private Sub btnLTxtTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 7
+    ' Seta o foco
+    txtQtdMaterialParaTroca01.SetFocus
 End Sub
 
 '-----------------------------------------------------------------TELA CADASTRO AVULSO-----------------------------------
@@ -893,7 +1107,8 @@ Private Sub txtIdBlocoAvulso_Change()
     txtIdBlocoAvulso.Value = UCase(txtIdBlocoAvulso.Value)
     
     ' Cria o código para o sistema
-    txtIdBlocoAvulsoSistema.Value = txtIdBlocoAvulso & "-" & Util.ExtrairUltimaPalavra(txtMaterialAvulso.Value) & "-BL"
+    txtIdBlocoAvulsoSistema.Value = txtIdBlocoAvulso & "-" & M_METODOS_GLOBAL.ExtrairUltimaPalavra( _
+                txtMaterialAvulso.Value) & "-BL"
     
     ' Deixa em branco o codigo se as variaveis forem vazias
     If txtIdBlocoAvulso.Value = "" And txtMaterialAvulso.Value = "" Then
@@ -906,7 +1121,8 @@ Private Sub txtMaterialAvulso_Change()
     txtMaterialAvulso.Value = UCase(txtMaterialAvulso.Value)
     
     ' Cria o código para o sistema
-    txtIdBlocoAvulsoSistema.Value = txtIdBlocoAvulso & "-" & Util.ExtrairUltimaPalavra(txtMaterialAvulso.Value) & "-BL"
+    txtIdBlocoAvulsoSistema.Value = txtIdBlocoAvulso & "-" & M_METODOS_GLOBAL.ExtrairUltimaPalavra( _
+                txtMaterialAvulso.Value) & "-BL"
     
     ' Deixa em branco o codigo se as variaveis forem vazias
     If txtIdBlocoAvulso.Value = "" And txtMaterialAvulso.Value = "" Then
@@ -921,7 +1137,7 @@ End Sub
 ' txtComprimentoChapaAvulsa tela cadastro avulso
 Private Sub txtComprimentoChapaAvulsa_Change()
    'Define o resultado no TextBox
-    txtComprimentoChapaAvulsa.Value = Util.formatarMetros(txtComprimentoChapaAvulsa)
+    txtComprimentoChapaAvulsa.Value = M_METODOS_GLOBAL.formatarMetros(txtComprimentoChapaAvulsa)
     
     ' Seta o valor no comprimento bruto
     txtCompChapasBrutasAvulso.Value = txtComprimentoChapaAvulsa.Value
@@ -930,17 +1146,18 @@ Private Sub txtComprimentoChapaAvulsa_Change()
     txtComprimentoChapaAvulsa.SelStart = Len(txtComprimentoChapaAvulsa.Value)
     
     'Retorna valor calculado e formatado
-    txtTotalM2Avulso.Value = Util.formatarComPontos(Format(Util.calcularM2(txtComprimentoChapaAvulsa.Value, _
+    txtTotalM2Avulso.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularM2(txtComprimentoChapaAvulsa.Value, _
         txtAlturaChapaAvulsa.Value, txtQuantidadeChapasAvulsas.Value), "0.0000"))
         
     'Seta o custo do material m²
-    txtCustoSimplesM2Avulso.Value = Util.formatarComPontos(Format(Util.custoMaterialM2(txtTotalBlocoAvulso.Value, _
-            txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", txtTotalM2Avulso.Value), "0.00"))
+    txtCustoSimplesM2Avulso.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.custoMaterialM2( _
+            txtTotalBlocoAvulso.Value, txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", _
+            txtTotalM2Avulso.Value), "0.00"))
 End Sub
 ' txtAlturaChapaAvulsa tela cadastro avulso
 Private Sub txtAlturaChapaAvulsa_Change()
    'Define o resultado no TextBox
-    txtAlturaChapaAvulsa.Value = Util.formatarMetros(txtAlturaChapaAvulsa)
+    txtAlturaChapaAvulsa.Value = M_METODOS_GLOBAL.formatarMetros(txtAlturaChapaAvulsa)
     
     ' Seta o valor na altura bruto
     txtAlturaChapasBrutasAvulso.Value = txtAlturaChapaAvulsa.Value
@@ -949,12 +1166,13 @@ Private Sub txtAlturaChapaAvulsa_Change()
     txtAlturaChapaAvulsa.SelStart = Len(txtAlturaChapaAvulsa.Value)
     
     'Retorna valor calculado e formatado
-    txtTotalM2Avulso.Value = Util.formatarComPontos(Format(Util.calcularM2(txtComprimentoChapaAvulsa.Value, _
-        txtAlturaChapaAvulsa.Value, txtQuantidadeChapasAvulsas.Value), "0.0000"))
+    txtTotalM2Avulso.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularM2( _
+        txtComprimentoChapaAvulsa.Value, txtAlturaChapaAvulsa.Value, txtQuantidadeChapasAvulsas.Value), "0.0000"))
         
     'Seta o custo do material m²
-    txtCustoSimplesM2Avulso.Value = Util.formatarComPontos(Format(Util.custoMaterialM2(txtTotalBlocoAvulso.Value, _
-            txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", txtTotalM2Avulso.Value), "0.00"))
+    txtCustoSimplesM2Avulso.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.custoMaterialM2( _
+            txtTotalBlocoAvulso.Value, txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", _
+            txtTotalM2Avulso.Value), "0.00"))
 End Sub
 ' txtQuantidadeChapasAvulsas tela cadastro avulso
 Private Sub txtQuantidadeChapasAvulsas_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
@@ -971,16 +1189,17 @@ Private Sub txtQuantidadeChapasAvulsas_Exit(ByVal Cancel As MSForms.ReturnBoolea
     End If
     
     'Retorna valor calculado e formatado
-    txtTotalM2Avulso.Value = Util.formatarComPontos(Format(Util.calcularM2(txtComprimentoChapaAvulsa.Value, _
-        txtAlturaChapaAvulsa.Value, txtQuantidadeChapasAvulsas.Value), "0.0000"))
+    txtTotalM2Avulso.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularM2( _
+        txtComprimentoChapaAvulsa.Value, txtAlturaChapaAvulsa.Value, txtQuantidadeChapasAvulsas.Value), "0.0000"))
     'Seta o custo do material m²
-    txtCustoSimplesM2Avulso.Value = Util.formatarComPontos(Format(Util.custoMaterialM2(txtTotalBlocoAvulso.Value, _
-            txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", txtTotalM2Avulso.Value), "0.00"))
+    txtCustoSimplesM2Avulso.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.custoMaterialM2( _
+            txtTotalBlocoAvulso.Value, txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", _
+            txtTotalM2Avulso.Value), "0.00"))
 End Sub
 ' txtCompChapasBrutasAvulso tela cadastro avulso
 Private Sub txtCompChapasBrutasAvulso_Change()
    'Define o resultado no TextBox
-    txtCompChapasBrutasAvulso.Value = Util.formatarMetros(txtCompChapasBrutasAvulso)
+    txtCompChapasBrutasAvulso.Value = M_METODOS_GLOBAL.formatarMetros(txtCompChapasBrutasAvulso)
 
     'Move o cursor para o final do TextBox
     txtCompChapasBrutasAvulso.SelStart = Len(txtCompChapasBrutasAvulso.Value)
@@ -988,7 +1207,7 @@ End Sub
 ' txtAlturaChapasBrutasAvulso tela cadastro avulso
 Private Sub txtAlturaChapasBrutasAvulso_Change()
    'Define o resultado no TextBox
-    txtAlturaChapasBrutasAvulso.Value = Util.formatarMetros(txtAlturaChapasBrutasAvulso)
+    txtAlturaChapasBrutasAvulso.Value = M_METODOS_GLOBAL.formatarMetros(txtAlturaChapasBrutasAvulso)
 
     'Move o cursor para o final do TextBox
     txtAlturaChapasBrutasAvulso.SelStart = Len(txtAlturaChapasBrutasAvulso.Value)
@@ -996,50 +1215,53 @@ End Sub
 ' txtAdicionaisAvulso tela cadastro avulso
 Private Sub txtAdicionaisAvulso_Change()
     ' Define o resultado no TextBox
-    txtAdicionaisAvulso.Value = Util.formatarValor(txtAdicionaisAvulso.Value)
+    txtAdicionaisAvulso.Value = M_METODOS_GLOBAL.formatarValor(txtAdicionaisAvulso.Value)
     
     ' Move o cursor para o final do TextBox
     txtAdicionaisAvulso.SelStart = Len(txtAdicionaisAvulso.Value)
     
     'Seta o custo do material m²
-    txtCustoSimplesM2Avulso.Value = Util.formatarComPontos(Format(Util.custoMaterialM2(txtTotalBlocoAvulso.Value, _
-            txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", txtTotalM2Avulso.Value), "0.00"))
+    txtCustoSimplesM2Avulso.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.custoMaterialM2( _
+            txtTotalBlocoAvulso.Value, txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", _
+            txtTotalM2Avulso.Value), "0.00"))
 End Sub
 ' txtValorFreteAvulso tela cadastro avulso
 Private Sub txtValorFreteAvulso_Change()
     ' Define o resultado no TextBox
-    txtValorFreteAvulso.Value = Util.formatarValor(txtValorFreteAvulso.Value)
+    txtValorFreteAvulso.Value = M_METODOS_GLOBAL.formatarValor(txtValorFreteAvulso.Value)
 
     ' Move o cursor para o final do TextBox
     txtValorFreteAvulso.SelStart = Len(txtValorFreteAvulso.Value)
     
     'Seta o custo do material m²
-    txtCustoSimplesM2Avulso.Value = Util.formatarComPontos(Format(Util.custoMaterialM2(txtTotalBlocoAvulso.Value, _
-            txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", txtTotalM2Avulso.Value), "0.00"))
+    txtCustoSimplesM2Avulso.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.custoMaterialM2( _
+            txtTotalBlocoAvulso.Value, txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", _
+            txtTotalM2Avulso.Value), "0.00"))
 End Sub
 ' txtValorBlocoAvulso tela cadastro avulso
 Private Sub txtValorMetroAvulso_Change()
     ' Define o resultado no TextBox
-    txtValorMetroAvulso.Value = Util.formatarValor(txtValorMetroAvulso.Value)
+    txtValorMetroAvulso.Value = M_METODOS_GLOBAL.formatarValor(txtValorMetroAvulso.Value)
     
     ' Move o cursor para o final do TextBox
     txtValorMetroAvulso.SelStart = Len(txtValorMetroAvulso.Value)
 
     ' Retorna valor calculado e formatado
-    txtTotalBlocoAvulso.Value = Util.formatarComPontos(Format(Util.calcularValorBloco(txtTotalM2Avulso.Value, _
-            txtValorMetroAvulso.Value), "0.00"))
+    txtTotalBlocoAvulso.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorBloco( _
+            txtTotalM2Avulso.Value, txtValorMetroAvulso.Value), "0.00"))
             
     'Se m² for diferente de 0 calcula o custo do material
     'Seta o custo do material m²
-    txtCustoSimplesM2Avulso.Value = Util.formatarComPontos(Format(Util.custoMaterialM2(txtTotalBlocoAvulso.Value, _
+    txtCustoSimplesM2Avulso.Value = M_METODOS_GLOBAL.formatarComPontos(Format(Util.custoMaterialM2(txtTotalBlocoAvulso.Value, _
             txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", txtTotalM2Avulso.Value), "0.00"))
 End Sub
 ' txtTotalM2Avulso tela cadastro avulso
 Private Sub txtTotalM2Avulso_Change()
     'Se m² for diferente de 0 calcula o custo do material
     'Seta o custo do material m²
-    txtCustoSimplesM2Avulso.Value = Util.formatarComPontos(Format(Util.custoMaterialM2(txtTotalBlocoAvulso.Value, _
-            txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", txtTotalM2Avulso.Value), "0.00"))
+    txtCustoSimplesM2Avulso.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.custoMaterialM2( _
+            txtTotalBlocoAvulso.Value, txtValorFreteAvulso.Value, txtAdicionaisAvulso.Value, "0,00", "0,00", _
+            txtTotalM2Avulso.Value), "0.00"))
 End Sub
 ' Botão btnLImgCadastrarMaterialAvulso tela cadastro avulso
 Private Sub btnLImgCadastrarMaterialAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -1055,11 +1277,15 @@ End Sub
 Private Sub btnLTxtCadastrarChapaAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço cadastrar chapas avulsos, tela cadastro avulso"
+    ' Seta o foco
+    txtIdBlocoAvulso.SetFocus
 End Sub
 ' Botão btnLTxtVoltarCadatradoChapasAvulso tela cadastro avulso
 Private Sub btnLTxtVoltarCadatradoChapasAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Muda abra da multPage - tela estoque m²
     Me.MultiPageCEBC.Value = 4
+    ' Seta o foco
+    txtMaterialChapaPesquisa.SetFocus
 End Sub
 ' Botão btnLTxtLimparCadastroChapaAvulso tela cadastro avulso
 Private Sub btnLTxtLimparCadastroChapaAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -1129,26 +1355,56 @@ End Sub
 Private Sub btnLTxtAdicionarTamanhoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço adicionar tamanhos, tela lançamento e edição chapa"
+    ' Seta o foco
+    cbTiposMateriaisChapas.SetFocus
 End Sub
 ' Botão btnLTxtEditarTamanhoChapa tela lançamento e edição chapa
 Private Sub btnLTxtEditarTamanhoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço editar tamanho chapa, tela lançamento e edição chapa"
+    ' Seta o foco
+    cbTiposMateriaisChapas.SetFocus
 End Sub
 ' Botão btnLTxtTirarDaLista tela lançamento e edição chapa
 Private Sub btnLTxtTirarDaLista_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço tira tamanho da lista, tela lançamento e edição chapa"
+    ' Seta o foco
+    cbTiposMateriaisChapas.SetFocus
 End Sub
 ' Botão btnLTxtSalvarChapa tela lançamento e edição chapa
 Private Sub btnLTxtSalvarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço salva alteração da chapa, tela lançamento e edição chapa"
+    ' Seta o foco
+    cbPolideiraChapa.SetFocus
 End Sub
 ' Botão btnLTxtVoltarChapa tela lançamento e edição chapa
 Private Sub btnLTxtVoltarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    ' Chama Serviço
-    MsgBox "Chama Serviço voltar, tela lançamento e edição chapa"
+    ' Volta para tela que chamou
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = paginaAnterior
+        
+    If paginaAnterior = 1 Then
+        ' Botão chapa
+        formControle.Controls("btnLMenuBloco").BackColor = RGB(200, 230, 255)
+        formControle.Controls("btnLMenuBloco").Font.Size = 32
+        formControle.Controls("btnLMenuBloco").Font.Size = 20
+        formControle.Controls("btnLMenuBloco").Left = 15
+        formControle.Controls("btnLMenuBloco").Width = 172
+        formControle.Controls("btnLMenuBloco").TextAlign = fmTextAlignCenter
+                    
+        ' Botão Menu
+        formControle.Controls("btnLMenuChapa").BackColor = RGB(0, 100, 200)
+        formControle.Controls("btnLMenuChapa").Left = 2
+        formControle.Controls("btnLMenuChapa").Width = 189
+        formControle.Controls("btnLMenuChapa").TextAlign = fmTextAlignLeft
+        
+        ' Seta o foco
+        txtMaterialChapaPesquisa.SetFocus
+    End If
+    ' Seta o foco
+    txtMaterialBlocoPesquisa.SetFocus
 End Sub
 
 '-----------------------------------------------------------------TELA TROCA ESTOQUE-----------------------------------
@@ -1157,6 +1413,8 @@ End Sub
 Private Sub btnLTxtAdicionarTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço adicionar material para troca, tela troca estoque"
+    ' Seta o foco
+    txtMaterialParaTroca02.SetFocus
 End Sub
 ' Botão btnLTxtTrocarEstoque tela troca estoque
 Private Sub btnLTxtTrocarEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -1167,6 +1425,8 @@ End Sub
 Private Sub btnLTxtVoltarTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço voltar, tela troca estoque"
+    ' Seta o foco
+    txtMaterialChapaPesquisa.SetFocus
 End Sub
 
 '-----------------------------------------------------------------TELA DESPACHE-----------------------------------
@@ -1185,6 +1445,8 @@ End Sub
 Private Sub btnLTxtAdicionar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço adicionar chapa, tela despache"
+    ' Seta o foco
+    txtMaterial.SetFocus
 End Sub
 ' Botão btnLTxtDespachar tela despache
 Private Sub btnLTxtDespachar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -1203,26 +1465,36 @@ End Sub
 Private Sub btnLTxtPesquisarCarregos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço pesquisar por carregos, tela carregos"
+    ' Seta o foco
+    cbMotoristaL.SetFocus
 End Sub
 ' Botão btnLTxtLimparListas tela carregos
 Private Sub btnLTxtLimparListas_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço limpar dados filtro, tela carregos"
+'    ' Seta o foco
+'    cbMotoristaL.SetFocus
 End Sub
 ' Botão btnLImgExportarCarregoPDF tela carregos
 Private Sub btnLImgExportarCarregoPDF_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço exportar carregos em pdf, tela carregos"
+    ' Seta o foco
+'    cbMotoristaL.SetFocus
 End Sub
 ' Botão btnLTxtEditarCarrego tela carregos
 Private Sub btnLTxtEditarCarrego_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço editar carrego, tela carregos"
+    ' Seta o foco
+    cbMotoristaL.SetFocus
 End Sub
 ' Botão btnLTxtVoltarCArrego tela carregos
 Private Sub btnLTxtVoltarCArrego_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço voltar, tela carregos"
+    ' Seta o foco
+    cbMotoristaL.SetFocus
 End Sub
 
 '-----------------------------------------------------------------TELA CADASTROS DIVERSOS-----------------------------------
@@ -1419,6 +1691,8 @@ Private Sub limparCamposPesquisaEstoqueM2()
     obEstoqueZeroSim.Value = False
     obEstoqueZeroNao.Value = True
     txtNomeArquivoEstoqueChapas.Value = ""
+    ' Seta o foco
+    txtMaterialChapaPesquisa.SetFocus
 End Sub
 ' Limpa os campos da tela cadastrao de blocos
 Private Sub limparCamposCadastroBlocos()
@@ -1443,6 +1717,9 @@ Private Sub limparCamposCadastroBlocos()
     txtValorFreteBloco.Value = "0,00"
     txtValorM3.Value = "0,00"
     lTotalDia.Caption = "0,00"
+    
+    ' Seta o foco
+    cbPedreira.SetFocus
 End Sub
 ' Limpa os campos de pesquisa da tela cadastro avulso
 Private Sub limparCamposCadastroAvulso()
@@ -1468,6 +1745,8 @@ Private Sub limparCamposCadastroAvulso()
     txtTotalM2Avulso.Value = "0,00"
     txtCustoSimplesM2Avulso.Value = "0,00"
     txtTotalBlocoAvulso.Value = "0,00"
+    ' Seta o foco
+    txtIdBlocoAvulso.SetFocus
 End Sub
 
 '-----------------------------------------------------------------CARREAGMENTO DOS COMBOBBOX-----------------------------------
@@ -1617,7 +1896,7 @@ End Sub
 '-----------------------------------------------------------------CARREAGMENTO DAS LIST-----------------------------------
 '                                                                 ---------------------
 ' Carrega a lista
-Private Sub carregarList(ListBox As MSForms.ListBox, listaObjetos As Collection)
+Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collection)
    'Variaveis do metodo
     Dim objeto As objBloco
     Dim i As Integer
@@ -1633,20 +1912,22 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaObjetos As Collection)
     ' Tamanho das colunas da list
     ListBox.ColumnWidths = "185;250;52;52;52;52;90;75;75;74;"
     
-    'Verifica se tem algum dado a pesquisa
-    If listaObjetos.Count = -1 Or listaObjetos.Count = 0 Then ' Se não tiver dados
-        'Mensagem de retorno
-        errorStyle.SemDadosError SEM_DADOS_MENSAGEM, SEM_DADOS_TITULO
+    ' Verifica se tem algum dado a pesquisa
+    If listaCollection.Count = -1 Or listaCollection.Count = 0 Then ' Se não tiver dados
+        If paginaAnterior <> 1 Then ' Ativa mensagem se a pagina anterior não for a do menu
+            ' Mensagem de retorno
+            errorStyle.Informativo SEM_DADOS_MENSAGEM, SEM_DADOS_TITULO
+        End If
     Else
         ' Loop através dos itens da coleção
-        For i = 1 To listaObjetos.Count
+        For i = 1 To listaCollection.Count
             ' Seta o ojeto
-            Set objeto = listaObjetos(i)
+            Set objeto = listaCollection(i)
             
-            'Adiciona uma linha
+            ' Adiciona uma linha
             ListBox.AddItem
             
-            'Adiciona os dados do bloco
+            ' Adiciona os dados do bloco
             ListBox.list(ListBox.ListCount - 1, 0) = objeto.idSistema
             ListBox.list(ListBox.ListCount - 1, 1) = objeto.nomeMaterial
             ListBox.list(ListBox.ListCount - 1, 2) = _
@@ -1673,6 +1954,8 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaObjetos As Collection)
         ' Total de chapas
         lQtdChapas.Caption = qtdChapas
     End If
+    ' Libera espaço da memoria
+    Set listaObjeto = Nothing
 End Sub
 ' Carrega a lista ListTamanhosChapas tela edicao chapa
 Private Sub carregarListTamanhosChapas(lista As MSForms.ListBox) ' Irá receber id chapa para carregamento

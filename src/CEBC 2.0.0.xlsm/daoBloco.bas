@@ -143,6 +143,11 @@ Function pesquisarPorId(id As String) As objBloco
         rsBloco.MoveNext
     Wend
     
+    ' Criar lógica para quando não tiver o id cadastrado, para retorno na hora do cadastro
+    If bloco.idSistema = "" Then
+        bloco.idSistema = "bloco não cadastrado!"
+    End If
+    
     ' Libera recurso Recordset
     rsBloco.Close
     Set rsBloco = Nothing
