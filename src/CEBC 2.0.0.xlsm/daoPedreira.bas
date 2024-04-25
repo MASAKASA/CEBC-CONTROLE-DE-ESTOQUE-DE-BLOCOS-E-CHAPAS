@@ -33,16 +33,23 @@ Function pesquisarPorNome(nomePedreira As String) As objPedreira
         
     'Abrindo conexão com banco
     Call conctarBanco
+    ' Criando e abrindo Recordset para consulta
+    Set rs = ObjectFactory.factoryRsBloco(rs)
     ' Consulta banco
-    rs.Open strSql, BD, adOpenKeyset, adLockReadOnly
+    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
-    While Not rsBloco.EOF
+    While Not rs.EOF
         pedreira.id = rs.Fields("Id_Pedreira").Value
         pedreira.nome = rs.Fields("Nome_Pedreira").Value
+        
+        rs.MoveNext
     Wend
     
+    ' Libera espaço na memoria
+    Set rs = Nothing
     'Fechar conexão com banco
     Call fecharConexaoBanco
+    
     ' Retorno
     Set pesquisarPorNome = pedreira
     ' Libera espaço na memoria

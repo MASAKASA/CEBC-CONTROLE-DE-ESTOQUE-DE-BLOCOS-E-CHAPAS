@@ -33,18 +33,24 @@ Function pesquisarPorNome(nomeSerraria As String) As objSerraria
         
     'Abrindo conexão com banco
     Call conctarBanco
+    ' Criando e abrindo Recordset para consulta
+    Set rs = ObjectFactory.factoryRsBloco(rs)
     ' Consulta banco
-    rs.Open strSql, BD, adOpenKeyset, adLockReadOnly
+    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
     While Not rs.EOF
         serraria.id = rs.Fields("Id_Serraria").Value
         serraria.nome = rs.Fields("Nome_Serraria").Value
+        
+        rs.MoveNext
     Wend
     
+    ' Libera espaço na memoria
+    Set rs = Nothing
     'Fechar conexão com banco
     Call fecharConexaoBanco
     ' Retorno
-    Set pesquisarPorNome = polideira
+    Set pesquisarPorNome = serraria
     ' Libera espaço na memoria
     Set serraria = Nothing
 End Function

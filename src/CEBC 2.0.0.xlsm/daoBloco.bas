@@ -33,6 +33,7 @@ Function cadastrarEEditar(bloco As objBloco)
     Call conctarBanco
     
     ' Criando e abrindo Recordset para consulta
+    Set rsBloco = ObjectFactory.factoryRsAuxiliar(rsBloco)
     Set rsAuxiliar = ObjectFactory.factoryRsAuxiliar(rsAuxiliar)
     ' Abrindo Recordset para consulta
     rsAuxiliar.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
@@ -52,51 +53,12 @@ Function cadastrarEEditar(bloco As objBloco)
         ' Confere se tem uma serraria ou não
         If bloco.serraria.nome = "" Then ' Cadastro sem Serraria
             ' Realoca espaço da variavel
-            ReDim campos(1 To 21)
-            ' Colocando vingulas, Parenteses e  arpas simples os valores
-            campos(1) = "('" & bloco.idSistema & "', "
-            campos(2) = "'" & bloco.nomeMaterial & "', "
-            campos(3) = "'" & bloco.valoresAdicionais & "', "
-            campos(4) = "'" & bloco.valorTotalBloco & "', "
-            campos(5) = "'" & bloco.precoM3Bloco & "', "
-            campos(6) = "'" & bloco.qtdM3 & "', "
-            campos(7) = "'" & bloco.numeroBlocoPedreira & "', "
-            campos(8) = "'" & bloco.largLiquidoBloco & "', "
-            campos(9) = "'" & bloco.altLiquidoBloco & "', "
-            campos(10) = "'" & bloco.compLiquidoBloco & "', "
-            campos(11) = "'" & bloco.dataCadastro & "', "
-            campos(12) = "'" & bloco.observacao & "', "
-            campos(13) = bloco.tipoMaterial.id & ", "
-            campos(14) = "'" & bloco.freteBloco & ", "
-            campos(15) = bloco.estoque.id & ", "
-            campos(16) = bloco.pedreira.id & ", "
-            campos(17) = bloco.status.id & ", "
-            campos(18) = "'" & bloco.compBrutoBloco & ", "
-            campos(19) = "'" & bloco.altBrutoBloco & ", "
-            campos(20) = "'" & bloco.largBrutoBloco & ", "
-            campos(21) = "'" & bloco.nota & "');"
-            
-            'Concatenando os valores
-            For i = 1 To 21
-                valoresCamposBloco = valoresCamposBloco & campos(i)
-            Next i
-
-            'Concatenando comando SQL e cadastrando bloco no banco de dados
-            strSql = "INSERT INTO Blocos ( Id_Bloco, Descricao, Valores_Adicionais, Preço_Bloco, valor_M3, " _
-                & "Quantidade_M3, Id_bloco_Pedreira, Larg_Liquida_Bloco, Alt_Liquida_Bloco, Comp_Liquida_Bloco, " _
-                & "Data_cadastro, Observacao, Fk_Tipo_Material, Valor_Frete, Fk_Estoque, Fk_Pedreira, Fk_Status, " _
-                & "Comp_Bruto_Bloco, Alt_Bruto_Bloco, Bloco, Tem_Nota ) VALUES " & valoresCamposBloco
-            
-            rsBloco.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
-            
-        Else ' Cadastro sem Serraria
-            ' Realoca espaço da variavel
             ReDim campos(1 To 22)
             ' Colocando vingulas, Parenteses e  arpas simples os valores
             campos(1) = "('" & bloco.idSistema & "', "
             campos(2) = "'" & bloco.nomeMaterial & "', "
             campos(3) = "'" & bloco.valoresAdicionais & "', "
-            campos(4) = "'" & bloco.valorTotalBloco & "', "
+            campos(4) = "'" & bloco.valorBloco & "', "
             campos(5) = "'" & bloco.precoM3Bloco & "', "
             campos(6) = "'" & bloco.qtdM3 & "', "
             campos(7) = "'" & bloco.numeroBlocoPedreira & "', "
@@ -106,18 +68,18 @@ Function cadastrarEEditar(bloco As objBloco)
             campos(11) = "'" & bloco.dataCadastro & "', "
             campos(12) = "'" & bloco.observacao & "', "
             campos(13) = bloco.tipoMaterial.id & ", "
-            campos(14) = "'" & bloco.freteBloco & ", "
+            campos(14) = "'" & bloco.freteBloco & "', "
             campos(15) = bloco.estoque.id & ", "
             campos(16) = bloco.pedreira.id & ", "
             campos(17) = bloco.status.id & ", "
-            campos(18) = bloco.serraria.id & ", "
-            campos(19) = "'" & bloco.compBrutoBloco & ", "
-            campos(20) = "'" & bloco.altBrutoBloco & ", "
-            campos(21) = "'" & bloco.largBrutoBloco & ", "
-            campos(22) = "'" & bloco.nota & "');"
+            campos(18) = "'" & bloco.compBrutoBloco & "', "
+            campos(19) = "'" & bloco.altBrutoBloco & "', "
+            campos(20) = "'" & bloco.largBrutoBloco & "', "
+            campos(21) = "'" & bloco.nota & "', "
+            campos(22) = "'" & bloco.consultarCustoMedio & "');"
             
             'Concatenando os valores
-            For i = 1 To 21
+            For i = 1 To 22
                 valoresCamposBloco = valoresCamposBloco & campos(i)
             Next i
 
@@ -125,7 +87,48 @@ Function cadastrarEEditar(bloco As objBloco)
             strSql = "INSERT INTO Blocos ( Id_Bloco, Descricao, Valores_Adicionais, Preço_Bloco, valor_M3, " _
                 & "Quantidade_M3, Id_bloco_Pedreira, Larg_Liquida_Bloco, Alt_Liquida_Bloco, Comp_Liquida_Bloco, " _
                 & "Data_cadastro, Observacao, Fk_Tipo_Material, Valor_Frete, Fk_Estoque, Fk_Pedreira, Fk_Status, " _
-                & "Fk_Serraria, Comp_Bruto_Bloco, Alt_Bruto_Bloco, Bloco, Tem_Nota ) VALUES " & valoresCamposBloco
+                & "Comp_Bruto_Bloco, Alt_Bruto_Bloco, Larg_Bruto_Bloco, Tem_Nota, Custo_Medio ) VALUES " & valoresCamposBloco
+            
+            rsBloco.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
+            
+        Else ' Cadastro com Serraria
+            ' Realoca espaço da variavel
+            ReDim campos(1 To 23)
+            ' Colocando vingulas, Parenteses e  arpas simples os valores
+            campos(1) = "('" & bloco.idSistema & "', "
+            campos(2) = "'" & bloco.nomeMaterial & "', "
+            campos(3) = "'" & bloco.valoresAdicionais & "', "
+            campos(4) = "'" & bloco.valorBloco & "', "
+            campos(5) = "'" & bloco.precoM3Bloco & "', "
+            campos(6) = "'" & bloco.qtdM3 & "', "
+            campos(7) = "'" & bloco.numeroBlocoPedreira & "', "
+            campos(8) = "'" & bloco.largLiquidoBloco & "', "
+            campos(9) = "'" & bloco.altLiquidoBloco & "', "
+            campos(10) = "'" & bloco.compLiquidoBloco & "', "
+            campos(11) = "'" & bloco.dataCadastro & "', "
+            campos(12) = "'" & bloco.observacao & "', "
+            campos(13) = bloco.tipoMaterial.id & ", "
+            campos(14) = "'" & bloco.freteBloco & "', "
+            campos(15) = bloco.estoque.id & ", "
+            campos(16) = bloco.pedreira.id & ", "
+            campos(17) = bloco.status.id & ", "
+            campos(18) = bloco.serraria.id & ", "
+            campos(19) = "'" & bloco.compBrutoBloco & "', "
+            campos(20) = "'" & bloco.altBrutoBloco & "', "
+            campos(21) = "'" & bloco.largBrutoBloco & "', "
+            campos(22) = "'" & bloco.nota & "', "
+            campos(23) = "'" & bloco.consultarCustoMedio & "');"
+            
+            'Concatenando os valores
+            For i = 1 To 23
+                valoresCamposBloco = valoresCamposBloco & campos(i)
+            Next i
+
+            'Concatenando comando SQL e cadastrando bloco no banco de dados
+            strSql = "INSERT INTO Blocos ( Id_Bloco, Descricao, Valores_Adicionais, Preço_Bloco, valor_M3, " _
+                & "Quantidade_M3, Id_bloco_Pedreira, Larg_Liquida_Bloco, Alt_Liquida_Bloco, Comp_Liquida_Bloco, " _
+                & "Data_cadastro, Observacao, Fk_Tipo_Material, Valor_Frete, Fk_Estoque, Fk_Pedreira, Fk_Status, " _
+                & "Fk_Serraria, Comp_Bruto_Bloco, Alt_Bruto_Bloco, Larg_Bruto_Bloco, Tem_Nota , Custo_Medio) VALUES " & valoresCamposBloco
             
             rsBloco.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
         End If
@@ -233,8 +236,6 @@ Function cadastrarEEditar(bloco As objBloco)
         End If
     End If
     
-    ' Libera recurso Recordset
-    rsBloco.Close
     Set rsBloco = Nothing
     'Fechando conexão com banco
     Call fecharConexaoBanco
@@ -318,30 +319,28 @@ Function pesquisarPorId(id As String) As objBloco
         bloco.setPedreira retornarObjeto(pedreira, sqlSelectPesquisarPorId, "Id_Pedreira", "Nome_Pedreira")
         
         ' fk para consulta
+        ' Só pesquisa se existir objeto
+        If IsNull(rsBloco.Fields("Fk_Serraria").Value) Then
+            ' Seta objeto sem dados
+            bloco.setSerraria ObjectFactory.factorySerraria(serraria)
+        Else
             fkObject = rsBloco.Fields("Fk_Serraria").Value
-            ' Só pesquisa se existir objeto
-            If Not fkObject Then
-                ' String para consulta
-                sqlSelectPesquisarPorId = "SELECT * FROM Serrarias WHERE Id_Serraria = " & fkObject & ";"
-                ' Setando Objeto
-                bloco.setSerraria retornarObjeto(serraria, sqlSelectPesquisarPorId, "Id_Serraria", "Nome_Serraria")
-            Else
-                ' Seta objeto sem dados
-                bloco.setSerraria ObjectFactory.factorySerraria(serraria)
-            End If
-            
-            ' fk para consulta
-            fkObject = rsBloco.Fields("Fk_Polideira").Value
-            ' Só pesquisa se existir objeto
-            If Not fkObject Then
-                ' String para consulta
-                sqlSelectPesquisarPorId = "SELECT * FROM Polideiras WHERE Id_Polidoria = " & fkObject & ";"
-                ' Setando Objeto
-                bloco.setPolideira retornarObjeto(polideira, sqlSelectPesquisarPorId, "Id_Polidoria", "Nome_Polidoria")
-            Else
-                ' Seta objeto sem dados
-                bloco.setPolideira ObjectFactory.factoryPolideira(polideira)
-            End If
+            ' String para consulta
+            sqlSelectPesquisarPorId = "SELECT * FROM Serrarias WHERE Id_Serraria = " & fkObject & ";"
+            ' Setando Objeto
+            bloco.setSerraria retornarObjeto(serraria, sqlSelectPesquisarPorId, "Id_Serraria", "Nome_Serraria")
+        End If
+        
+        ' fk para consulta
+        If IsNull(rsBloco.Fields("Fk_Polideira").Value) Then
+            ' Seta objeto sem dados
+            bloco.setPolideira ObjectFactory.factoryPolideira(polideira)
+        Else
+            ' String para consulta
+            sqlSelectPesquisarPorId = "SELECT * FROM Polideiras WHERE Id_Polidoria = " & fkObject & ";"
+            ' Setando Objeto
+            bloco.setPolideira retornarObjeto(polideira, sqlSelectPesquisarPorId, "Id_Polidoria", "Nome_Polidoria")
+        End If
         
         ' fk para consulta
         fkObject = rsBloco.Fields("Fk_Status").Value
@@ -366,11 +365,6 @@ Function pesquisarPorId(id As String) As objBloco
         
         rsBloco.MoveNext
     Wend
-    
-    ' Criar lógica para quando não tiver o id cadastrado, para retorno na hora do cadastro
-    If bloco.idSistema = "" Then
-        bloco.idSistema = "bloco não cadastrado!"
-    End If
     
     ' Libera recurso Recordset
     rsBloco.Close
@@ -475,29 +469,27 @@ Function pesquisarPorIdsVariados(idsParaPesquisa As Collection) As Collection
             bloco.setPedreira retornarObjeto(pedreira, sqlSelectPesquisarPorId, "Id_Pedreira", "Nome_Pedreira")
             
             ' fk para consulta
-            fkObject = rsBloco.Fields("Fk_Serraria").Value
             ' Só pesquisa se existir objeto
-            If Not fkObject Then
+            If IsNull(rsBloco.Fields("Fk_Serraria").Value) Then
+                ' Seta objeto sem dados
+                bloco.setSerraria ObjectFactory.factorySerraria(serraria)
+            Else
+                fkObject = rsBloco.Fields("Fk_Serraria").Value
                 ' String para consulta
                 sqlSelectPesquisarPorId = "SELECT * FROM Serrarias WHERE Id_Serraria = " & fkObject & ";"
                 ' Setando Objeto
                 bloco.setSerraria retornarObjeto(serraria, sqlSelectPesquisarPorId, "Id_Serraria", "Nome_Serraria")
-            Else
-                ' Seta objeto sem dados
-                bloco.setSerraria ObjectFactory.factorySerraria(serraria)
             End If
             
             ' fk para consulta
-            fkObject = rsBloco.Fields("Fk_Polideira").Value
-            ' Só pesquisa se existir objeto
-            If Not fkObject Then
+            If IsNull(rsBloco.Fields("Fk_Polideira").Value) Then
+                ' Seta objeto sem dados
+                bloco.setPolideira ObjectFactory.factoryPolideira(polideira)
+            Else
                 ' String para consulta
                 sqlSelectPesquisarPorId = "SELECT * FROM Polideiras WHERE Id_Polidoria = " & fkObject & ";"
                 ' Setando Objeto
                 bloco.setPolideira retornarObjeto(polideira, sqlSelectPesquisarPorId, "Id_Polidoria", "Nome_Polidoria")
-            Else
-                ' Seta objeto sem dados
-                bloco.setPolideira ObjectFactory.factoryPolideira(polideira)
             End If
             
             ' fk para consulta
@@ -783,29 +775,27 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
             bloco.setPedreira retornarObjeto(pedreira, sqlSelectPesquisarPorId, "Id_Pedreira", "Nome_Pedreira")
             
             ' fk para consulta
-            fkObject = rsBloco.Fields("Fk_Serraria").Value
             ' Só pesquisa se existir objeto
-            If Not fkObject Then
+            If IsNull(rsBloco.Fields("Fk_Serraria").Value) Then
+                ' Seta objeto sem dados
+                bloco.setSerraria ObjectFactory.factorySerraria(serraria)
+            Else
+                fkObject = rsBloco.Fields("Fk_Serraria").Value
                 ' String para consulta
                 sqlSelectPesquisarPorId = "SELECT * FROM Serrarias WHERE Id_Serraria = " & fkObject & ";"
                 ' Setando Objeto
                 bloco.setSerraria retornarObjeto(serraria, sqlSelectPesquisarPorId, "Id_Serraria", "Nome_Serraria")
-            Else
-                ' Seta objeto sem dados
-                bloco.setSerraria ObjectFactory.factorySerraria(serraria)
             End If
             
             ' fk para consulta
-            fkObject = rsBloco.Fields("Fk_Polideira").Value
-            ' Só pesquisa se existir objeto
-            If Not fkObject Then
+            If IsNull(rsBloco.Fields("Fk_Polideira").Value) Then
+                ' Seta objeto sem dados
+                bloco.setPolideira ObjectFactory.factoryPolideira(polideira)
+            Else
                 ' String para consulta
                 sqlSelectPesquisarPorId = "SELECT * FROM Polideiras WHERE Id_Polidoria = " & fkObject & ";"
                 ' Setando Objeto
                 bloco.setPolideira retornarObjeto(polideira, sqlSelectPesquisarPorId, "Id_Polidoria", "Nome_Polidoria")
-            Else
-                ' Seta objeto sem dados
-                bloco.setPolideira ObjectFactory.factoryPolideira(polideira)
             End If
             
             ' fk para consulta

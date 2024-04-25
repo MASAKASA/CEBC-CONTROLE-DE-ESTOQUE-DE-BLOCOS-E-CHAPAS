@@ -66,7 +66,7 @@ Private Sub UserForm_Initialize()
     
     ' Atribuições da variaveis
     status(1) = "PEDREIRA"
-    status(2) = "SERRADA"
+    status(2) = "SERRARIA"
     status(3) = "ESTOQUE"
     status(4) = "FECHADO"
     status(5) = "CHAPAS BRUTAS"
@@ -839,7 +839,7 @@ Private Sub btnLTxtCadastrarBloco_MouseDown(ByVal Button As Integer, ByVal Shift
                                     txtCompBrutoBloco.Value, txtAlturaBlocoBruto.Value, txtLarguraBlocoBruto.Value, _
                                     txtComprimentoBloco.Value, txtAlturaBloco.Value, txtLarguraBloco.Value, estoque, _
                                     txtAdicionais.Value, txtValorFreteBloco.Value, txtValorM3.Value, txtTotalM3.Value, _
-                                    txtValorTotalBloco.Value
+                                    txtValorTotalBloco.Value, "NÃO"
         
         ' Chama serviço para cadastrar do bloco
         Call daoBloco.cadastrarEEditar(bloco)

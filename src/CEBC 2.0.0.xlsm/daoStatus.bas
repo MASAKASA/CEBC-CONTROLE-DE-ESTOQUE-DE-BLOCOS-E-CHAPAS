@@ -33,16 +33,23 @@ Function pesquisarPorNome(nomeStatus As String) As objStatus
         
     'Abrindo conexão com banco
     Call conctarBanco
+    ' Criando e abrindo Recordset para consulta
+    Set rs = ObjectFactory.factoryRsBloco(rs)
     ' Consulta banco
-    rs.Open strSql, BD, adOpenKeyset, adLockReadOnly
+    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
     While Not rs.EOF
         status.id = rs.Fields("Id_Status").Value
         status.nome = rs.Fields("Nome_Status").Value
+        
+        rs.MoveNext
     Wend
     
+    ' Libera espaço na memoria
+    Set rs = Nothing
     'Fechar conexão com banco
     Call fecharConexaoBanco
+    
     ' Retorno
     Set pesquisarPorNome = status
     ' Libera espaço na memoria

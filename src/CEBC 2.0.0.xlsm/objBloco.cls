@@ -55,7 +55,8 @@ Public Sub carregarBlocoCadastro(dataCadastro As String, idSistema As String, pe
                         numeroBlocoPedreira As String, nomeMaterial As String, tipoMaterial As objTipoMaterial, nota As String, _
                         status As objStatus, observacao As String, compBrutoBloco As String, altBrutoBloco As String, largBrutoBloco As String, _
                         compLiquidoBloco As String, altLiquidoBloco As String, largLiquidoBloco As String, estoque As objEstoque, _
-                        valoresAdicionais As String, freteBloco As String, precoM3Bloco As String, qtdM3 As String, valorBloco As String)
+                        valoresAdicionais As String, freteBloco As String, precoM3Bloco As String, qtdM3 As String, valorBloco As String, _
+                        consultarCustoMedio As String)
     ' Atribuições
     Me.dataCadastro = dataCadastro
     Me.idSistema = idSistema
@@ -79,6 +80,7 @@ Public Sub carregarBlocoCadastro(dataCadastro As String, idSistema As String, pe
     Me.precoM3Bloco = precoM3Bloco
     Me.qtdM3 = qtdM3
     Me.valorBloco = valorBloco
+    Me.consultarCustoMedio = consultarCustoMedio
 End Sub
 
 ' Construtor para manipulação

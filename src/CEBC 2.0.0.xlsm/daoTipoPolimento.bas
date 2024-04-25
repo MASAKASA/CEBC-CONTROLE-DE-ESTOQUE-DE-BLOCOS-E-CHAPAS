@@ -33,16 +33,23 @@ Function pesquisarPorNome(nomeTipoPolimento As String) As objTipoPolimento
         
     'Abrindo conexão com banco
     Call conctarBanco
+    ' Criando e abrindo Recordset para consulta
+    Set rs = ObjectFactory.factoryRsBloco(rs)
     ' Consulta banco
-    rs.Open strSql, BD, adOpenKeyset, adLockReadOnly
+    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
     While Not rs.EOF
         tipoPolimento.id = rs.Fields("Id_Polimento").Value
         tipoPolimento.nome = rs.Fields("Id_Polimento").Value
+        
+        rs.MoveNext
     Wend
     
+    ' Libera espaço na memoria
+    Set rs = Nothing
     'Fechar conexão com banco
     Call fecharConexaoBanco
+    
     ' Retorno
     Set pesquisarPorNome = tipoPolimento
     ' Libera espaço na memoria

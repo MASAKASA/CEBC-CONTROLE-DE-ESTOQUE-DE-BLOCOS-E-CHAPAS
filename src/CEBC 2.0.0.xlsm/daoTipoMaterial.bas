@@ -33,14 +33,20 @@ Function pesquisarPorNome(nomeTipoMaterial As String) As objTipoMaterial
         
     'Abrindo conexão com banco
     Call conctarBanco
+    ' Criando e abrindo Recordset para consulta
+    Set rs = ObjectFactory.factoryRsBloco(rs)
     ' Consulta banco
-    rs.Open strSql, BD, adOpenKeyset, adLockReadOnly
+    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
     While Not rs.EOF
         tipoMaterial.id = rs.Fields("Id_Tipo_Material").Value
         tipoMaterial.nome = rs.Fields("Nome_Tipo_Material").Value
+        
+        rs.MoveNext
     Wend
     
+    ' Libera espaço na memoria
+    Set rs = Nothing
     'Fechar conexão com banco
     Call fecharConexaoBanco
     ' Retorno
