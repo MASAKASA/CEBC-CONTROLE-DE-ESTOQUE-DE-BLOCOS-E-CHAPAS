@@ -139,7 +139,7 @@ Function pesquisarPorNome(nomeTipoPolimento As String) As objTipoPolimento
     
     While Not rs.EOF
         tipoPolimento.id = rs.Fields("Id_Polimento").Value
-        tipoPolimento.nome = rs.Fields("Id_Polimento").Value
+        tipoPolimento.nome = rs.Fields("Nome_Polimento").Value
         
         rs.MoveNext
     Wend
@@ -159,7 +159,7 @@ End Function
 Function listarTipoPolideiras() As Collection
     ' String para consultas
     Dim strSql As String ' String para consultas
-    Dim rsBloco As ADODB.Recordset ' Recordset para consulta principal
+    Dim rs As ADODB.Recordset ' Recordset para consulta principal
     
     ' String para consulta
     strSql = "SELECT * FROM Tipo_Polimento ORDER BY Nome_Polimento;"
@@ -170,16 +170,18 @@ Function listarTipoPolideiras() As Collection
     Set listaTiposPolimentos = ObjectFactory.factoryLista(listaTiposPolimentos)
     ' Criando e abrindo Recordset para consulta
     Set rs = ObjectFactory.factoryRsBloco(rs)
+    ' Consulta banco
+    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
     While Not rs.EOF
         ' Criação e atribuição do objeto
         Set tipoPolimento = ObjectFactory.factoryTipoPolimento(tipoPolimento)
         
         tipoPolimento.id = rs.Fields("Id_Polimento").Value
-        tipoPolimento.nome = rs.Fields("Id_Polimento").Value
+        tipoPolimento.nome = rs.Fields("Nome_Polimento").Value
         
         ' Adiciona na lista
-        listaPedreiras.Add pedreira
+        listaTiposPolimentos.Add tipoPolimento
         
         ' Libera espaço para nova pesquisa se ouver
         Set tipoPolimento = Nothing

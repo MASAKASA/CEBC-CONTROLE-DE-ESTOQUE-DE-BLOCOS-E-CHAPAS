@@ -159,7 +159,7 @@ End Function
 Function listarPedreiras() As Collection
     ' String para consultas
     Dim strSql As String ' String para consultas
-    Dim rsBloco As ADODB.Recordset ' Recordset para consulta principal
+    Dim rs As ADODB.Recordset ' Recordset para consulta principal
     
     ' String para consulta
     strSql = "SELECT * FROM Pedreiras ORDER BY Nome_Pedreira;"
@@ -170,6 +170,8 @@ Function listarPedreiras() As Collection
     Set listaPedreiras = ObjectFactory.factoryLista(listaPedreiras)
     ' Criando e abrindo Recordset para consulta
     Set rs = ObjectFactory.factoryRsBloco(rs)
+    ' Consulta banco
+    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
     While Not rs.EOF
         ' Criação e atribuição do objeto

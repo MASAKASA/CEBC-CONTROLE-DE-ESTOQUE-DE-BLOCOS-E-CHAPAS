@@ -170,6 +170,8 @@ Function listarMotoristas() As Collection
     Set listaMotoristas = ObjectFactory.factoryLista(listaMotoristas)
     ' Criando e abrindo Recordset para consulta
     Set rs = ObjectFactory.factoryRsBloco(rs)
+    ' Consulta banco
+    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
     While Not rs.EOF
         ' Criação e atribuição do objeto

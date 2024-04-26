@@ -169,6 +169,8 @@ Function listarDestinos() As Collection
     Set listaDestinos = ObjectFactory.factoryLista(listaDestinos)
     ' Criando e abrindo Recordset para consulta
     Set rs = ObjectFactory.factoryRsBloco(rs)
+    ' Consulta banco
+    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
     While Not rs.EOF
         ' Criação e atribuição do objeto

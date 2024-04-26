@@ -127,7 +127,7 @@ Function pesquisarPorNome(nomePolideira As String) As objPolideira
     Set polideira = ObjectFactory.factoryPolideira(polideira)
     
     ' String para consulta
-    strSql = "SELECT * FROM Polidorias" _
+    strSql = "SELECT * FROM Polideiras" _
         & " WHERE Nome_Polidoria = '" & nomePolideira & "';"
         
     'Abrindo conexão com banco
@@ -159,7 +159,7 @@ End Function
 Function listarPolideiras() As Collection
     ' String para consultas
     Dim strSql As String ' String para consultas
-    Dim rsBloco As ADODB.Recordset ' Recordset para consulta principal
+    Dim rs As ADODB.Recordset ' Recordset para consulta principal
     
     ' String para consulta
     strSql = "SELECT * FROM Polideiras ORDER BY Nome_Polidoria;"
@@ -170,6 +170,8 @@ Function listarPolideiras() As Collection
     Set listaPolideiras = ObjectFactory.factoryLista(listaPolideiras)
     ' Criando e abrindo Recordset para consulta
     Set rs = ObjectFactory.factoryRsBloco(rs)
+    ' Consulta banco
+    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
     While Not rs.EOF
         ' Criação e atribuição do objeto

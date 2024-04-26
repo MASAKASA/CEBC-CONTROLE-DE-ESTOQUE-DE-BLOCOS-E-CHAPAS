@@ -158,7 +158,7 @@ End Function
 Function listarSerrarias() As Collection
     ' String para consultas
     Dim strSql As String ' String para consultas
-    Dim rsBloco As ADODB.Recordset ' Recordset para consulta principal
+    Dim rs As ADODB.Recordset ' Recordset para consulta principal
     
     ' String para consulta
     strSql = "SELECT * FROM Serrarias ORDER BY Nome_Serraria;"
@@ -169,13 +169,15 @@ Function listarSerrarias() As Collection
     Set listaSerrarias = ObjectFactory.factoryLista(listaSerrarias)
     ' Criando e abrindo Recordset para consulta
     Set rs = ObjectFactory.factoryRsBloco(rs)
+    ' Consulta banco
+    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
     While Not rs.EOF
         ' Criação e atribuição do objeto
         Set serraria = ObjectFactory.factorySerraria(serraria)
         
-        serraria.id = rs.Fields("Id_Pedreira").Value
-        serraria.nome = rs.Fields("Nome_Pedreira").Value
+        serraria.id = rs.Fields("Id_Serraria").Value
+        serraria.nome = rs.Fields("Nome_Serraria").Value
         
         ' Adiciona na lista
         listaSerrarias.Add serraria

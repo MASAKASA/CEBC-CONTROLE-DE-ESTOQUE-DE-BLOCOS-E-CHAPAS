@@ -158,7 +158,7 @@ End Function
 Function listarTiposMateriais() As Collection
     ' String para consultas
     Dim strSql As String ' String para consultas
-    Dim rsBloco As ADODB.Recordset ' Recordset para consulta principal
+    Dim rs As ADODB.Recordset ' Recordset para consulta principal
     
     ' String para consulta
     strSql = "SELECT * FROM Tipo_Material ORDER BY Nome_Tipo_Material;"
@@ -169,6 +169,8 @@ Function listarTiposMateriais() As Collection
     Set listaTipoMaterial = ObjectFactory.factoryLista(listaTipoMaterial)
     ' Criando e abrindo Recordset para consulta
     Set rs = ObjectFactory.factoryRsBloco(rs)
+    ' Consulta banco
+    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
     While Not rs.EOF
         ' Criação e atribuição do objeto

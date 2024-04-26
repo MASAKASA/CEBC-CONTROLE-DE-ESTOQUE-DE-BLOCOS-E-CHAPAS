@@ -203,7 +203,7 @@ Function cadastrarEEditar(bloco As objBloco)
                 & "Valor_Polimento = '" & bloco.valorTotalPolimento & "', Custo_Material = '" & bloco.custoMaterial & "', " _
                 & "Custo_Total = '" & bloco.valorTotalBloco & "', Fk_Tipo_Material = '" & bloco.tipoMaterial.id & "', " _
                 & "Fk_Pedreira = '" & bloco.pedreira.id & "', Fk_Estoque = '" & bloco.estoque.id & "', " _
-                & "', Fk_Serraria = '" & bloco.serraria.id & "', " _
+                & "', Fk_Polideira = '" & bloco.polideira.id & "', " _
                 & "Fk_Status = '" & bloco.status.id & "' WHERE Id_Bloco = '" & bloco.idSistema & "';"
                 
             rsBloco.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
@@ -228,7 +228,7 @@ Function cadastrarEEditar(bloco As objBloco)
                 & "Valor_Polimento = '" & bloco.valorTotalPolimento & "', Custo_Material = '" & bloco.custoMaterial & "', " _
                 & "Custo_Total = '" & bloco.valorTotalBloco & "', Fk_Tipo_Material = '" & bloco.tipoMaterial.id & "', " _
                 & "Fk_Pedreira = '" & bloco.pedreira.id & "', Fk_Estoque = '" & bloco.estoque.id & "', " _
-                & "Fk_Polideira = '" & bloco.polideira.id & "'," _
+                & "Fk_Serraria = '" & bloco.serraria.id & "'," _
                 & "Fk_Status = '" & bloco.status.id & "' WHERE Id_Bloco = '" & bloco.idSistema & "';"
                 
             rsBloco.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
@@ -335,6 +335,7 @@ Function pesquisarPorId(id As String) As objBloco
             ' Seta objeto sem dados
             bloco.setPolideira ObjectFactory.factoryPolideira(polideira)
         Else
+            fkObject = rsBloco.Fields("Fk_Polideira").Value
             ' String para consulta
             sqlSelectPesquisarPorId = "SELECT * FROM Polideiras WHERE Id_Polidoria = " & fkObject & ";"
             ' Setando Objeto
@@ -485,6 +486,7 @@ Function pesquisarPorIdsVariados(idsParaPesquisa As Collection) As Collection
                 ' Seta objeto sem dados
                 bloco.setPolideira ObjectFactory.factoryPolideira(polideira)
             Else
+                fkObject = rsBloco.Fields("Fk_Polideira").Value
                 ' String para consulta
                 sqlSelectPesquisarPorId = "SELECT * FROM Polideiras WHERE Id_Polidoria = " & fkObject & ";"
                 ' Setando Objeto
@@ -791,6 +793,7 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
                 ' Seta objeto sem dados
                 bloco.setPolideira ObjectFactory.factoryPolideira(polideira)
             Else
+                fkObject = rsBloco.Fields("Fk_Polideira").Value
                 ' String para consulta
                 sqlSelectPesquisarPorId = "SELECT * FROM Polideiras WHERE Id_Polidoria = " & fkObject & ";"
                 ' Setando Objeto

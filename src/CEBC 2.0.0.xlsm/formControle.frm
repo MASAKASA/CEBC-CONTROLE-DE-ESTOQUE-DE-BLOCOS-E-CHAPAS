@@ -36,6 +36,7 @@ Dim pedreira As objPedreira
 Dim polideira As objPolideira
 Dim serraria As objSerraria
 Dim tipoMaterial As objTipoMaterial
+Dim tipoPolimento As objTipoPolimento
 Dim statusObj As objStatus
 Dim estoque As objEstoque
 
@@ -130,18 +131,17 @@ Private Sub btnLMenuHome_MouseDown(ByVal Button As Integer, ByVal Shift As Integ
 End Sub
 ' Efeito para clique nas label btnLMenuBloco do menu
 Private Sub btnLMenuBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    
-    ' Carregar os comboBox da tela
-    Call carregarPedreiras(Me.cbPedreiraBlocoPesquisa)
-    Call carregarSerrarias(Me.cbSerrariaBlocoPesquisa)
-    Call carregarTemNota(Me.cbTemNota)
-    
     ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 1
     ' Seta pagina anterior
     paginaAnterior = 0
     ' Seta o foco
     txtMaterialBlocoPesquisa.SetFocus
+    
+    ' Carregar os comboBox da tela
+    Call carregarPedreiras(Me.cbPedreiraBlocoPesquisa)
+    Call carregarSerrarias(Me.cbSerrariaBlocoPesquisa)
+    Call carregarTemNota(Me.cbTemNota)
 End Sub
 ' Efeito para clique nas label btnLMenuChapa do menu
 Private Sub btnLMenuChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -491,7 +491,7 @@ Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As
     txtMaterialEditar.SetFocus
     
     ' Chama serviço para pesquisa do bloco
-    Set bloco = daoBloco.pesquisarPorId(Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Envia o id do bloco
+    Set bloco = daoBloco.pesquisarPorId(Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Envia o id do bloco
     
     ' Carregar os comboBox da tela
     Call carregarTiposMateriais(Me.cbTipoMaterialEditar)
@@ -500,6 +500,7 @@ Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As
     Call carregarPolideiras(Me.cbPolideiraEditar)
     Call carregarEstoque(Me.cbEstoqueEditar)
     Call carregarTemNota(Me.cbNotaBlocoEditar)
+    Call carregarStatus(Me.cbStatusBlocoEditar)
     Call carregarCustoMedio(Me.cbCustoMedioEditar)
     
     ' Carrega os dados na tela editar bloco
@@ -507,6 +508,13 @@ Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As
 End Sub
 ' Botão btnLTxtADDEstoque tela estoque m³
 Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    
+        ' Verifica se tem algum item selecionado
+    If Me.ListEstoqueM3.ListIndex = -1 Then
+        ' Mensagem usuário
+        errorStyle.Informativo SELECIONE_TEM_MENSAGEM, SELECIONE_TEM_TITULO
+        Exit Sub
+    End If
     
     ' Botão chapa
     formControle.Controls("btnLMenuChapa").BackColor = RGB(200, 230, 255)
@@ -522,12 +530,39 @@ Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As 
     formControle.Controls("btnLMenuBloco").Width = 189
     formControle.Controls("btnLMenuBloco").TextAlign = fmTextAlignLeft
     
-    'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 6
+    ' Muda abra da multPage para tela editar bloco
+    Me.MultiPageCEBC.Value = 3
     ' Seta número de pagina para poder voltar
     paginaAnterior = 1
     ' Seta o foco
     cbPolideiraChapa.SetFocus
+    
+    ' Chama serviço para pesquisa do bloco
+    Set bloco = daoBloco.pesquisarPorId(Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Envia o id do bloco
+    
+    ' Carregar os comboBox da tela
+    Call carregarTiposMateriais(Me.cbTipoMaterialEditar)
+    Call carregarPedreiras(Me.cbPedreiraEditar)
+    Call carregarSerrarias(Me.cbSerrariaEditar)
+    Call carregarPolideiras(Me.cbPolideiraEditar)
+    Call carregarEstoque(Me.cbEstoqueEditar)
+    Call carregarTemNota(Me.cbNotaBlocoEditar)
+    Call carregarCustoMedio(Me.cbCustoMedioEditar)
+    
+    ' Carrega os dados na tela editar bloco
+    Call carregarDadosBlocoTelaEdicaoBloco(bloco)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 End Sub
 
 '-----------------------------------------------------------------TELA CADASTRO DE BLOCOS-----------------------------------
@@ -839,6 +874,85 @@ End Sub
 
 '-----------------------------------------------------------------TELA EDITAR BLOCO-----------------------------------
 '                                                                 -----------------
+' txtNBlocoPedreiraEditar tela editar bloco
+Private Sub txtNBlocoPedreiraEditar_Change()
+    ' Coloca tudo em caixa alta
+    txtNBlocoPedreiraEditar.Value = UCase(txtNBlocoPedreiraEditar.Value)
+End Sub
+
+' txtMaterialEditar tela editar bloco
+Private Sub txtMaterialEditar_Change()
+    ' Coloca tudo em caixa alta
+    txtMaterialEditar.Value = UCase(txtMaterialEditar.Value)
+End Sub
+
+' txtDataCadastroEditar tela editar bloco
+Private Sub txtDataCadastroEditar_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+    ' Deixa só a digitação de numero
+    If KeyAscii < 48 Or KeyAscii > 57 Then
+        KeyAscii = 0
+    End If
+    
+    ' Coloca as barras para formatação
+    If Len(txtDataCadastroEditar.Value) = 2 Or Len(txtDataCadastroEditar.Value) = 5 Then
+    
+        txtDataCadastroEditar.Value = txtDataCadastroEditar.Value & "/"
+    End If
+End Sub
+
+' txtQtdM3blocoEditar tela editar bloco
+Private Sub txtQtdM3blocoEditar_Change()
+    ' Define o resultado no TextBox
+    txtQtdM3blocoEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtQtdM3blocoEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtQtdM3blocoEditar.SelStart = Len(txtQtdM3blocoEditar.Value)
+End Sub
+
+' txtCompBrutaBlocoEditar tela editar bloco
+Private Sub txtCompBrutaBlocoEditar_Change()
+    ' Define o resultado no TextBox
+    txtCompBrutaBlocoEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtCompBrutaBlocoEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtCompBrutaBlocoEditar.SelStart = Len(txtCompBrutaBlocoEditar.Value)
+End Sub
+
+' txtAltBrutaBlocoEditar tela editar bloco
+Private Sub txtAltBrutaBlocoEditar_Change()
+    ' Define o resultado no TextBox
+    txtAltBrutaBlocoEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtAltBrutaBlocoEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtAltBrutaBlocoEditar.SelStart = Len(txtAltBrutaBlocoEditar.Value)
+End Sub
+
+' txtLArgBrutaBlocoEditar tela editar bloco
+Private Sub txtLArgBrutaBlocoEditar_Change()
+    ' Define o resultado no TextBox
+    txtLArgBrutaBlocoEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtLArgBrutaBlocoEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtLArgBrutaBlocoEditar.SelStart = Len(txtLArgBrutaBlocoEditar.Value)
+End Sub
+
+' txtCompLiquidoBlocoEditar tela editar bloco
+Private Sub txtCompLiquidoBlocoEditar_Change()
+    ' Define o resultado no TextBox
+    txtCompLiquidoBlocoEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtCompLiquidoBlocoEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtCompLiquidoBlocoEditar.SelStart = Len(txtCompLiquidoBlocoEditar.Value)
+    
+    ' Retorna valor calculado e formatado
+    txtQtdM3blocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularM3(txtCompLiquidoBlocoEditar.Value, _
+            txtAltLiquidoBlocoEditar.Value, txtLArgLiquidoBlocoEditar.Value), "0.0000"))
+
+    ' Retorna valor calculado e formatado
+    txtValoBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorBloco( _
+            txtPrecoBlocoEditar.Value, txtQtdM3blocoEditar.Value), "0.00"))
+End Sub
+
 ' Carrega os campos com os dados do bloco tela editar bloco
 Private Sub carregarDadosBlocoTelaEdicaoBloco(bloco As objBloco)
     ' Exibir o resultado da pesquisa
@@ -905,28 +1019,59 @@ Private Sub cbAbrirBlocoEditar_Click()
 End Sub
 ' Botão btnLTxtSalvarEdicaoBloco tela editar bloco
 Private Sub btnLTxtSalvarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    'Chama Serviço
-    MsgBox "Chama Serviço editar bloco, tela editar bloco"
-    ' Seta o foco
-    txtMaterialEditar.SetFocus
-    
     ' Verifica o Número do bloco na pedreira
-    If txtIdBloco.Value = "" Or txtIdBloco.Value = " " Then
+    If txtNBlocoPedreiraEditar.Value = "" Or txtNBlocoPedreiraEditar.Value = " " Then
         ' Deixa visivel o erro com mensagens
-        errorStyle.EntrarErrorStyleTextBox txtIdBloco, NUMERO_BLOCO_PEDREIRA_MENSAGEM, NUMERO_BLOCO_PEDREIRA_TITULO
+        errorStyle.EntrarErrorStyleTextBox txtNBlocoPedreiraEditar, NUMERO_BLOCO_PEDREIRA_MENSAGEM, NUMERO_BLOCO_PEDREIRA_TITULO
         ' Para o fluxo do sistema para a correção
         Exit Sub
     End If
     ' Deixa na cor patrão
-    errorStyle.sairErrorStyleTextBox txtIdBloco
+    errorStyle.sairErrorStyleTextBox txtNBlocoPedreiraEditar
     
     ' Verifica nome do bloco
-    If txtNomeBloco.Value = "" Or txtNomeBloco.Value = " " Then
+    If txtMaterialEditar.Value = "" Or txtMaterialEditar.Value = " " Then
         ' Deixa visivel o erro com mensagens
-        errorStyle.EntrarErrorStyleTextBox txtNomeBloco, NOME_BLOCO_MENSAGEM, NOME_BLOCO_PEDREIRA_TITULO
+        errorStyle.EntrarErrorStyleTextBox txtMaterialEditar, NOME_BLOCO_MENSAGEM, NOME_BLOCO_PEDREIRA_TITULO
         ' Para o fluxo do sistema para a correção
         Exit Sub
     End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtMaterialEditar
+    
+    ' Criação dos objetos
+    Set pedreira = daoPedreira.pesquisarPorNome(cbPedreiraEditar.Value)
+    Set serraria = daoSerrada.pesquisarPorNome(cbSerrariaEditar.Value)
+    Set polideira = daoPolideira.pesquisarPorNome(cbPolideiraEditar)
+    Set tipoMaterial = daoTipoMaterial.pesquisarPorNome(cbTipoMaterialEditar.Value)
+    Set statusObj = daoStatus.pesquisarPorNome(cbStatusBlocoEditar)
+    Set estoque = daoEstoqueM3.pesquisarPorNome(cbEstoqueEditar.Value)
+    Set bloco = ObjectFactory.factoryBloco(bloco)
+    
+    ' Criação do objeto
+    bloco.carregarBlocoEdicao bloco.idSistema, bloco.nomeMaterial, bloco.observacao, bloco.numeroBlocoPedreira, estoque, _
+                    bloco.dataCadastro, bloco.qtdM3, bloco.qtdM2Serrada, bloco.qtdM2Polimento, bloco.qtdChapas, bloco.nota, _
+                    bloco.consultarCustoMedio, bloco.compBrutoBloco, bloco.altBrutoBloco, bloco.largBrutoBloco, bloco.compLiquidoBloco, _
+                    bloco.altLiquidoBloco, bloco.largLiquidoBloco, bloco.compBrutoChapaBruta, bloco.altBrutoChapaBruta, _
+                    bloco.compLiquidoChapaBruta, bloco.altLiquidoChapaBruta, bloco.compBrutoChapaPolida, bloco.altBrutoChapaPolida, _
+                    bloco.compLiquidoChapaPolida, bloco.altLiquidoChapaPolida, bloco.valorBloco, bloco.precoM3Bloco, _
+                    bloco.freteBloco, bloco.valorMetroSerrada, bloco.valorMetroPolimento, bloco.valoresAdicionais, _
+                    bloco.valorTotalSerrada, bloco.valorTotalPolimento, bloco.custoMaterial, bloco.valorTotalBloco, _
+                    statusObj, tipoMaterial, pedreira, serraria, polideira
+    
+    ' Chama serviço para cadastrar do bloco
+    Call daoBloco.cadastrarEEditar(bloco)
+    
+    ' Chama serviço para pesquisa do bloco
+    Set bloco = daoBloco.pesquisarPorId(bloco.idSistema) ' Envia o id do bloco
+    
+    ' Recarrega os dados na tela editar bloco
+    Call carregarDadosBlocoTelaEdicaoBloco(bloco)
+    
+    'Mensagem de cadastro realizado com sucesso. Mensagem de erro utilizada para sucesso na operação
+    errorStyle.Informativo SUCESSO_EDICAO_MENSAGEM, SUCESSO_EDICAO_TITULO
+    ' Seta o foco
+    txtMaterialEditar.SetFocus
 End Sub
 ' Botão btnLTxtVoltarEdicaoBloco tela editar bloco
 Private Sub btnLTxtVoltarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -1008,18 +1153,24 @@ Private Sub btnLTxtNovoAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As 
     ' Coloca data atual na txtDataCadastroChapaAvulsa na tela cadastro chapa avulso
     txtDataCadastroChapaAvulsa.Value = Date
     
+    'Muda abra da multPage
+    Me.MultiPageCEBC.Value = 5
+    ' Seta o foco
+    txtIdBlocoAvulso.SetFocus
+    
     ' Chama metodo para carregar comboBox
     Call carregarTiposMateriais(Me.cbTipoMaterialL)
     Call carregarTiposPolimento(Me.cbTipoPolimentoL)
     Call carregarTemNota(Me.cbTemNotaAvulso)
     
-    ' Chama metodo para carregar lista
-    Call carregarList(Me.ListMaterias)
-    
-    'Muda abra da multPage
-    Me.MultiPageCEBC.Value = 5
-    ' Seta o foco
-    txtIdBlocoAvulso.SetFocus
+'    ' Pesquisa blocos cadastrado no dia atual
+'    Set listaObjeto = daoBloco.listarBlocosFilter(Date, Date, "", "", "", "", "", "", "", "", "", "", "")
+'
+'    ' Chama metodo para carregar lista e blocos cadastros do dia atual
+'    Call carregarList(Me.listCadastradosHoje, listaObjeto)
+'
+'    ' Chama metodo para carregar lista
+'    Call carregarList(Me.ListMaterias)
 End Sub
 ' Botão btnLTxtEditarChapa tela estoque m²
 Private Sub btnLTxtEditarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -1352,11 +1503,13 @@ Private Sub btnLTxtVoltarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As
         formControle.Controls("btnLMenuChapa").Width = 189
         formControle.Controls("btnLMenuChapa").TextAlign = fmTextAlignLeft
         
+            ' Seta o foco
+        txtMaterialBlocoPesquisa.SetFocus
+    Else
         ' Seta o foco
         txtMaterialChapaPesquisa.SetFocus
     End If
-    ' Seta o foco
-    txtMaterialBlocoPesquisa.SetFocus
+
 End Sub
 
 '-----------------------------------------------------------------TELA TROCA ESTOQUE-----------------------------------
@@ -1720,110 +1873,213 @@ End Sub
 
 ' Carrega a combobox de pedreira
 Private Sub carregarPedreiras(cbPedreiras As MSForms.comboBox)
+    ' Variaveis do metodo
+    Dim listaObjetos As Collection
+    Dim i As Integer
+    
+    ' Criando a lista
+    Set listaObjetos = daoPedreira.listarPedreiras
+
     ' limpa a lista para carregamento
     cbPedreiras.Clear
     
-    ' Carregamento para lista
-    cbPedreiras.AddItem "PEDREIRA 01"
-    cbPedreiras.AddItem "PEDREIRA 02"
-    cbPedreiras.AddItem "BRUNO DAGRAM"
-'    ' for para carregamento
-'    For Each nomePedreira In pedreiras
-'
-'        If nomePedreira <> "IMPORTADO" And nomePedreira <> "AVULSO" Then
-'            ComboBoxPedreira.AddItem nomePedreira ' Tela cadastro de blocos
-'
-'        End If
-'
-'        If nomePedreira <> "AVULSO" Then
-'            ComboBoxPedreiraBlocoPesquisa.AddItem nomePedreira ' Tela pesquisa de blocos
-'
-'        End If
-'    Next nomePedreira
+    ' Verifica se tem algum dado a pesquisa
+    If listaObjetos.Count = -1 Or listaObjetos.Count = 0 Then ' Se não tiver dados
+        ' Mensagem de erro
+        errorStyle.Informativo SEM_DADOS_MENSAGEM, SEM_DADOS_TITULO
+        Exit Sub
+    Else
+        ' Carregamento com primeiro item vazio
+        cbPedreiras.AddItem ""
+        
+        ' Loop através dos itens da coleção
+        For i = 1 To listaObjetos.Count
+            ' Seta o ojeto
+            Set pedreira = listaObjetos(i)
+            ' Carregamento para lista
+            cbPedreiras.AddItem pedreira.nome
+            ' Libera espaço memoria
+            Set pedreira = Nothing
+        Next i
+    End If
+    ' Libera espaço da memoria
+    Set listaObjetos = Nothing
 End Sub
 ' Carrega a combobox de serraria
 Private Sub carregarSerrarias(cbSerrarias As MSForms.comboBox)
+    ' Variaveis do metodo
+    Dim listaObjetos As Collection
+    Dim i As Integer
+    
+    ' Criando a lista
+    Set listaObjetos = daoSerrada.listarSerrarias
+
     ' limpa a lista para carregamento
     cbSerrarias.Clear
     
-    ' Carregamento para lista
-    cbSerrarias.AddItem "SERRARIA 01"
-    cbSerrarias.AddItem "SERRARIA 02"
-    cbSerrarias.AddItem "AVULSO"
-    
-'    ' for para carregamento
-'    For Each nomePedreira In pedreiras
-'
-'        If nomePedreira <> "IMPORTADO" And nomePedreira <> "AVULSO" Then
-'            ComboBoxPedreira.AddItem nomePedreira ' Tela cadastro de blocos
-'
-'        End If
-'
-'        If nomePedreira <> "AVULSO" Then
-'            ComboBoxPedreiraBlocoPesquisa.AddItem nomePedreira ' Tela pesquisa de blocos
-'
-'        End If
-'    Next nomePedreira
+    ' Verifica se tem algum dado a pesquisa
+    If listaObjetos.Count = -1 Or listaObjetos.Count = 0 Then ' Se não tiver dados
+        ' Mensagem de erro
+        errorStyle.Informativo SEM_DADOS_MENSAGEM, SEM_DADOS_TITULO
+        Exit Sub
+    Else
+       ' Loop através dos itens da coleção
+        For i = 1 To listaObjetos.Count
+            ' Seta o ojeto
+            Set serraria = listaObjetos(i)
+            ' Carregamento para lista
+            cbSerrarias.AddItem serraria.nome
+            ' Libera espaço memoria
+            Set serraria = Nothing
+        Next i
+    End If
+    ' Libera espaço da memoria
+    Set listaObjetos = Nothing
 End Sub
 ' Carrega a combobox de tipo material
 Private Sub carregarTiposMateriais(cbTiposMateriais As MSForms.comboBox)
+    ' Variaveis do metodo
+    Dim listaObjetos As Collection
+    Dim i As Integer
+    
+    ' Criando a lista
+    Set listaObjetos = daoTipoMaterial.listarTiposMateriais
+
     ' limpa a lista para carregamento
     cbTiposMateriais.Clear
     
-    ' Carregamento para lista
-    cbTiposMateriais.AddItem "TIPO 01"
-    cbTiposMateriais.AddItem "TIPO 02"
-    cbTiposMateriais.AddItem "EXTRA"
-'    ' for para carregamento
-'    For Each nomePedreira In pedreiras
-'
-'        If nomePedreira <> "IMPORTADO" And nomePedreira <> "AVULSO" Then
-'            ComboBoxPedreira.AddItem nomePedreira ' Tela cadastro de blocos
-'
-'        End If
-'
-'        If nomePedreira <> "AVULSO" Then
-'            ComboBoxPedreiraBlocoPesquisa.AddItem nomePedreira ' Tela pesquisa de blocos
-'
-'        End If
-'    Next nomePedreira
+    ' Verifica se tem algum dado a pesquisa
+    If listaObjetos.Count = -1 Or listaObjetos.Count = 0 Then ' Se não tiver dados
+        ' Mensagem de erro
+        errorStyle.Informativo SEM_DADOS_MENSAGEM, SEM_DADOS_TITULO
+        Exit Sub
+    Else
+        ' Loop através dos itens da coleção
+        For i = 1 To listaObjetos.Count
+            ' Seta o ojeto
+            Set tipoMaterial = listaObjetos(i)
+            ' Carregamento para lista
+            cbTiposMateriais.AddItem tipoMaterial.nome
+            ' Libera espaço memoria
+            Set tipoMaterial = Nothing
+        Next i
+        ' Deixar um item já selecionado
+        Call selecaoItem("cbTipoMaterial", "EXTRA")
+    End If
+    ' Libera espaço da memoria
+    Set listaObjetos = Nothing
 End Sub
 ' Carrega a combobox tem nota
 Private Sub carregarTemNota(cbTemNota As MSForms.comboBox)
     ' limpa a lista para carregamento
     cbTemNota.Clear
     
+    ' Deixar um item já selecionado
+    If Me.MultiPageCEBC.Value = 1 Then
+        cbTemNota.AddItem ""
+    End If
+    
     ' Carregamento para lista
     cbTemNota.AddItem "SIM"
     cbTemNota.AddItem "NÃO"
+    
+    ' Deixar um item já selecionado
+    If Me.MultiPageCEBC.Value = 2 Then
+        Call selecaoItem("cbNotaC", "NÃO")
+    End If
 End Sub
 ' Carrega a combobox de polideira
 Private Sub carregarPolideiras(cbPolideiras As MSForms.comboBox)
+    ' Variaveis do metodo
+    Dim listaObjetos As Collection
+    Dim i As Integer
+    
+    ' Criando a lista
+    Set listaObjetos = daoPolideira.listarPolideiras
+
     ' limpa a lista para carregamento
     cbPolideiras.Clear
     
-    ' Carregamento para lista
-    cbPolideiras.AddItem "POLIDEIRA 01"
-    cbPolideiras.AddItem "POLIDEIRA 02"
-    cbPolideiras.AddItem "SÃO ROQUE"
+    ' Verifica se tem algum dado a pesquisa
+    If listaObjetos.Count = -1 Or listaObjetos.Count = 0 Then ' Se não tiver dados
+        ' Mensagem de erro
+        errorStyle.Informativo SEM_DADOS_MENSAGEM, SEM_DADOS_TITULO
+        Exit Sub
+    Else
+        ' Loop através dos itens da coleção
+        For i = 1 To listaObjetos.Count
+            ' Seta o ojeto
+            Set polideira = listaObjetos(i)
+            ' Carregamento para lista
+            cbPolideiras.AddItem polideira.nome
+            ' Libera espaço memoria
+            Set polideira = Nothing
+        Next i
+    End If
+    ' Libera espaço da memoria
+    Set listaObjetos = Nothing
 End Sub
 ' Carrega a combobox de tipo polimento
 Private Sub carregarTiposPolimento(cbTiposPolimento As MSForms.comboBox)
+    ' Variaveis do metodo
+    Dim listaObjetos As Collection
+    Dim i As Integer
+    
+    ' Criando a lista
+    Set listaObjetos = daoTipoPolimento.listarTipoPolideiras
+
     ' limpa a lista para carregamento
     cbTiposPolimento.Clear
     
-    ' Carregamento para lista
-    cbTiposPolimento.AddItem "TIPO 01"
-    cbTiposPolimento.AddItem "TIPO 02"
-    cbTiposPolimento.AddItem "POLIDO"
+    ' Verifica se tem algum dado a pesquisa
+    If listaObjetos.Count = -1 Or listaObjetos.Count = 0 Then ' Se não tiver dados
+        ' Mensagem de erro
+        errorStyle.Informativo SEM_DADOS_MENSAGEM, SEM_DADOS_TITULO
+        Exit Sub
+    Else
+        ' Loop através dos itens da coleção
+        For i = 1 To listaObjetos.Count
+            ' Seta o ojeto
+            Set tipoPolimento = listaObjetos(i)
+            ' Carregamento para lista
+            cbTiposPolimento.AddItem tipoPolimento.nome
+            ' Libera espaço memoria
+            Set tipoPolimento = Nothing
+        Next i
+    End If
+    ' Libera espaço da memoria
+    Set listaObjetos = Nothing
 End Sub
 ' Carrega a combobox de estoque carregarCustoMedio
 Private Sub carregarEstoque(cbTiposEstoque As MSForms.comboBox)
+    ' Variaveis do metodo
+    Dim listaObjetos As Collection
+    Dim i As Integer
+    
+    ' Criando a lista
+    Set listaObjetos = daoEstoqueM3.listarEstoqueM3
+
     ' limpa a lista para carregamento
     cbTiposEstoque.Clear
     
-    ' Carregamento para lista
-    cbTiposEstoque.AddItem "CASA DO GRANITO"
+    ' Verifica se tem algum dado a pesquisa
+    If listaObjetos.Count = -1 Or listaObjetos.Count = 0 Then ' Se não tiver dados
+        ' Mensagem de erro
+        errorStyle.Informativo SEM_DADOS_MENSAGEM, SEM_DADOS_TITULO
+        Exit Sub
+    Else
+        ' Loop através dos itens da coleção
+        For i = 1 To listaObjetos.Count
+            ' Seta o ojeto
+            Set estoque = listaObjetos(i)
+            ' Carregamento para lista
+            cbTiposEstoque.AddItem estoque.nome
+            ' Libera espaço memoria
+            Set estoque = Nothing
+        Next i
+    End If
+    ' Libera espaço da memoria
+    Set listaObjetos = Nothing
 End Sub
 ' Carrega a combobox de custo medio
 Private Sub carregarCustoMedio(cbCustoMedio As MSForms.comboBox)
@@ -1836,13 +2092,34 @@ Private Sub carregarCustoMedio(cbCustoMedio As MSForms.comboBox)
 End Sub
 ' Carrega a combobox de status
 Private Sub carregarStatus(cbStatus As MSForms.comboBox)
+    ' Variaveis do metodo
+    Dim listaObjetos As Collection
+    Dim i As Integer
+    
+    ' Criando a lista
+    Set listaObjetos = daoStatus.listarStatus
+
     ' limpa a lista para carregamento
     cbStatus.Clear
     
-    ' Carregamento para lista
-    cbStatus.AddItem "STATUS 01"
-    cbStatus.AddItem "STATUS 02"
-    cbStatus.AddItem "EM PROCESSO"
+    ' Verifica se tem algum dado a pesquisa
+    If listaObjetos.Count = -1 Or listaObjetos.Count = 0 Then ' Se não tiver dados
+        ' Mensagem de erro
+        errorStyle.Informativo SEM_DADOS_MENSAGEM, SEM_DADOS_TITULO
+        Exit Sub
+    Else
+        ' Loop através dos itens da coleção
+        For i = 1 To listaObjetos.Count
+            ' Seta o ojeto
+            Set statusObj = listaObjetos(i)
+            ' Carregamento para lista
+            cbStatus.AddItem statusObj.nome
+            ' Libera espaço memoria
+            Set statusObj = Nothing
+        Next i
+    End If
+    ' Libera espaço da memoria
+    Set listaObjetos = Nothing
 End Sub
 
 '-----------------------------------------------------------------CARREAGMENTO DAS LIST-----------------------------------
