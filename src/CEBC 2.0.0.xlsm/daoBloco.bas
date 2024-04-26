@@ -12,7 +12,6 @@ Private estoque As objEstoque
 
 ' Cadastra e edita objeto
 Function cadastrarEEditar(bloco As objBloco)
-
     ' String para consultas
     Dim rsBloco As ADODB.Recordset ' Recordset para consulta principal
     Dim rsAuxiliar As ADODB.Recordset ' Recordset para consulta

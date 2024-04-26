@@ -481,8 +481,7 @@ Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As
     ' Verifica se tem algum item selecionado
     If Me.ListEstoqueM3.ListIndex = -1 Then
         ' Mensagem usuário
-        'Mensagem de cadastro realizado com sucesso
-        MsgBox "Selecione um item da lista!", vbInformation, "Nada selecioando"
+        errorStyle.Informativo SELECIONE_TEM_MENSAGEM, SELECIONE_TEM_TITULO
         Exit Sub
     End If
     
@@ -751,67 +750,7 @@ Private Sub btnLTxtCadastrarBloco_MouseDown(ByVal Button As Integer, ByVal Shift
     End If
     ' Deixa na cor patrão
     errorStyle.sairErrorStyleTextBox txtNomeBloco
-    
-    ' Verifica o tipo do material
-    If cbTipoMaterial.Value = "" Or cbTipoMaterial.Value = " " Then
-        ' Deixa visivel o erro com mensagens
-        errorStyle.EntrarErrorStyleComboBox cbTipoMaterial, TIPO_MATERIAL_MENSAGEM, TIPO_MATERIAL_TITULO
-        ' Para o fluxo do sistema para a correção
-        Exit Sub
-    End If
-    ' Deixa na cor patrão
-    errorStyle.sairErrorStyleComboBox cbTipoMaterial
-    
-    ' Verifica tem nota
-    If cbNotaC.Value = "" Or cbNotaC.Value = " " Then
-        ' Deixa visivel o erro com mensagens
-        errorStyle.EntrarErrorStyleComboBox cbNotaC, TEM_NOTA_MENSAGEM, TEM_NOTA_TITULO
-        ' Para o fluxo do sistema para a correção
-        Exit Sub
-    End If
-    ' Deixa na cor patrão
-    errorStyle.sairErrorStyleComboBox cbNotaC
-    
-    ' Verifica o comprimento
-    If txtComprimentoBloco.Value = "" Or txtComprimentoBloco.Value = "0,0000" Then
-        ' Deixa visivel o erro com mensagens
-        errorStyle.EntrarErrorStyleTextBox txtComprimentoBloco, COMP_BLOCO_MENSAGEM, COMP_BLOCO_TITULO
-        ' Para o fluxo do sistema para a correção
-        Exit Sub
-    End If
-    ' Deixa na cor patrão
-    errorStyle.sairErrorStyleTextBox txtComprimentoBloco
-    
-    ' Verifica o altura
-    If txtAlturaBloco.Value = "" Or txtAlturaBloco.Value = "0,0000" Then
-        ' Deixa visivel o erro com mensagens
-        errorStyle.EntrarErrorStyleTextBox txtAlturaBloco, ALT_BLOCO_MENSAGEM, ALT_BLOCO_TITULO
-        ' Para o fluxo do sistema para a correção
-        Exit Sub
-    End If
-    ' Deixa na cor patrão
-    errorStyle.sairErrorStyleTextBox txtAlturaBloco
-    
-    ' Verifica o largura
-    If txtLarguraBloco.Value = "" Or txtLarguraBloco.Value = "0,0000" Then
-        ' Deixa visivel o erro com mensagens
-        errorStyle.EntrarErrorStyleTextBox txtLarguraBloco, LARG_BLOCO_MENSAGEM, LARG_BLOCO_TITULO
-        ' Para o fluxo do sistema para a correção
-        Exit Sub
-    End If
-    ' Deixa na cor patrão
-    errorStyle.sairErrorStyleTextBox txtLarguraBloco
-    
-    ' Verifica o valor do m³
-    If txtValorM3.Value = "" Or txtValorM3.Value = "0,0000" Then
-        ' Deixa visivel o erro com mensagens
-        errorStyle.EntrarErrorStyleTextBox txtValorM3, VALOR_M3_MENSAGEM, VALOR_M3_TITULO
-        ' Para o fluxo do sistema para a correção
-        Exit Sub
-    End If
-    ' Deixa na cor patrão
-    errorStyle.sairErrorStyleTextBox txtValorM3
-    
+        
     ' Verifica se um cadastrado ou edição
     Set blocoPesquisa = daoBloco.pesquisarPorId(txtIdBlocoSistema.Value)
     If blocoPesquisa.idSistema = txtIdBlocoSistema.Value Then
@@ -970,6 +909,24 @@ Private Sub btnLTxtSalvarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Sh
     MsgBox "Chama Serviço editar bloco, tela editar bloco"
     ' Seta o foco
     txtMaterialEditar.SetFocus
+    
+    ' Verifica o Número do bloco na pedreira
+    If txtIdBloco.Value = "" Or txtIdBloco.Value = " " Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtIdBloco, NUMERO_BLOCO_PEDREIRA_MENSAGEM, NUMERO_BLOCO_PEDREIRA_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtIdBloco
+    
+    ' Verifica nome do bloco
+    If txtNomeBloco.Value = "" Or txtNomeBloco.Value = " " Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtNomeBloco, NOME_BLOCO_MENSAGEM, NOME_BLOCO_PEDREIRA_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
 End Sub
 ' Botão btnLTxtVoltarEdicaoBloco tela editar bloco
 Private Sub btnLTxtVoltarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)

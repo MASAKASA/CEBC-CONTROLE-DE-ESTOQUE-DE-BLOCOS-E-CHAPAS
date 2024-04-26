@@ -13,18 +13,6 @@ Global ACAO_CANCELADA_MENSAGEM As String
 Global ACAO_CANCELADA_TITULO As String
 Global CONFIRMACAO_CADASTRO_MENSAGEM As String
 Global CONFIRMACAO_CADASTRO_TITULO As String
-Global VALOR_M3_MENSAGEM As String
-Global VALOR_M3_TITULO As String
-Global LARG_BLOCO_MENSAGEM As String
-Global LARG_BLOCO_TITULO As String
-Global ALT_BLOCO_MENSAGEM As String
-Global ALT_BLOCO_TITULO As String
-Global COMP_BLOCO_MENSAGEM As String
-Global COMP_BLOCO_TITULO As String
-Global TEM_NOTA_MENSAGEM As String
-Global TEM_NOTA_TITULO As String
-Global TIPO_MATERIAL_MENSAGEM As String
-Global TIPO_MATERIAL_TITULO As String
 Global NOME_BLOCO_MENSAGEM As String
 Global NOME_BLOCO_PEDREIRA_TITULO As String
 Global NUMERO_BLOCO_PEDREIRA_MENSAGEM As String
@@ -35,6 +23,8 @@ Global STATUS_SERRARIA_MENSAGEM As String
 Global STATUS_SERRARIA_TITULO As String
 
 ' TELA ESTOQUE BLOCOS M³
+Global SELECIONE_TEM_MENSAGEM As String
+Global SELECIONE_TEM_TITULO As String
 Global EXPORTADO_SUCESSO_MENSAGEM As String
 Global EXPORTADO_SUCESSO_TITULO As String
 Global LIST_SEM_DADOS_MENSAGEM As String
@@ -61,18 +51,6 @@ Public Sub carregarTraducaoErros()
     ACAO_CANCELADA_TITULO = "Cancelamento"
     CONFIRMACAO_CADASTRO_MENSAGEM = "Confira se o número e descrição/material do bloco estão corretos, pois a junção deles irá criar o ID do bloco no sistema. ID do bloco não poderá ser alterado posteriormente. Tudo conferido e podemos seguir com o cadastro?"
     CONFIRMACAO_CADASTRO_TITULO = "Atenção - Confirmação"
-    VALOR_M3_MENSAGEM = "Adicione o Valor M³!"
-    VALOR_M3_TITULO = "Valor M³ não informado"
-    LARG_BLOCO_MENSAGEM = "Adicione a largura!"
-    LARG_BLOCO_TITULO = "Largura não informada"
-    ALT_BLOCO_MENSAGEM = "Adicione a altura!"
-    ALT_BLOCO_TITULO = "Altura não informada"
-    COMP_BLOCO_MENSAGEM = "Adicione o comprimento!"
-    COMP_BLOCO_TITULO = "Comprimento não informado"
-    TEM_NOTA_MENSAGEM = "Informe se o bloco tem a nota fiscal!"
-    TEM_NOTA_TITULO = "Nota fiscal!"
-    TIPO_MATERIAL_MENSAGEM = "Selecione o tipo do material!"
-    TIPO_MATERIAL_TITULO = "Tipo de material não informado"
     NOME_BLOCO_MENSAGEM = "Adicone a descrição do bloco!"
     NOME_BLOCO_PEDREIRA_TITULO = "Descrição do bloco não informada"
     NUMERO_BLOCO_PEDREIRA_MENSAGEM = "Adicone o número do bloco!"
@@ -83,6 +61,8 @@ Public Sub carregarTraducaoErros()
     NOME_PEDREIRA_TITULO = "Nome da pedreira não informada"
     
     ' TELA ESTOQUE BLOCOS M³
+    SELECIONE_TEM_MENSAGEM = "Selecione um item da lista!"
+    SELECIONE_TEM_TITULO = "Nada selecioando"
     EXPORTADO_SUCESSO_MENSAGEM = "Dados exportados para PDF com sucesso!"
     EXPORTADO_SUCESSO_TITULO = "Sucesso na esportação"
     LIST_SEM_DADOS_MENSAGEM = "Faça primeiro uma pesquisa para poder exportar!"
