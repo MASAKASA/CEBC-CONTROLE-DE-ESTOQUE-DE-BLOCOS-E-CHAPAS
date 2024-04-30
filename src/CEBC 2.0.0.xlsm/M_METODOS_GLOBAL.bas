@@ -254,60 +254,73 @@ Function formatarMetros(quantidade As String)
     Dim textoDigitado As String
     Dim textoFormatado As String
     Dim primeiroCaractere As String
-    Dim caractere_0 As String
+'    Dim caractere_0 As String
+    Dim numerosDecimais As String
+    Dim posicaoVirgula As Long
     Dim i As Integer
     
     'Obtém o texto digitado pelo usuário
     textoDigitado = quantidade
     textoFormatado = ""
-    
-    'Remove todos os caracteres não numéricos
-    For i = 1 To Len(textoDigitado)
-        If IsNumeric(Mid(textoDigitado, i, 1)) Then
-            textoFormatado = textoFormatado & Mid(textoDigitado, i, 1)
+    '
+    posicaoVirgula = InStr(textoDigitado, ",") ' Captura a posição da virgula no texto
+    numerosDecimais = Mid(textoDigitado, posicaoVirgula + 1, Len(textoDigitado)) ' Captura os números decimais
+    ' Confere se já esta formatado
+    If Len(numerosDecimais) = 4 Then
+        ' Seta valor já formatado
+        textoFormatado = quantidade
+    Else
+        'Remove todos os caracteres não numéricos
+        For i = 1 To Len(textoDigitado)
+            If IsNumeric(Mid(textoDigitado, i, 1)) Then
+                textoFormatado = textoFormatado & Mid(textoDigitado, i, 1)
+            End If
+            
+            'Remove o zero na esquerda do texto
+            If Len(textoFormatado) = 6 Then
+                If Left(textoFormatado, 1) = 0 Then
+                    textoFormatado = Mid(textoFormatado, 2, 5)
+                End If
+            End If
+        Next i
+        
+        'Adiciona um caractere de virgula e mantém a máscara
+        If Len(textoFormatado) = 7 Then
+            textoFormatado = Mid(textoFormatado, 1, 3) & "," & Mid(textoFormatado, 4, 5) ' Left(textoFormatado, 1) & Mid(textoFormatado, 1, 4) & "," & Mid(textoFormatado, 4, 5)
         End If
         
-        'Remove o zero na esquerda do texto
         If Len(textoFormatado) = 6 Then
-            If Left(textoFormatado, 1) = 0 Then
-                textoFormatado = Mid(textoFormatado, 2, 5)
-            End If
+            textoFormatado = Left(textoFormatado, 1) & Mid(textoFormatado, 2, 1) & "," & Mid(textoFormatado, 3, 5)
         End If
-    Next i
+        
+        'Adiciona um caractere de virgula e mantém a máscara
+        If Len(textoFormatado) = 5 Then
+            textoFormatado = Left(textoFormatado, 1) & "," & Mid(textoFormatado, 2, 5)
+        End If
+        
+        'Captura o primeiro caractere para comparação
+        primeiroCaractere = Mid(textoFormatado, 1, 1)
     
-    'Adiciona um caractere de virgula e mantém a máscara
-    If Len(textoFormatado) = 6 Then
-        textoFormatado = Left(textoFormatado, 1) & Mid(textoFormatado, 2, 1) & "," & Mid(textoFormatado, 3, 5)
-    End If
+        'Adicionaos a direita e mantém a máscara
+        If Len(textoFormatado) = 4 Then
+            textoFormatado = "0," & textoFormatado
     
-    'Adiciona um caractere de virgula e mantém a máscara
-    If Len(textoFormatado) = 5 Then
-        textoFormatado = Left(textoFormatado, 1) & "," & Mid(textoFormatado, 2, 5)
-    End If
+        ElseIf Len(textoFormatado) = 3 Then
+            textoFormatado = "0,0" & textoFormatado
     
-    'Captura o primeiro caractere para comparação
-    primeiroCaractere = Mid(textoFormatado, 1, 1)
-
-    'Adicionaos a direita e mantém a máscara
-    If Len(textoFormatado) = 4 Then
-        textoFormatado = "0," & textoFormatado
-
-    ElseIf Len(textoFormatado) = 3 Then
-        textoFormatado = "0,0" & textoFormatado
-
-    ElseIf Len(textoFormatado) = 2 Then
-        textoFormatado = "0,00" & textoFormatado
-
-    ElseIf Len(textoFormatado) = 1 Then
-        textoFormatado = "0,000" & textoFormatado
-
-    ElseIf Len(textoFormatado) = 0 Then
-        textoFormatado = "0,0000" & textoFormatado
+        ElseIf Len(textoFormatado) = 2 Then
+            textoFormatado = "0,00" & textoFormatado
+    
+        ElseIf Len(textoFormatado) = 1 Then
+            textoFormatado = "0,000" & textoFormatado
+    
+        ElseIf Len(textoFormatado) = 0 Then
+            textoFormatado = "0,0000" & textoFormatado
+        End If
     End If
     
     'Retorna valor formatado
     formatarMetros = textoFormatado
-    
 End Function
 
 ' Função para retornar valor com dois digitos após a virgula
@@ -412,8 +425,31 @@ Function subtracaoM2(m2Estoque As String, m2Despache As String) As Double
     subtracaoM2 = totalM2
     
 End Function
+
+' Calcula o custo do material por metro
+Function calcularCustoMaterial(totalMetro As String, valorBloco As String) As Double
+    
+    'Variaveis do metodo
+    Dim totalM As Double
+    Dim valorB As Double
+    Dim custoMaterial As Double
+    
+    'Convertendo os valores
+    totalM = CDbl(totalMetro)
+    valorB = CDbl(valorBloco)
+    ' Cofere se os valores são maiores que 0
+    If totalM = 0 Or valorB = 0 Then
+            custoMaterial = 0
+    Else
+        'Receber e calcular o total do bloco
+        custoMaterial = valorB / totalM
+    End If
+    
+    'Retornar valor calcuculado e formatado
+    calcularCustoMaterial = custoMaterial
+End Function
 'Formata e calcula o total do bloco
-Function calcularValorBloco(totalMetro As String, valorMetro As String) As Double
+Function calcularValor(totalMetro As String, valorMetro As String) As Double
     
     'Variaveis do metodo
     Dim textoFormatado As String
@@ -429,10 +465,29 @@ Function calcularValorBloco(totalMetro As String, valorMetro As String) As Doubl
     totalBloco = totalM * valorM
     
     'Retornar valor calcuculado e formatado
-    calcularValorBloco = totalBloco
+    calcularValor = totalBloco
     
 End Function
-
+'Formata e calcula o total do serrada e polimento do bloco
+Function calcularValorServicos(totalMetro As String, valorMetro As String) As Double
+    
+    'Variaveis do metodo
+    Dim textoFormatado As String
+    Dim totalM As Double
+    Dim valorM As Double
+    Dim totalBloco As Double
+    
+    'Convertendo os valores
+    totalM = CDbl(totalMetro)
+    valorM = CDbl(valorMetro)
+    
+    'Receber e calcular o total do bloco
+    totalBloco = totalM * valorM
+    
+    'Retornar valor calcuculado e formatado
+    calcularValorServicos = totalBloco
+    
+End Function
 ' Calcula o m³
 Function calcularM3(compr As String, alt As String, larg As String) As Double
     

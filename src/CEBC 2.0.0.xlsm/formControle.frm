@@ -475,6 +475,8 @@ Private Sub btnLTxtNovoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As I
     
     ' Chama metodo para carregar lista e blocos cadastros do dia atual
     Call carregarList(Me.listCadastradosHoje, listaObjeto)
+    ' Libera espaço em memoria
+    Set listaObjeto = Nothing
 End Sub
 ' Botão btnLTxtEditarBloco tela estoque m³
 Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -538,7 +540,7 @@ Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As 
     cbPolideiraChapa.SetFocus
     
     ' Chama serviço para pesquisa do bloco
-    Set bloco = daoBloco.pesquisarPorId(Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Envia o id do bloco
+    Set bloco = daoBloco.pesquisarPorId(Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Envia o id do bloco
     
     ' Carregar os comboBox da tela
     Call carregarTiposMateriais(Me.cbTipoMaterialEditar)
@@ -551,18 +553,8 @@ Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As 
     
     ' Carrega os dados na tela editar bloco
     Call carregarDadosBlocoTelaEdicaoBloco(bloco)
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    ' Libera espaço em memoria
+    Set bloco = Nothing
 End Sub
 
 '-----------------------------------------------------------------TELA CADASTRO DE BLOCOS-----------------------------------
@@ -886,6 +878,12 @@ Private Sub txtMaterialEditar_Change()
     txtMaterialEditar.Value = UCase(txtMaterialEditar.Value)
 End Sub
 
+' txtObsEditar tela editar bloco
+Private Sub txtObsEditar_Change()
+' Coloca tudo em caixa alta
+    txtObsEditar.Value = UCase(txtObsEditar.Value)
+End Sub
+
 ' txtDataCadastroEditar tela editar bloco
 Private Sub txtDataCadastroEditar_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
     ' Deixa só a digitação de numero
@@ -909,6 +907,41 @@ Private Sub txtQtdM3blocoEditar_Change()
     txtQtdM3blocoEditar.SelStart = Len(txtQtdM3blocoEditar.Value)
 End Sub
 
+' txtQtdM2SerradaEditar tela editar bloco
+Private Sub txtQtdM2SerradaEditar_Change()
+    ' Define o resultado no TextBox
+    txtQtdM2SerradaEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtQtdM2SerradaEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtQtdM2SerradaEditar.SelStart = Len(txtQtdM2SerradaEditar.Value)
+End Sub
+
+' txtQtdM2PolimentoEditar tela editar bloco
+Private Sub txtQtdM2PolimentoEditar_Change()
+    ' Define o resultado no TextBox
+    txtQtdM2PolimentoEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtQtdM2PolimentoEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtQtdM2PolimentoEditar.SelStart = Len(txtQtdM2PolimentoEditar.Value)
+    
+    ' Seta m² polimento para calculo do custo
+    txtTotalM2PolimentoBlocoEditar.Value = txtQtdM2PolimentoEditar.Value
+End Sub
+
+' txtTotalChapaBlocoEditar tela editar bloco
+Private Sub txtTotalChapaBlocoEditar_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+    ' Deixa só a digitação de numero
+    If KeyAscii < 48 Or KeyAscii > 57 Then
+        KeyAscii = 0
+    End If
+End Sub
+
+' txtTotalChapaBlocoEditar tela editar bloco
+Private Sub txtTotalChapaBlocoEditar_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    If txtTotalChapaBlocoEditar.Value = "" Or txtTotalChapaBlocoEditar.Value = " " Then
+        txtTotalChapaBlocoEditar.Value = "0"
+    End If
+End Sub
 ' txtCompBrutaBlocoEditar tela editar bloco
 Private Sub txtCompBrutaBlocoEditar_Change()
     ' Define o resultado no TextBox
@@ -945,12 +978,282 @@ Private Sub txtCompLiquidoBlocoEditar_Change()
     txtCompLiquidoBlocoEditar.SelStart = Len(txtCompLiquidoBlocoEditar.Value)
     
     ' Retorna valor calculado e formatado
-    txtQtdM3blocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularM3(txtCompLiquidoBlocoEditar.Value, _
-            txtAltLiquidoBlocoEditar.Value, txtLArgLiquidoBlocoEditar.Value), "0.0000"))
+    txtQtdM3blocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularM3( _
+            txtCompLiquidoBlocoEditar.Value, txtAltLiquidoBlocoEditar.Value, txtLArgLiquidoBlocoEditar.Value), "0.0000"))
 
     ' Retorna valor calculado e formatado
-    txtValoBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorBloco( _
+    txtValoBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorServicos( _
             txtPrecoBlocoEditar.Value, txtQtdM3blocoEditar.Value), "0.00"))
+End Sub
+
+' txtAltLiquidoBlocoEditar tela editar bloco
+Private Sub txtAltLiquidoBlocoEditar_Change()
+    ' Define o resultado no TextBox
+    txtAltLiquidoBlocoEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtAltLiquidoBlocoEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtAltLiquidoBlocoEditar.SelStart = Len(txtAltLiquidoBlocoEditar.Value)
+    
+    ' Retorna valor calculado e formatado
+    txtQtdM3blocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularM3( _
+            txtCompLiquidoBlocoEditar.Value, txtAltLiquidoBlocoEditar.Value, txtLArgLiquidoBlocoEditar.Value), "0.0000"))
+
+    ' Retorna valor calculado e formatado
+    txtValoBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorServicos( _
+            txtPrecoBlocoEditar.Value, txtQtdM3blocoEditar.Value), "0.00"))
+End Sub
+
+' txtLArgLiquidoBlocoEditar tela editar bloco
+Private Sub txtLArgLiquidoBlocoEditar_Change()
+    ' Define o resultado no TextBox
+    txtLArgLiquidoBlocoEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtLArgLiquidoBlocoEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtLArgLiquidoBlocoEditar.SelStart = Len(txtLArgLiquidoBlocoEditar.Value)
+    
+    ' Retorna valor calculado e formatado
+    txtQtdM3blocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularM3( _
+            txtCompLiquidoBlocoEditar.Value, txtAltLiquidoBlocoEditar.Value, txtLArgLiquidoBlocoEditar.Value), "0.0000"))
+
+    ' Retorna valor calculado e formatado
+    txtValoBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorServicos( _
+            txtPrecoBlocoEditar.Value, txtQtdM3blocoEditar.Value), "0.00"))
+End Sub
+
+' txtCompBrutaBrutoChapaEditar tela editar bloco
+Private Sub txtCompBrutaBrutoChapaEditar_Change()
+    ' Define o resultado no TextBox
+    txtCompBrutaBrutoChapaEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtCompBrutaBrutoChapaEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtCompBrutaBrutoChapaEditar.SelStart = Len(txtCompBrutaBrutoChapaEditar.Value)
+End Sub
+
+' txtAltBrutaBrutoChapaEditar tela editar bloco
+Private Sub txtAltBrutaBrutoChapaEditar_Change()
+    ' Define o resultado no TextBox
+    txtAltBrutaBrutoChapaEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtAltBrutaBrutoChapaEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtAltBrutaBrutoChapaEditar.SelStart = Len(txtAltBrutaBrutoChapaEditar.Value)
+End Sub
+
+' txtCompBrutaliquidoChapaEditar tela editar bloco
+Private Sub txtCompBrutaliquidoChapaEditar_Change()
+    ' Define o resultado no TextBox
+    txtCompBrutaliquidoChapaEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtCompBrutaliquidoChapaEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtCompBrutaliquidoChapaEditar.SelStart = Len(txtCompBrutaliquidoChapaEditar.Value)
+    
+    ' Retorna valor calculado e formatado
+    txtQtdM2SerradaEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularM2( _
+                                txtCompBrutaliquidoChapaEditar.Value, txtAltBrutaLiquidoChapaEditar.Value, _
+                                txtTotalChapaBlocoEditar.Value), "0.0000"))
+End Sub
+
+' txtAltBrutaLiquidoChapaEditar tela editar bloco
+Private Sub txtAltBrutaLiquidoChapaEditar_Change()
+    ' Define o resultado no TextBox
+    txtAltBrutaLiquidoChapaEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtAltBrutaLiquidoChapaEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtAltBrutaLiquidoChapaEditar.SelStart = Len(txtAltBrutaLiquidoChapaEditar.Value)
+    
+    ' Retorna valor calculado e formatado
+    txtQtdM2SerradaEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularM2( _
+                                txtCompBrutaliquidoChapaEditar.Value, txtAltBrutaLiquidoChapaEditar.Value, _
+                                txtTotalChapaBlocoEditar.Value), "0.0000"))
+End Sub
+
+' txtCompPolidaBrutoChapaEditar tela editar bloco
+Private Sub txtCompPolidaBrutoChapaEditar_Change()
+    ' Define o resultado no TextBox
+    txtCompPolidaBrutoChapaEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtCompPolidaBrutoChapaEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtCompPolidaBrutoChapaEditar.SelStart = Len(txtCompPolidaBrutoChapaEditar.Value)
+End Sub
+
+' txtAltPolidaBrutoChapaEditar tela editar bloco
+Private Sub txtAltPolidaBrutoChapaEditar_Change()
+    ' Define o resultado no TextBox
+    txtAltPolidaBrutoChapaEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtAltPolidaBrutoChapaEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtAltPolidaBrutoChapaEditar.SelStart = Len(txtAltPolidaBrutoChapaEditar.Value)
+End Sub
+
+' txtCompPolidaLiquidoChapaEditar tela editar bloco
+Private Sub txtCompPolidaLiquidoChapaEditar_Change()
+    ' Define o resultado no TextBox
+    txtCompPolidaLiquidoChapaEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtCompPolidaLiquidoChapaEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtCompPolidaLiquidoChapaEditar.SelStart = Len(txtCompPolidaLiquidoChapaEditar.Value)
+    
+    ' Retorna valor calculado e formatado
+    txtQtdM2PolimentoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularM2( _
+                                txtCompPolidaLiquidoChapaEditar.Value, txtAltPolidaLiquidaChapaEditar.Value, _
+                                txtTotalChapaBlocoEditar.Value), "0.0000"))
+End Sub
+
+' txtAltPolidaLiquidaChapaEditar tela editar bloco
+Private Sub txtAltPolidaLiquidaChapaEditar_Change()
+    ' Define o resultado no TextBox
+    txtAltPolidaLiquidaChapaEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtAltPolidaLiquidaChapaEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtAltPolidaLiquidaChapaEditar.SelStart = Len(txtAltPolidaLiquidaChapaEditar.Value)
+    
+    ' Retorna valor calculado e formatado
+    txtQtdM2PolimentoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularM2( _
+                                txtCompPolidaLiquidoChapaEditar.Value, txtAltPolidaLiquidaChapaEditar.Value, _
+                                txtTotalChapaBlocoEditar.Value), "0.0000"))
+End Sub
+
+' txtPrecoBlocoEditar tela editar bloco
+Private Sub txtPrecoBlocoEditar_Change()
+    ' Define o resultado no TextBox
+    txtPrecoBlocoEditar.Value = M_METODOS_GLOBAL.formatarValor(txtPrecoBlocoEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtPrecoBlocoEditar.SelStart = Len(txtPrecoBlocoEditar.Value)
+                                
+    ' Retorna valor calculado e formatado
+    txtValoBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorServicos( _
+            txtPrecoBlocoEditar.Value, txtQtdM3blocoEditar.Value), "0.00"))
+End Sub
+
+' txtValoBlocoEditar tela editar bloco
+Private Sub txtValoBlocoEditar_Change()
+    ' Define o resultado no TextBox
+    txtValoBlocoEditar.Value = M_METODOS_GLOBAL.formatarValor(txtValoBlocoEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtValoBlocoEditar.SelStart = Len(txtValoBlocoEditar.Value)
+                                
+    ' Valor total do bloco
+    txtTotalBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.custoBloco( _
+                    txtValoBlocoEditar.Value, txtFreteBlocoEditar.Value, txtTotalSerradaEditar.Value, _
+                    txtTotalPolimentoEditar.Value, txtValorADDImpostosEditar.Value), "0.00"))
+End Sub
+
+' txtFreteBlocoEditar tela editar bloco
+Private Sub txtFreteBlocoEditar_Change()
+    ' Define o resultado no TextBox
+    txtFreteBlocoEditar.Value = M_METODOS_GLOBAL.formatarValor(txtFreteBlocoEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtFreteBlocoEditar.SelStart = Len(txtFreteBlocoEditar.Value)
+                                
+    ' Valor total do bloco
+    txtTotalBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.custoBloco( _
+                    txtValoBlocoEditar.Value, txtFreteBlocoEditar.Value, txtTotalSerradaEditar.Value, _
+                    txtTotalPolimentoEditar.Value, txtValorADDImpostosEditar.Value), "0.00"))
+End Sub
+
+' txtValorSerradaEditar tela editar bloco
+Private Sub txtValorSerradaEditar_Change()
+    ' Define o resultado no TextBox
+    txtValorSerradaEditar.Value = M_METODOS_GLOBAL.formatarValor(txtValorSerradaEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtValorSerradaEditar.SelStart = Len(txtValorSerradaEditar.Value)
+                                
+    ' Valor da serrada
+    txtTotalSerradaEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorServicos( _
+                    txtQtdM2SerradaEditar.Value, txtValorSerradaEditar.Value), "0.00"))
+End Sub
+
+' txtValorPolimentoEditar tela editar bloco
+Private Sub txtValorPolimentoEditar_Change()
+    ' Define o resultado no TextBox
+    txtValorPolimentoEditar.Value = M_METODOS_GLOBAL.formatarValor(txtValorPolimentoEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtValorPolimentoEditar.SelStart = Len(txtValorPolimentoEditar.Value)
+                                
+    ' Valor da polimento
+    txtTotalPolimentoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorServicos( _
+                    txtQtdM2PolimentoEditar.Value, txtValorPolimentoEditar.Value), "0.00"))
+End Sub
+
+' txtValorADDImpostosEditar tela editar bloco
+Private Sub txtValorADDImpostosEditar_Change()
+    ' Define o resultado no TextBox
+    txtValorADDImpostosEditar.Value = M_METODOS_GLOBAL.formatarValor(txtValorADDImpostosEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtValorADDImpostosEditar.SelStart = Len(txtValorADDImpostosEditar.Value)
+                                
+    ' Valor total do bloco
+    txtTotalBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.custoBloco( _
+                    txtValoBlocoEditar.Value, txtFreteBlocoEditar.Value, txtTotalSerradaEditar.Value, _
+                    txtTotalPolimentoEditar.Value, txtValorADDImpostosEditar.Value), "0.00"))
+End Sub
+
+' txtTotalSerradaEditar tela editar bloco
+Private Sub txtTotalSerradaEditar_Change()
+    ' Define o resultado no TextBox
+    txtTotalSerradaEditar.Value = M_METODOS_GLOBAL.formatarValor(txtTotalSerradaEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtTotalSerradaEditar.SelStart = Len(txtTotalSerradaEditar.Value)
+                                
+    ' Valor total do bloco
+    txtTotalBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.custoBloco( _
+                    txtValoBlocoEditar.Value, txtFreteBlocoEditar.Value, txtTotalSerradaEditar.Value, _
+                    txtTotalPolimentoEditar.Value, txtValorADDImpostosEditar.Value), "0.00"))
+End Sub
+
+' txtTotalPolimentoEditar tela editar bloco
+Private Sub txtTotalPolimentoEditar_Change()
+    ' Define o resultado no TextBox
+    txtTotalPolimentoEditar.Value = M_METODOS_GLOBAL.formatarValor(txtTotalPolimentoEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtTotalPolimentoEditar.SelStart = Len(txtTotalPolimentoEditar.Value)
+                                
+    ' Valor total do bloco
+    txtTotalBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.custoBloco( _
+                    txtValoBlocoEditar.Value, txtFreteBlocoEditar.Value, txtTotalSerradaEditar.Value, _
+                    txtTotalPolimentoEditar.Value, txtValorADDImpostosEditar.Value), "0.00"))
+End Sub
+
+' txtCustoMaterialBlocoEditar tela editar bloco
+Private Sub txtCustoMaterialBlocoEditar_Change()
+    ' Define o resultado no TextBox
+    txtCustoMaterialBlocoEditar.Value = M_METODOS_GLOBAL.formatarValor(txtCustoMaterialBlocoEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtCustoMaterialBlocoEditar.SelStart = Len(txtCustoMaterialBlocoEditar.Value)
+End Sub
+
+' txtTotalM2PolimentoBlocoEditar tela editar bloco
+Private Sub txtTotalM2PolimentoBlocoEditar_Change()
+    ' Define o resultado no TextBox
+    txtTotalM2PolimentoBlocoEditar.Value = M_METODOS_GLOBAL.formatarMetros(txtTotalM2PolimentoBlocoEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtTotalM2PolimentoBlocoEditar.SelStart = Len(txtTotalM2PolimentoBlocoEditar.Value)
+                                
+    ' Custo por metro
+    txtCustoMaterialBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularCustoMaterial( _
+                        txtTotalM2PolimentoBlocoEditar.Value, txtTotalBlocoEditar.Value), "0.00"))
+End Sub
+
+' txtTotalBlocoEditar tela editar bloco
+Private Sub txtTotalBlocoEditar_Change()
+    ' Define o resultado no TextBox
+    txtTotalBlocoEditar.Value = M_METODOS_GLOBAL.formatarValor(txtTotalBlocoEditar.Value)
+    
+    ' Move o cursor para o final do TextBox
+    txtTotalBlocoEditar.SelStart = Len(txtTotalBlocoEditar.Value)
+                                
+    ' Custo por metro
+    txtCustoMaterialBlocoEditar.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularCustoMaterial( _
+                        txtTotalM2PolimentoBlocoEditar.Value, txtTotalBlocoEditar.Value), "0.00"))
 End Sub
 
 ' Carrega os campos com os dados do bloco tela editar bloco
@@ -1049,14 +1352,14 @@ Private Sub btnLTxtSalvarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Sh
     Set bloco = ObjectFactory.factoryBloco(bloco)
     
     ' Criação do objeto
-    bloco.carregarBlocoEdicao bloco.idSistema, bloco.nomeMaterial, bloco.observacao, bloco.numeroBlocoPedreira, estoque, _
-                    bloco.dataCadastro, bloco.qtdM3, bloco.qtdM2Serrada, bloco.qtdM2Polimento, bloco.qtdChapas, bloco.nota, _
-                    bloco.consultarCustoMedio, bloco.compBrutoBloco, bloco.altBrutoBloco, bloco.largBrutoBloco, bloco.compLiquidoBloco, _
-                    bloco.altLiquidoBloco, bloco.largLiquidoBloco, bloco.compBrutoChapaBruta, bloco.altBrutoChapaBruta, _
-                    bloco.compLiquidoChapaBruta, bloco.altLiquidoChapaBruta, bloco.compBrutoChapaPolida, bloco.altBrutoChapaPolida, _
-                    bloco.compLiquidoChapaPolida, bloco.altLiquidoChapaPolida, bloco.valorBloco, bloco.precoM3Bloco, _
-                    bloco.freteBloco, bloco.valorMetroSerrada, bloco.valorMetroPolimento, bloco.valoresAdicionais, _
-                    bloco.valorTotalSerrada, bloco.valorTotalPolimento, bloco.custoMaterial, bloco.valorTotalBloco, _
+    bloco.carregarBlocoEdicao txtIdBlocoEditar.Value, txtMaterialEditar.Value, txtObsEditar.Value, txtNBlocoPedreiraEditar.Value, estoque, _
+                    txtDataCadastroEditar.Value, txtQtdM3blocoEditar.Value, txtQtdM2SerradaEditar.Value, txtQtdM2PolimentoEditar.Value, txtTotalChapaBlocoEditar.Value, cbNotaBlocoEditar.Value, _
+                    cbCustoMedioEditar.Value, txtCompBrutaBlocoEditar.Value, txtAltBrutaBlocoEditar.Value, txtLArgBrutaBlocoEditar.Value, txtCompLiquidoBlocoEditar.Value, _
+                    txtAltLiquidoBlocoEditar.Value, txtLArgLiquidoBlocoEditar.Value, txtCompBrutaBrutoChapaEditar.Value, txtAltBrutaBrutoChapaEditar.Value, _
+                    txtCompBrutaliquidoChapaEditar.Value, txtAltBrutaLiquidoChapaEditar.Value, txtCompPolidaBrutoChapaEditar.Value, txtAltPolidaBrutoChapaEditar.Value, _
+                    txtCompPolidaLiquidoChapaEditar.Value, txtAltPolidaLiquidaChapaEditar.Value, txtValoBlocoEditar.Value, txtPrecoBlocoEditar.Value, _
+                    txtFreteBlocoEditar.Value, txtValorSerradaEditar.Value, txtValorPolimentoEditar.Value, txtValorADDImpostosEditar.Value, _
+                    txtTotalSerradaEditar.Value, txtTotalPolimentoEditar.Value, txtCustoMaterialBlocoEditar.Value, txtTotalBlocoEditar.Value, _
                     statusObj, tipoMaterial, pedreira, serraria, polideira
     
     ' Chama serviço para cadastrar do bloco
@@ -1068,7 +1371,16 @@ Private Sub btnLTxtSalvarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Sh
     ' Recarrega os dados na tela editar bloco
     Call carregarDadosBlocoTelaEdicaoBloco(bloco)
     
-    'Mensagem de cadastro realizado com sucesso. Mensagem de erro utilizada para sucesso na operação
+    ' Libera espaço da memorio
+    Set pedreira = Nothing
+    Set serraria = Nothing
+    Set polideira = Nothing
+    Set tipoMaterial = Nothing
+    Set statusObj = Nothing
+    Set estoque = Nothing
+    Set bloco = Nothing
+    
+    ' Mensagem de edição realizada com sucesso. Mensagem de erro utilizada para sucesso na operação
     errorStyle.Informativo SUCESSO_EDICAO_MENSAGEM, SUCESSO_EDICAO_TITULO
     ' Seta o foco
     txtMaterialEditar.SetFocus
@@ -1662,105 +1974,106 @@ End Sub
 '                                                                 -----------------------------
 ' Desabilita campos da tela editar bloco
 Private Sub desabilitaCamposBlocoEditar()
-    txtIdBlocoEditar.Visible = False
-    txtMaterialEditar.Visible = False
-    cbTipoMaterialEditar.Visible = False
-    txtObsEditar.Visible = False
-    cbPedreiraEditar.Visible = False
-    cbSerrariaEditar.Visible = False
-    cbPolideiraEditar.Visible = False
-    txtNBlocoPedreiraEditar.Visible = False
-    cbEstoqueEditar.Visible = False
-    txtDataCadastroEditar.Visible = False
-    txtQtdM3blocoEditar.Visible = False
-    txtQtdM2SerradaEditar.Visible = False
-    txtQtdM2PolimentoEditar.Visible = False
-    txtTotalChapaBlocoEditar.Visible = False
-    cbStatusBlocoEditar.Visible = False
-    cbNotaBlocoEditar.Visible = False
-    cbCustoMedioEditar.Visible = False
+    txtIdBlocoEditar.Enabled = False
+    txtMaterialEditar.Enabled = False
+    cbTipoMaterialEditar.Enabled = False
+    txtObsEditar.Enabled = False
+    cbPedreiraEditar.Enabled = False
+    cbSerrariaEditar.Enabled = False
+    cbPolideiraEditar.Enabled = False
+    txtNBlocoPedreiraEditar.Enabled = False
+    cbEstoqueEditar.Enabled = False
+    txtDataCadastroEditar.Enabled = False
+    txtQtdM3blocoEditar.Enabled = False
+    txtQtdM2SerradaEditar.Enabled = False
+    txtQtdM2PolimentoEditar.Enabled = False
+    txtTotalChapaBlocoEditar.Enabled = False
+    cbStatusBlocoEditar.Enabled = False
+    cbNotaBlocoEditar.Enabled = False
+    cbCustoMedioEditar.Enabled = False
     
     ' Dimensões bloco e médias chapas
-    txtCompBrutaBlocoEditar.Visible = False
-    txtAltBrutaBlocoEditar.Visible = False
-    txtLArgBrutaBlocoEditar.Visible = False
-    txtCompLiquidoBlocoEditar.Visible = False
-    txtAltLiquidoBlocoEditar.Visible = False
-    txtLArgLiquidoBlocoEditar.Visible = False
-    txtCompBrutaBrutoChapaEditar.Visible = False
-    txtAltBrutaBrutoChapaEditar.Visible = False
-    txtCompBrutaliquidoChapaEditar.Visible = False
-    txtAltBrutaLiquidoChapaEditar.Visible = False
-    txtCompPolidaBrutoChapaEditar.Visible = False
-    txtAltPolidaBrutoChapaEditar.Visible = False
-    txtCompPolidaLiquidoChapaEditar.Visible = False
-    txtAltPolidaLiquidaChapaEditar.Visible = False
+    txtCompBrutaBlocoEditar.Enabled = False
+    txtAltBrutaBlocoEditar.Enabled = False
+    txtLArgBrutaBlocoEditar.Enabled = False
+    txtCompLiquidoBlocoEditar.Enabled = False
+    txtAltLiquidoBlocoEditar.Enabled = False
+    txtLArgLiquidoBlocoEditar.Enabled = False
+    txtCompBrutaBrutoChapaEditar.Enabled = False
+    txtAltBrutaBrutoChapaEditar.Enabled = False
+    txtCompBrutaliquidoChapaEditar.Enabled = False
+    txtAltBrutaLiquidoChapaEditar.Enabled = False
+    txtCompPolidaBrutoChapaEditar.Enabled = False
+    txtAltPolidaBrutoChapaEditar.Enabled = False
+    txtCompPolidaLiquidoChapaEditar.Enabled = False
+    txtAltPolidaLiquidaChapaEditar.Enabled = False
     
     ' Valores
-    txtValoBlocoEditar.Visible = False
-    txtPrecoBlocoEditar.Visible = False
-    txtFreteBlocoEditar.Visible = False
-    txtValorSerradaEditar.Visible = False
-    txtValorPolimentoEditar.Visible = False
-    txtValorADDImpostosEditar.Visible = False
-    txtTotalSerradaEditar.Visible = False
-    txtTotalPolimentoEditar.Visible = False
+    txtValoBlocoEditar.Enabled = False
+    txtPrecoBlocoEditar.Enabled = False
+    txtFreteBlocoEditar.Enabled = False
+    txtValorSerradaEditar.Enabled = False
+    txtValorPolimentoEditar.Enabled = False
+    txtValorADDImpostosEditar.Enabled = False
+    txtTotalSerradaEditar.Enabled = False
+    txtTotalPolimentoEditar.Enabled = False
     
     ' Custos
-    txtCustoMaterialBlocoEditar.Visible = False
-    txtTotalM2PolimentoBlocoEditar.Visible = False
-    txtTotalBlocoEditar.Visible = False
+    txtCustoMaterialBlocoEditar.Enabled = False
+    txtTotalM2PolimentoBlocoEditar.Enabled = False
+    txtTotalBlocoEditar.Enabled = False
 End Sub
+
 ' Habilita campos da tela editar bloco
 Private Sub habilitaCamposBlocoEditar()
-    txtIdBlocoEditar.Visible = True
-    txtMaterialEditar.Visible = True
-    cbTipoMaterialEditar.Visible = True
-    txtObsEditar.Visible = True
-    cbPedreiraEditar.Visible = True
-    cbSerrariaEditar.Visible = True
-    cbPolideiraEditar.Visible = True
-    txtNBlocoPedreiraEditar.Visible = True
-    cbEstoqueEditar.Visible = True
-    txtDataCadastroEditar.Visible = True
-    txtQtdM3blocoEditar.Visible = True
-    txtQtdM2SerradaEditar.Visible = True
-    txtQtdM2PolimentoEditar.Visible = True
-    txtTotalChapaBlocoEditar.Visible = True
-    cbStatusBlocoEditar.Visible = True
-    cbNotaBlocoEditar.Visible = True
-    cbCustoMedioEditar.Visible = True
+    txtIdBlocoEditar.Enabled = True
+    txtMaterialEditar.Enabled = True
+    cbTipoMaterialEditar.Enabled = True
+    txtObsEditar.Enabled = True
+    cbPedreiraEditar.Enabled = True
+    cbSerrariaEditar.Enabled = True
+    cbPolideiraEditar.Enabled = True
+    txtNBlocoPedreiraEditar.Enabled = True
+    cbEstoqueEditar.Enabled = True
+    txtDataCadastroEditar.Enabled = True
+    txtQtdM3blocoEditar.Enabled = True
+    txtQtdM2SerradaEditar.Enabled = True
+    txtQtdM2PolimentoEditar.Enabled = True
+    txtTotalChapaBlocoEditar.Enabled = True
+    cbStatusBlocoEditar.Enabled = True
+    cbNotaBlocoEditar.Enabled = True
+    cbCustoMedioEditar.Enabled = True
     
     ' Dimensões bloco e médias chapas
-    txtCompBrutaBlocoEditar.Visible = True
-    txtAltBrutaBlocoEditar.Visible = True
-    txtLArgBrutaBlocoEditar.Visible = True
-    txtCompLiquidoBlocoEditar.Visible = True
-    txtAltLiquidoBlocoEditar.Visible = True
-    txtLArgLiquidoBlocoEditar.Visible = True
-    txtCompBrutaBrutoChapaEditar.Visible = True
-    txtAltBrutaBrutoChapaEditar.Visible = True
-    txtCompBrutaliquidoChapaEditar.Visible = True
-    txtAltBrutaLiquidoChapaEditar.Visible = True
-    txtCompPolidaBrutoChapaEditar.Visible = True
-    txtAltPolidaBrutoChapaEditar.Visible = True
-    txtCompPolidaLiquidoChapaEditar.Visible = True
-    txtAltPolidaLiquidaChapaEditar.Visible = True
+    txtCompBrutaBlocoEditar.Enabled = True
+    txtAltBrutaBlocoEditar.Enabled = True
+    txtLArgBrutaBlocoEditar.Enabled = True
+    txtCompLiquidoBlocoEditar.Enabled = True
+    txtAltLiquidoBlocoEditar.Enabled = True
+    txtLArgLiquidoBlocoEditar.Enabled = True
+    txtCompBrutaBrutoChapaEditar.Enabled = True
+    txtAltBrutaBrutoChapaEditar.Enabled = True
+    txtCompBrutaliquidoChapaEditar.Enabled = True
+    txtAltBrutaLiquidoChapaEditar.Enabled = True
+    txtCompPolidaBrutoChapaEditar.Enabled = True
+    txtAltPolidaBrutoChapaEditar.Enabled = True
+    txtCompPolidaLiquidoChapaEditar.Enabled = True
+    txtAltPolidaLiquidaChapaEditar.Enabled = True
     
     ' Valores
-    txtValoBlocoEditar.Visible = True
-    txtPrecoBlocoEditar.Visible = True
-    txtFreteBlocoEditar.Visible = True
-    txtValorSerradaEditar.Visible = True
-    txtValorPolimentoEditar.Visible = True
-    txtValorADDImpostosEditar.Visible = True
-    txtTotalSerradaEditar.Visible = True
-    txtTotalPolimentoEditar.Visible = True
+    txtValoBlocoEditar.Enabled = True
+    txtPrecoBlocoEditar.Enabled = True
+    txtFreteBlocoEditar.Enabled = True
+    txtValorSerradaEditar.Enabled = True
+    txtValorPolimentoEditar.Enabled = True
+    txtValorADDImpostosEditar.Enabled = True
+    txtTotalSerradaEditar.Enabled = True
+    txtTotalPolimentoEditar.Enabled = True
     
     ' Custos
-    txtCustoMaterialBlocoEditar.Visible = False
-    txtTotalM2PolimentoBlocoEditar.Visible = False
-    txtTotalBlocoEditar.Visible = False
+    txtCustoMaterialBlocoEditar.Enabled = False
+    txtTotalM2PolimentoBlocoEditar.Enabled = False
+    txtTotalBlocoEditar.Enabled = False
 End Sub
 
 '-----------------------------------------------------------------LIMPAR CAMPOS-----------------------------------
@@ -1786,6 +2099,7 @@ Private Sub limparCamposPesquisaEstoqueM3()
     chbEstoque.Value = False
     chbFechado.Value = False
 End Sub
+
 ' Limpa os campos de pesquisa da tela estoque M²
 Private Sub limparCamposPesquisaEstoqueM2()
     txtMaterialChapaPesquisa.Value = ""
@@ -1799,6 +2113,7 @@ Private Sub limparCamposPesquisaEstoqueM2()
     ' Seta o foco
     txtMaterialChapaPesquisa.SetFocus
 End Sub
+
 ' Limpa os campos da tela cadastrao de blocos
 Private Sub limparCamposCadastroBlocos()
     txtDataCadastro.Value = Date
@@ -1826,6 +2141,7 @@ Private Sub limparCamposCadastroBlocos()
     ' Seta o foco
     cbPedreira.SetFocus
 End Sub
+
 ' Limpa os campos de pesquisa da tela cadastro avulso
 Private Sub limparCamposCadastroAvulso()
     txtDataCadastroChapaAvulsa.Value = Date
@@ -1905,6 +2221,7 @@ Private Sub carregarPedreiras(cbPedreiras As MSForms.comboBox)
     ' Libera espaço da memoria
     Set listaObjetos = Nothing
 End Sub
+
 ' Carrega a combobox de serraria
 Private Sub carregarSerrarias(cbSerrarias As MSForms.comboBox)
     ' Variaveis do metodo
@@ -1936,6 +2253,7 @@ Private Sub carregarSerrarias(cbSerrarias As MSForms.comboBox)
     ' Libera espaço da memoria
     Set listaObjetos = Nothing
 End Sub
+
 ' Carrega a combobox de tipo material
 Private Sub carregarTiposMateriais(cbTiposMateriais As MSForms.comboBox)
     ' Variaveis do metodo
@@ -1969,6 +2287,7 @@ Private Sub carregarTiposMateriais(cbTiposMateriais As MSForms.comboBox)
     ' Libera espaço da memoria
     Set listaObjetos = Nothing
 End Sub
+
 ' Carrega a combobox tem nota
 Private Sub carregarTemNota(cbTemNota As MSForms.comboBox)
     ' limpa a lista para carregamento
@@ -1988,6 +2307,7 @@ Private Sub carregarTemNota(cbTemNota As MSForms.comboBox)
         Call selecaoItem("cbNotaC", "NÃO")
     End If
 End Sub
+
 ' Carrega a combobox de polideira
 Private Sub carregarPolideiras(cbPolideiras As MSForms.comboBox)
     ' Variaveis do metodo
@@ -2019,6 +2339,7 @@ Private Sub carregarPolideiras(cbPolideiras As MSForms.comboBox)
     ' Libera espaço da memoria
     Set listaObjetos = Nothing
 End Sub
+
 ' Carrega a combobox de tipo polimento
 Private Sub carregarTiposPolimento(cbTiposPolimento As MSForms.comboBox)
     ' Variaveis do metodo
@@ -2050,6 +2371,7 @@ Private Sub carregarTiposPolimento(cbTiposPolimento As MSForms.comboBox)
     ' Libera espaço da memoria
     Set listaObjetos = Nothing
 End Sub
+
 ' Carrega a combobox de estoque carregarCustoMedio
 Private Sub carregarEstoque(cbTiposEstoque As MSForms.comboBox)
     ' Variaveis do metodo
@@ -2081,6 +2403,7 @@ Private Sub carregarEstoque(cbTiposEstoque As MSForms.comboBox)
     ' Libera espaço da memoria
     Set listaObjetos = Nothing
 End Sub
+
 ' Carrega a combobox de custo medio
 Private Sub carregarCustoMedio(cbCustoMedio As MSForms.comboBox)
     ' limpa a lista para carregamento
@@ -2090,6 +2413,7 @@ Private Sub carregarCustoMedio(cbCustoMedio As MSForms.comboBox)
     cbCustoMedio.AddItem "SIM"
     cbCustoMedio.AddItem "NÃO"
 End Sub
+
 ' Carrega a combobox de status
 Private Sub carregarStatus(cbStatus As MSForms.comboBox)
     ' Variaveis do metodo
@@ -2179,6 +2503,8 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
             lQtdBlocos.Caption = i
             ' Soma a qtd de chapas
             qtdChapas = qtdChapas + CInt(objeto.qtdChapas)
+            ' Libera espaço da memoria
+            Set objeto = Nothing
         Next i
         ' Total de chapas
         lQtdChapas.Caption = qtdChapas
@@ -2186,6 +2512,7 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
     ' Libera espaço da memoria
     Set listaObjeto = Nothing
 End Sub
+
 ' Carrega a lista ListTamanhosChapas tela edicao chapa
 Private Sub carregarListTamanhosChapas(lista As MSForms.ListBox) ' Irá receber id chapa para carregamento
     ' Limpar a ListBox
