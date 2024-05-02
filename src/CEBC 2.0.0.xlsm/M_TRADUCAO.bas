@@ -2,6 +2,10 @@ Attribute VB_Name = "M_TRADUCAO"
 Option Explicit
 
 ' Variaveis globais para os erros
+' TELA EDIÇÃO DE BLOCO
+Global HABILITE_EDICAO_MENSAGEM As String
+Global HABILITE_EDICAO_TITULO As String
+
 ' TELA CADASTRO DE BLOCO
 Global SUCESSO_EDICAO_MENSAGEM As String
 Global SUCESSO_EDICAO_TITULO As String
@@ -40,10 +44,14 @@ Global ADICIONE_STATUS_TITULO As String
 ' Carrega as variaveis dos erros
 Public Sub carregarTraducaoErros()
     ' Mensagem para usuário
+    ' TELA EDIÇÃO DE BLOCO
+    HABILITE_EDICAO_MENSAGEM = "Habilite edição!"
+    HABILITE_EDICAO_TITULO = "Edição desabilitada"
+    
     ' TELA CADASTRO DE BLOCO
     ERRO_DESCONHECIDO_MENSAGEM = "Erro desconhecido! Procurar o suporte!"
     ERRO_DESCONHECIDO_TITULO = "Erro desconhecido"
-    SUCESSO_EDICAO_MENSAGEM = "Edição feito com sucesso!"
+    SUCESSO_EDICAO_MENSAGEM = "Edição feita com sucesso!"
     SUCESSO_EDICAO_TITULO = "Edição"
     CADASTRO_CONFIRMADO_MENSAGEM = "Cadastrado com sucesso!"
     CADASTRO_CONFIRMADO_TITULO = "Cadastro confirmado"

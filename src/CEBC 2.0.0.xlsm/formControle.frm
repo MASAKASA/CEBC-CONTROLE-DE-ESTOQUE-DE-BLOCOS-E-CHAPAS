@@ -294,115 +294,8 @@ Private Sub opTodos_Click()
 End Sub
 ' Botão btnLTxtPesquisarBlocos tela estoque m³
 Private Sub btnLTxtPesquisarBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    ' Variaveis do metodo
-    Dim listaBlocos As Collection
-    Dim dataInicial As String
-    Dim dataFinal As String
-    Dim idBlocoPedreira As String
-    Dim descricaoBloco As String
-    Dim pedreiraBloco As String
-    Dim serrariaBloco As String
-    Dim temNota As String
-    Dim statusPedreira As String
-    Dim statusSerraria As String
-    Dim statusChapasBrutas As String
-    Dim statusEmProcesso As String
-    Dim statusEstoque As String
-    Dim statusFechado As String
-    
-    ' Formata a data inicial
-    If txtDataInicioBlocoPesquisa.Value = "" Or Len(txtDataInicioBlocoPesquisa.Value) < 10 Then
-        txtDataInicioBlocoPesquisa.Value = M_METODOS_GLOBAL.dataInicial
-    End If
-
-    ' Formata a data final
-    If txtDataFinalBlocoPesquisa.Value = "" Or Len(txtDataFinalBlocoPesquisa.Value) < 10 Then
-        txtDataFinalBlocoPesquisa.Value = M_METODOS_GLOBAL.dataFinal
-    End If
-    
-    'Validando a data
-    If IsDate(txtDataInicioBlocoPesquisa.Value) = False Then
-        ' Deixa visivel o erro com mensagens
-        errorStyle.EntrarErrorStyleTextBox txtDataInicioBlocoPesquisa, ADICIONE_DATA_MENSAGEM, ADICIONE_DATA_TITULO
-        'Para o fluxo do sistema para a correção
-        Exit Sub
-    End If
-    ' Deixa na cor patrão
-    errorStyle.sairErrorStyleTextBox txtDataInicioBlocoPesquisa
-
-    'Validando a data
-    If IsDate(txtDataFinalBlocoPesquisa.Value) = False Then
-        ' Deixa visivel o erro com mensagens
-        errorStyle.EntrarErrorStyleTextBox txtDataFinalBlocoPesquisa, ADICIONE_DATA_MENSAGEM, ADICIONE_DATA_TITULO
-        ' Para o fluxo do sistema para a correção
-        Exit Sub
-    End If
-    ' Deixa na cor patrão
-    errorStyle.sairErrorStyleTextBox txtDataFinalBlocoPesquisa
-    
-    'Atribuição das variaveies
-    dataInicial = txtDataInicioBlocoPesquisa.Value
-    dataFinal = txtDataFinalBlocoPesquisa.Value
-    idBlocoPedreira = txtIdBlocoPesquisa.Value
-    descricaoBloco = txtMaterialBlocoPesquisa.Value
-    pedreiraBloco = cbPedreiraBlocoPesquisa.Value
-    serrariaBloco = cbSerrariaBlocoPesquisa.Value
-    temNota = cbTemNota.Value
-    
-    'Status filter
-    statusPedreira = ""
-    statusSerraria = ""
-    statusChapasBrutas = ""
-    statusEmProcesso = ""
-    statusEstoque = ""
-    statusFechado = ""
-    
-    'Status para pesquisa e formatação
-    If chbPedreida.Value = True Then
-        statusPedreira = chbPedreida.Caption
-    End If
-    
-    If chbSerraria.Value = True Then
-        statusSerraria = chbSerraria.Caption
-    End If
-    
-    If chbChapasBrutas.Value = True Then
-        statusChapasBrutas = chbChapasBrutas.Caption
-    End If
-    
-    If chbEmProcesso.Value = True Then
-        statusEmProcesso = chbEmProcesso.Caption
-    End If
-    
-    If chbEstoque.Value = True Then
-        statusEstoque = chbEstoque.Caption
-    End If
-    
-    If chbFechado.Value = True Then
-        statusFechado = chbFechado.Caption
-    End If
-            
-    'Mensagem para o usuario escolher algum Status
-    If chbPedreida.Value = False And chbSerraria.Value = False And chbChapasBrutas.Value = False _
-            And chbEmProcesso.Value = False And chbEstoque.Value = False And chbFechado.Value = False Then
-        ' Deixa visivel o erro com mensagens
-        errorStyle.EntrarErrorStyleOptionButton obPedreiraESerrada, ADICIONE_STATUS_MENSAGEM, ADICIONE_STATUS_TITULO
-        ' Para o fluxo do sistema para a correção
-        Exit Sub
-    End If
-    ' Deixa na cor patrão
-    errorStyle.sairErrorStyleOptionButton obPedreiraESerrada
-    
-    ' Faz pesquisa com filtros no banco de dados e retoeno uma lista
-    Set listaBlocos = daoBloco.listarBlocosFilter(dataInicial, dataFinal, idBlocoPedreira, _
-            descricaoBloco, pedreiraBloco, serrariaBloco, temNota, statusPedreira, statusSerraria, _
-            statusChapasBrutas, statusEmProcesso, statusEstoque, statusFechado)
-            
-    ' Carrega a lista
-    Call carregarList(ListEstoqueM3, listaBlocos)
-    
-    ' Libera espeço na memoria
-    Set listaBlocos = Nothing
+    ' Chama serviço para pesquisa
+    Call pesquisarBlocosFilter
 End Sub
 ' Botão btnLTxtLimparFiltrosBlocos tela estoque m³
 Private Sub btnLTxtLimparFiltrosBlocos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -489,8 +382,6 @@ Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As
     
     ' Muda abra da multPage para tela editar bloco
     Me.MultiPageCEBC.Value = 3
-    ' Seta o foco
-    txtMaterialEditar.SetFocus
     
     ' Chama serviço para pesquisa do bloco
     Set bloco = daoBloco.pesquisarPorId(Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Envia o id do bloco
@@ -606,7 +497,7 @@ Private Sub txtComprimentoBloco_Change()
             txtAlturaBloco.Value, txtLarguraBloco.Value), "0.0000"))
 
     ' Retorna valor calculado e formatado
-    txtValorTotalBloco.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorBloco( _
+    txtValorBloco.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValor( _
             txtValorM3.Value, txtTotalM3.Value), "0.00"))
 End Sub
 ' txtAlturaBloco tela cadastro de bloco
@@ -625,7 +516,7 @@ Private Sub txtAlturaBloco_Change()
             txtAlturaBloco.Value, txtLarguraBloco.Value), "0.0000"))
 
     ' Retorna valor calculado e formatado
-    txtValorTotalBloco.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorBloco(txtValorM3.Value, _
+    txtValorBloco.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValor(txtValorM3.Value, _
             txtTotalM3.Value), "0.00"))
 End Sub
 ' txtLarguraBloco tela cadastro de bloco
@@ -644,7 +535,7 @@ Private Sub txtLarguraBloco_Change()
             txtAlturaBloco.Value, txtLarguraBloco.Value), "0.0000"))
 
     ' Retorna valor calculado e formatado
-    txtValorTotalBloco.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorBloco( _
+    txtValorBloco.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValor( _
             txtValorM3.Value, txtTotalM3.Value), "0.00"))
 End Sub
 ' txtCompBrutoBloco tela cadastro de bloco
@@ -696,7 +587,7 @@ Private Sub txtValorM3_Change()
     txtValorM3.SelStart = Len(txtValorM3.Value)
 
     ' Retorna valor calculado e formatado
-    txtValorTotalBloco.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValorBloco( _
+    txtValorBloco.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularValor( _
             txtValorM3.Value, txtTotalM3.Value), "0.00"))
 End Sub
 ' Botão btnLImgCadastrarPedreira tela cadastrar bloco
@@ -721,6 +612,7 @@ Private Sub btnLTxtCadastrarBloco_MouseDown(ByVal Button As Integer, ByVal Shift
     Dim resposta As VbMsgBoxResult ' Variavel para confirmação na hora de cadastrar
     Dim nomeStatus As String
     Dim nomeMaterial As String
+    Dim valorTotalBloco As String
     Dim cadastro As Boolean
     
     ' Patrão true
@@ -799,24 +691,27 @@ Private Sub btnLTxtCadastrarBloco_MouseDown(ByVal Button As Integer, ByVal Shift
         Set estoque = daoEstoqueM3.pesquisarPorNome("CASA DO GRANITO")
         Set bloco = ObjectFactory.factoryBloco(bloco)
         Set blocoPesquisa = ObjectFactory.factoryBloco(blocoPesquisa)
+        
+        ' Calcula valor total bloco
+        valorTotalBloco = M_METODOS_GLOBAL.formatarComPontos(Format(custoBloco( _
+                    txtValorBloco.Value, txtValorFreteBloco.Value, "0", "0", txtAdicionais.Value), "0.00"))
+        
         ' Criação do objeto
         bloco.carregarBlocoCadastro txtDataCadastro.Value, txtIdBlocoSistema.Value, pedreira, serraria, txtIdBloco.Value, _
                                     nomeMaterial, tipoMaterial, cbNotaC.Value, statusObj, txtObsBlocoCB.Value, _
                                     txtCompBrutoBloco.Value, txtAlturaBlocoBruto.Value, txtLarguraBlocoBruto.Value, _
                                     txtComprimentoBloco.Value, txtAlturaBloco.Value, txtLarguraBloco.Value, estoque, _
                                     txtAdicionais.Value, txtValorFreteBloco.Value, txtValorM3.Value, txtTotalM3.Value, _
-                                    txtValorTotalBloco.Value, "NÃO"
+                                    txtValorBloco.Value, valorTotalBloco, "NÃO"
         
         ' Chama serviço para cadastrar do bloco
         Call daoBloco.cadastrarEEditar(bloco)
         
-        ' verifica se foi um cadastro ou edição para personalisar as mensagens
+        ' Verifica se foi um cadastro ou edição para personalisar as mensagens
         If cadastro = True Then
             ' Verifica se bloco foi cadastrado
             Set blocoPesquisa = daoBloco.pesquisarPorId(bloco.idSistema)
             If blocoPesquisa.idSistema = txtIdBlocoSistema.Value Then
-                'Mensagem de cadastro realizado com sucesso. Mensagem de erro utilizada para sucesso na operação
-                errorStyle.Informativo CADASTRO_CONFIRMADO_MENSAGEM, CADASTRO_CONFIRMADO_TITULO
                 ' Limpa os campos
                 Call limparCamposCadastroBlocos
                 ' Recarregar a lista com blocos cadastrados hoje
@@ -825,8 +720,10 @@ Private Sub btnLTxtCadastrarBloco_MouseDown(ByVal Button As Integer, ByVal Shift
                 
                 ' Chama metodo para carregar lista e blocos cadastros do dia atual
                 Call carregarList(Me.listCadastradosHoje, listaObjeto)
+                ' Mensagem de cadastro realizado com sucesso.
+                errorStyle.Informativo CADASTRO_CONFIRMADO_MENSAGEM, CADASTRO_CONFIRMADO_TITULO
             Else
-                'Mensagem de cadastro realizado com sucesso. Mensagem de erro utilizada para sucesso na operação
+                ' Mensagem de erro desconhecido
                 errorStyle.Informativo ERRO_DESCONHECIDO_MENSAGEM, ERRO_DESCONHECIDO_TITULO
             End If
         Else
@@ -857,6 +754,8 @@ Private Sub btnLTxtVoltarCadastroBloco_MouseDown(ByVal Button As Integer, ByVal 
     Me.MultiPageCEBC.Value = paginaAnterior
     ' Seta o foco
     txtMaterialBlocoPesquisa.SetFocus
+    ' Chama serviço para pesquisa
+    Call pesquisarBlocosFilter
 End Sub
 ' Botão btnLTextLimparCadastroBloco tela cadastrar bloco
 Private Sub btnLTxtLimparCadastroBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -1310,6 +1209,11 @@ Private Sub carregarDadosBlocoTelaEdicaoBloco(bloco As objBloco)
     If bloco.status.nome = "FECHADO" Then
         cbAbrirBlocoEditar.Visible = True
         lBlocoFinalizado.Visible = True
+        Call desabilitaCamposBlocoEditar
+    Else
+        cbAbrirBlocoEditar.Visible = False
+        lBlocoFinalizado.Visible = False
+        Call habilitaCamposBlocoEditar
     End If
 End Sub
 ' Habilita e desabilita campos para edição tela editar bloco
@@ -1322,6 +1226,22 @@ Private Sub cbAbrirBlocoEditar_Click()
 End Sub
 ' Botão btnLTxtSalvarEdicaoBloco tela editar bloco
 Private Sub btnLTxtSalvarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    ' Variaveis do medoto
+    Dim blocoPesquisa As objBloco
+    
+    ' Verifica se esta habilitado para edição bloco finalizado
+    Set blocoPesquisa = daoBloco.pesquisarPorId(txtIdBlocoEditar.Value)
+    
+    If blocoPesquisa.status.nome = "FECHADO" Then
+        If cbAbrirBlocoEditar.Value = False Then
+            ' Mensagem de habilite para edição
+            errorStyle.Informativo HABILITE_EDICAO_MENSAGEM, HABILITE_EDICAO_TITULO
+            Exit Sub
+        End If
+    End If
+    ' Desabilita edição
+    cbAbrirBlocoEditar.Value = False
+    
     ' Verifica o Número do bloco na pedreira
     If txtNBlocoPedreiraEditar.Value = "" Or txtNBlocoPedreiraEditar.Value = " " Then
         ' Deixa visivel o erro com mensagens
@@ -1380,18 +1300,19 @@ Private Sub btnLTxtSalvarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Sh
     Set estoque = Nothing
     Set bloco = Nothing
     
-    ' Mensagem de edição realizada com sucesso. Mensagem de erro utilizada para sucesso na operação
+    ' Mensagem de edição realizada com sucesso.
     errorStyle.Informativo SUCESSO_EDICAO_MENSAGEM, SUCESSO_EDICAO_TITULO
-    ' Seta o foco
-    txtMaterialEditar.SetFocus
 End Sub
 ' Botão btnLTxtVoltarEdicaoBloco tela editar bloco
 Private Sub btnLTxtVoltarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 1
-    ' Seta o foco
-    txtMaterialBlocoPesquisa.SetFocus
+    ' Desabilita
+    cbAbrirBlocoEditar.Visible = False
+    lBlocoFinalizado.Visible = False
+    ' Chama serviço para pesquisa
+    Call pesquisarBlocosFilter
 End Sub
 
 '-----------------------------------------------------------------TELA ESTOQUE M²-----------------------------------
@@ -1970,6 +1891,121 @@ Private Sub btnLTxtListUsuarioLog_MouseDown(ByVal Button As Integer, ByVal Shift
     MsgBox "Chama Serviço carrega lista com log dos usuários, tela usuarios"
 End Sub
 
+'-----------------------------------------------------------------PESQUISAR-------------------------------------------------------
+'                                                                 ---------
+' Pesquisa blocos com filtros tela estoque m³
+Private Sub pesquisarBlocosFilter()
+    ' Variaveis do metodo
+    Dim listaBlocos As Collection
+    Dim dataInicial As String
+    Dim dataFinal As String
+    Dim idBlocoPedreira As String
+    Dim descricaoBloco As String
+    Dim pedreiraBloco As String
+    Dim serrariaBloco As String
+    Dim temNota As String
+    Dim statusPedreira As String
+    Dim statusSerraria As String
+    Dim statusChapasBrutas As String
+    Dim statusEmProcesso As String
+    Dim statusEstoque As String
+    Dim statusFechado As String
+    
+    ' Formata a data inicial
+    If txtDataInicioBlocoPesquisa.Value = "" Or Len(txtDataInicioBlocoPesquisa.Value) < 10 Then
+        txtDataInicioBlocoPesquisa.Value = M_METODOS_GLOBAL.dataInicial
+    End If
+
+    ' Formata a data final
+    If txtDataFinalBlocoPesquisa.Value = "" Or Len(txtDataFinalBlocoPesquisa.Value) < 10 Then
+        txtDataFinalBlocoPesquisa.Value = M_METODOS_GLOBAL.dataFinal
+    End If
+    
+    'Validando a data
+    If IsDate(txtDataInicioBlocoPesquisa.Value) = False Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtDataInicioBlocoPesquisa, ADICIONE_DATA_MENSAGEM, ADICIONE_DATA_TITULO
+        'Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtDataInicioBlocoPesquisa
+
+    'Validando a data
+    If IsDate(txtDataFinalBlocoPesquisa.Value) = False Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtDataFinalBlocoPesquisa, ADICIONE_DATA_MENSAGEM, ADICIONE_DATA_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtDataFinalBlocoPesquisa
+    
+    'Atribuição das variaveies
+    dataInicial = txtDataInicioBlocoPesquisa.Value
+    dataFinal = txtDataFinalBlocoPesquisa.Value
+    idBlocoPedreira = txtIdBlocoPesquisa.Value
+    descricaoBloco = txtMaterialBlocoPesquisa.Value
+    pedreiraBloco = cbPedreiraBlocoPesquisa.Value
+    serrariaBloco = cbSerrariaBlocoPesquisa.Value
+    temNota = cbTemNota.Value
+    
+    'Status filter
+    statusPedreira = ""
+    statusSerraria = ""
+    statusChapasBrutas = ""
+    statusEmProcesso = ""
+    statusEstoque = ""
+    statusFechado = ""
+    
+    'Status para pesquisa e formatação
+    If chbPedreida.Value = True Then
+        statusPedreira = chbPedreida.Caption
+    End If
+    
+    If chbSerraria.Value = True Then
+        statusSerraria = chbSerraria.Caption
+    End If
+    
+    If chbChapasBrutas.Value = True Then
+        statusChapasBrutas = chbChapasBrutas.Caption
+    End If
+    
+    If chbEmProcesso.Value = True Then
+        statusEmProcesso = chbEmProcesso.Caption
+    End If
+    
+    If chbEstoque.Value = True Then
+        statusEstoque = chbEstoque.Caption
+    End If
+    
+    If chbFechado.Value = True Then
+        statusFechado = chbFechado.Caption
+    End If
+            
+    'Mensagem para o usuario escolher algum Status
+    If chbPedreida.Value = False And chbSerraria.Value = False And chbChapasBrutas.Value = False _
+            And chbEmProcesso.Value = False And chbEstoque.Value = False And chbFechado.Value = False Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleOptionButton obPedreiraESerrada, ADICIONE_STATUS_MENSAGEM, ADICIONE_STATUS_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleOptionButton obPedreiraESerrada
+    
+    ' Faz pesquisa com filtros no banco de dados e retoeno uma lista
+    Set listaBlocos = daoBloco.listarBlocosFilter(dataInicial, dataFinal, idBlocoPedreira, _
+            descricaoBloco, pedreiraBloco, serrariaBloco, temNota, statusPedreira, statusSerraria, _
+            statusChapasBrutas, statusEmProcesso, statusEstoque, statusFechado)
+            
+    ' Carrega a lista
+    Call carregarList(ListEstoqueM3, listaBlocos)
+    
+    ' Libera espeço na memoria
+    Set listaBlocos = Nothing
+End Sub
+
 '-----------------------------------------------------------------DESABILITA  E HABILITA CAMPOS-----------------------------------
 '                                                                 -----------------------------
 ' Desabilita campos da tela editar bloco
@@ -2026,7 +2062,7 @@ End Sub
 
 ' Habilita campos da tela editar bloco
 Private Sub habilitaCamposBlocoEditar()
-    txtIdBlocoEditar.Enabled = True
+    txtIdBlocoEditar.Enabled = False
     txtMaterialEditar.Enabled = True
     cbTipoMaterialEditar.Enabled = True
     txtObsEditar.Enabled = True
@@ -2071,9 +2107,9 @@ Private Sub habilitaCamposBlocoEditar()
     txtTotalPolimentoEditar.Enabled = True
     
     ' Custos
-    txtCustoMaterialBlocoEditar.Enabled = False
-    txtTotalM2PolimentoBlocoEditar.Enabled = False
-    txtTotalBlocoEditar.Enabled = False
+    txtCustoMaterialBlocoEditar.Enabled = True
+    txtTotalM2PolimentoBlocoEditar.Enabled = True
+    txtTotalBlocoEditar.Enabled = True
 End Sub
 
 '-----------------------------------------------------------------LIMPAR CAMPOS-----------------------------------
@@ -2205,9 +2241,6 @@ Private Sub carregarPedreiras(cbPedreiras As MSForms.comboBox)
         errorStyle.Informativo SEM_DADOS_MENSAGEM, SEM_DADOS_TITULO
         Exit Sub
     Else
-        ' Carregamento com primeiro item vazio
-        cbPedreiras.AddItem ""
-        
         ' Loop através dos itens da coleção
         For i = 1 To listaObjetos.Count
             ' Seta o ojeto
@@ -2467,7 +2500,9 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
     
     ' Verifica se tem algum dado a pesquisa
     If listaCollection.Count = -1 Or listaCollection.Count = 0 Then ' Se não tiver dados
-        If paginaAnterior <> 1 Then ' Ativa mensagem se a pagina anterior não for a do menu
+        If paginaAnterior = 1 Then
+            Exit Sub
+        ElseIf paginaAnterior <> 1 Then ' Ativa mensagem se a pagina anterior não for a do menu
             ' Mensagem de retorno
             errorStyle.Informativo SEM_DADOS_MENSAGEM, SEM_DADOS_TITULO
         End If

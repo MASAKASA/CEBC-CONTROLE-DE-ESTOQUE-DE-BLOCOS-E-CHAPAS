@@ -52,66 +52,26 @@ Function cadastrarEEditar(bloco As objBloco)
         ' Confere se tem uma serraria ou não
         If bloco.serraria.nome = "" Then ' Cadastro sem Serraria
             ' Realoca espaço da variavel
-            ReDim campos(1 To 22)
-            ' Colocando vingulas, Parenteses e  arpas simples os valores
-            campos(1) = "('" & bloco.idSistema & "', "
-            campos(2) = "'" & bloco.nomeMaterial & "', "
-            campos(3) = "'" & bloco.valoresAdicionais & "', "
-            campos(4) = "'" & bloco.valorBloco & "', "
-            campos(5) = "'" & bloco.precoM3Bloco & "', "
-            campos(6) = "'" & bloco.qtdM3 & "', "
-            campos(7) = "'" & bloco.numeroBlocoPedreira & "', "
-            campos(8) = "'" & bloco.largLiquidoBloco & "', "
-            campos(9) = "'" & bloco.altLiquidoBloco & "', "
-            campos(10) = "'" & bloco.compLiquidoBloco & "', "
-            campos(11) = "'" & bloco.dataCadastro & "', "
-            campos(12) = "'" & bloco.observacao & "', "
-            campos(13) = bloco.tipoMaterial.id & ", "
-            campos(14) = "'" & bloco.freteBloco & "', "
-            campos(15) = bloco.estoque.id & ", "
-            campos(16) = bloco.pedreira.id & ", "
-            campos(17) = bloco.status.id & ", "
-            campos(18) = "'" & bloco.compBrutoBloco & "', "
-            campos(19) = "'" & bloco.altBrutoBloco & "', "
-            campos(20) = "'" & bloco.largBrutoBloco & "', "
-            campos(21) = "'" & bloco.nota & "', "
-            campos(22) = "'" & bloco.consultarCustoMedio & "');"
-            
-            'Concatenando os valores
-            For i = 1 To 22
-                valoresCamposBloco = valoresCamposBloco & campos(i)
-            Next i
-
-            'Concatenando comando SQL e cadastrando bloco no banco de dados
-            strSql = "INSERT INTO Blocos ( Id_Bloco, Descricao, Valores_Adicionais, Preço_Bloco, valor_M3, " _
-                & "Quantidade_M3, Id_bloco_Pedreira, Larg_Liquida_Bloco, Alt_Liquida_Bloco, Comp_Liquida_Bloco, " _
-                & "Data_cadastro, Observacao, Fk_Tipo_Material, Valor_Frete, Fk_Estoque, Fk_Pedreira, Fk_Status, " _
-                & "Comp_Bruto_Bloco, Alt_Bruto_Bloco, Larg_Bruto_Bloco, Tem_Nota, Custo_Medio ) VALUES " & valoresCamposBloco
-            
-            rsBloco.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
-            
-        Else ' Cadastro com Serraria
-            ' Realoca espaço da variavel
             ReDim campos(1 To 23)
             ' Colocando vingulas, Parenteses e  arpas simples os valores
             campos(1) = "('" & bloco.idSistema & "', "
             campos(2) = "'" & bloco.nomeMaterial & "', "
             campos(3) = "'" & bloco.valoresAdicionais & "', "
             campos(4) = "'" & bloco.valorBloco & "', "
-            campos(5) = "'" & bloco.precoM3Bloco & "', "
-            campos(6) = "'" & bloco.qtdM3 & "', "
-            campos(7) = "'" & bloco.numeroBlocoPedreira & "', "
-            campos(8) = "'" & bloco.largLiquidoBloco & "', "
-            campos(9) = "'" & bloco.altLiquidoBloco & "', "
-            campos(10) = "'" & bloco.compLiquidoBloco & "', "
-            campos(11) = "'" & bloco.dataCadastro & "', "
-            campos(12) = "'" & bloco.observacao & "', "
-            campos(13) = bloco.tipoMaterial.id & ", "
-            campos(14) = "'" & bloco.freteBloco & "', "
-            campos(15) = bloco.estoque.id & ", "
-            campos(16) = bloco.pedreira.id & ", "
-            campos(17) = bloco.status.id & ", "
-            campos(18) = bloco.serraria.id & ", "
+            campos(5) = "'" & bloco.valorTotalBloco & "', "
+            campos(6) = "'" & bloco.precoM3Bloco & "', "
+            campos(7) = "'" & bloco.qtdM3 & "', "
+            campos(8) = "'" & bloco.numeroBlocoPedreira & "', "
+            campos(9) = "'" & bloco.largLiquidoBloco & "', "
+            campos(10) = "'" & bloco.altLiquidoBloco & "', "
+            campos(11) = "'" & bloco.compLiquidoBloco & "', "
+            campos(12) = "'" & bloco.dataCadastro & "', "
+            campos(13) = "'" & bloco.observacao & "', "
+            campos(14) = bloco.tipoMaterial.id & ", "
+            campos(15) = "'" & bloco.freteBloco & "', "
+            campos(16) = bloco.estoque.id & ", "
+            campos(17) = bloco.pedreira.id & ", "
+            campos(18) = bloco.status.id & ", "
             campos(19) = "'" & bloco.compBrutoBloco & "', "
             campos(20) = "'" & bloco.altBrutoBloco & "', "
             campos(21) = "'" & bloco.largBrutoBloco & "', "
@@ -124,7 +84,49 @@ Function cadastrarEEditar(bloco As objBloco)
             Next i
 
             'Concatenando comando SQL e cadastrando bloco no banco de dados
-            strSql = "INSERT INTO Blocos ( Id_Bloco, Descricao, Valores_Adicionais, Preço_Bloco, valor_M3, " _
+            strSql = "INSERT INTO Blocos ( Id_Bloco, Descricao, Valores_Adicionais, Preço_Bloco, Custo_Total, valor_M3, " _
+                & "Quantidade_M3, Id_bloco_Pedreira, Larg_Liquida_Bloco, Alt_Liquida_Bloco, Comp_Liquida_Bloco, " _
+                & "Data_cadastro, Observacao, Fk_Tipo_Material, Valor_Frete, Fk_Estoque, Fk_Pedreira, Fk_Status, " _
+                & "Comp_Bruto_Bloco, Alt_Bruto_Bloco, Larg_Bruto_Bloco, Tem_Nota, Custo_Medio ) VALUES " & valoresCamposBloco
+            
+            rsBloco.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
+            
+        Else ' Cadastro com Serraria
+            ' Realoca espaço da variavel
+            ReDim campos(1 To 24)
+            ' Colocando vingulas, Parenteses e  arpas simples os valores
+            campos(1) = "('" & bloco.idSistema & "', "
+            campos(2) = "'" & bloco.nomeMaterial & "', "
+            campos(3) = "'" & bloco.valoresAdicionais & "', "
+            campos(4) = "'" & bloco.valorBloco & "', "
+            campos(5) = "'" & bloco.valorTotalBloco & "', "
+            campos(6) = "'" & bloco.precoM3Bloco & "', "
+            campos(7) = "'" & bloco.qtdM3 & "', "
+            campos(8) = "'" & bloco.numeroBlocoPedreira & "', "
+            campos(9) = "'" & bloco.largLiquidoBloco & "', "
+            campos(10) = "'" & bloco.altLiquidoBloco & "', "
+            campos(11) = "'" & bloco.compLiquidoBloco & "', "
+            campos(12) = "'" & bloco.dataCadastro & "', "
+            campos(13) = "'" & bloco.observacao & "', "
+            campos(14) = bloco.tipoMaterial.id & ", "
+            campos(15) = "'" & bloco.freteBloco & "', "
+            campos(16) = bloco.estoque.id & ", "
+            campos(17) = bloco.pedreira.id & ", "
+            campos(18) = bloco.status.id & ", "
+            campos(19) = bloco.serraria.id & ", "
+            campos(20) = "'" & bloco.compBrutoBloco & "', "
+            campos(21) = "'" & bloco.altBrutoBloco & "', "
+            campos(22) = "'" & bloco.largBrutoBloco & "', "
+            campos(23) = "'" & bloco.nota & "', "
+            campos(24) = "'" & bloco.consultarCustoMedio & "');"
+            
+            'Concatenando os valores
+            For i = 1 To 24
+                valoresCamposBloco = valoresCamposBloco & campos(i)
+            Next i
+
+            'Concatenando comando SQL e cadastrando bloco no banco de dados
+            strSql = "INSERT INTO Blocos ( Id_Bloco, Descricao, Valores_Adicionais, Preço_Bloco, Custo_Total, valor_M3, " _
                 & "Quantidade_M3, Id_bloco_Pedreira, Larg_Liquida_Bloco, Alt_Liquida_Bloco, Comp_Liquida_Bloco, " _
                 & "Data_cadastro, Observacao, Fk_Tipo_Material, Valor_Frete, Fk_Estoque, Fk_Pedreira, Fk_Status, " _
                 & "Fk_Serraria, Comp_Bruto_Bloco, Alt_Bruto_Bloco, Larg_Bruto_Bloco, Tem_Nota , Custo_Medio) VALUES " & valoresCamposBloco

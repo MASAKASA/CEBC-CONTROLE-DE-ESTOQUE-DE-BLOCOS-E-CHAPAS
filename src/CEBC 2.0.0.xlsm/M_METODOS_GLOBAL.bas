@@ -326,7 +326,7 @@ End Function
 ' Função para retornar valor com dois digitos após a virgula
 Function formatarValor(valor As String)
 
-    'Variaveis do metodo
+    ' Variaveis do metodo
     Dim textoDigitado As String
     Dim textoFormatado As String
     Dim textoEditado As String
@@ -335,18 +335,18 @@ Function formatarValor(valor As String)
     Dim posicaoVirgula As Long
     Dim i As Integer
     
-    'Obtém o texto digitado pelo usuário
+    ' Obtém o texto digitado pelo usuário
     textoDigitado = valor
     textoFormatado = ""
     textoEditado = ""
     
-    'Remove todos os caracteres não numéricos
+    ' Remove todos os caracteres não numéricos
     For i = 1 To Len(textoDigitado)
         If IsNumeric(Mid(textoDigitado, i, 1)) Then
             textoFormatado = textoFormatado & Mid(textoDigitado, i, 1)
         End If
         
-        'Remove o zero na esquerda do texto
+        ' Remove o zero na esquerda do texto
         If Len(textoFormatado) = 4 Then
             If Left(textoFormatado, 1) = 0 Then
                 textoFormatado = Mid(textoFormatado, 2, 3)
@@ -354,23 +354,23 @@ Function formatarValor(valor As String)
         End If
     Next i
     
-    'Adiciona um caractere de virgula e mantém a máscara
+    ' Adiciona um caractere de virgula e mantém a máscara
     If Len(textoFormatado) = 4 Then
         textoFormatado = Left(textoFormatado, 1) & Mid(textoFormatado, 2, 1) & "," & Mid(textoFormatado, 3, 3)
     End If
     
-    'Adiciona um caractere de virgula e mantém a máscara
+    ' Adiciona um caractere de virgula e mantém a máscara
     If Len(textoFormatado) = 3 Then
         textoFormatado = Left(textoFormatado, 1) & "," & Mid(textoFormatado, 2, 3)
     End If
     
-    'Captura o primeiro caractere para comparação
+    ' Captura o primeiro caractere para comparação
     primeiroCaractere = Mid(textoFormatado, 1, 1)
 
-    'Faz a formatação do texto se for editado
+    ' Faz a formatação do texto se for editado
     If Len(textoFormatado) < 4 Then
         
-        'Adiciona os zeros a direita e mantém a máscara
+        ' Adiciona os zeros a direita e mantém a máscara
         If Len(textoFormatado) = 2 Then
             textoEditado = "0," & textoFormatado
             textoFormatado = textoEditado
@@ -386,9 +386,9 @@ Function formatarValor(valor As String)
         End If
     End If
     
-    'Coloca vigula com duas casas decimais se não for uma edição
+    ' Coloca vigula com duas casas decimais se não for uma edição
     If Len(textoFormatado) >= 5 Then
-        'Captura a posição da virgula no texto
+        ' Captura a posição da virgula no texto
         posicaoVirgula = InStr(textoFormatado, ",")
         
         If posicaoVirgula = 0 Then
@@ -397,6 +397,9 @@ Function formatarValor(valor As String)
             
             If Len(textoFormatado) = 7 Then
                 textoFormatado = Mid(textoFormatado, 1, 1) & "." & Mid(textoFormatado, 2, 6)
+                
+            ElseIf Len(textoFormatado) = 8 Then
+                textoFormatado = Mid(textoFormatado, 1, 2) & "." & Mid(textoFormatado, 3, 7)
             End If
         End If
     End If
