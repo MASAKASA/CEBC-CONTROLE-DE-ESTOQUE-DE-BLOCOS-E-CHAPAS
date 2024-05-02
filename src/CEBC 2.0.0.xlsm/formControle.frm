@@ -382,6 +382,8 @@ Private Sub btnLTxtEditarBloco_MouseDown(ByVal Button As Integer, ByVal Shift As
     
     ' Muda abra da multPage para tela editar bloco
     Me.MultiPageCEBC.Value = 3
+    ' Seta paniga anterior para futuras condições
+    paginaAnterior = 1
     
     ' Chama serviço para pesquisa do bloco
     Set bloco = daoBloco.pesquisarPorId(Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Envia o id do bloco
