@@ -161,7 +161,7 @@ Public Function factoryTipoPolimento(variavelTipoPolimento As objTipoPolimento) 
     Set factoryTipoPolimento = variavelTipoPolimento
 End Function
 
-' Criação da instância de estoque
+' Criação da instância de estoque blocos
 Public Function factoryEstoque(variavelEstoque As objEstoque) As objEstoque
     ' Verificação se a instância já foi criada
     If variavelEstoque Is Nothing Then
@@ -169,4 +169,14 @@ Public Function factoryEstoque(variavelEstoque As objEstoque) As objEstoque
     End If
     ' Retorna a instância
     Set factoryEstoque = variavelEstoque
+End Function
+
+' Criação da instância de estoque de chapas
+Public Function factoryEstoqueChapas(variavelEstoque As objEstoqueChapa) As objEstoque
+    ' Verificação se a instância já foi criada
+    If variavelEstoque Is Nothing Then
+        Set variavelEstoque = New objEstoque
+    End If
+    ' Retorna a instância
+    Set factoryEstoqueChapas = variavelEstoque
 End Function

@@ -10,6 +10,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public id As String
+Public idChapa As String
 Public compremento As String
 Public altura As String
 Public qtdM2 As String
@@ -43,3 +44,12 @@ Public Sub carregarTamanhoManipulacao(id As String, compremento As String, altur
     Me.espessura = espessura
     Set Me.tipoMaterial = tipoMaterial
 End Sub
+
+' Gets e sets
+Public Function getTipoMaterial() As objTipoMaterial
+    getTipoMaterial = tipoMaterial
+End Function
+
+Public Function setTipoMaterial(tipoMaterial As objTipoMaterial)
+    Set Me.tipoMaterial = tipoMaterial
+End Function

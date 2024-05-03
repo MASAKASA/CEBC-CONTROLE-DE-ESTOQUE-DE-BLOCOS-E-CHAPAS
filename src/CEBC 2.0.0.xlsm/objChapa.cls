@@ -11,57 +11,102 @@ Option Explicit
 
 Public idSistema As String
 Public nomeMaterial As String
+Public qtdEstoque As String
+Public idPedreira As String
+Public custoPolimento As String
+Public custoTotal As String
 Public compBruto As String
 Public altBruto As String
-Public custo As String
-Public total As String
-Public tamanhos As New Collection
+Public qtdM2Bruto As String
+Public bloco As objBloco
 Public polideira As objPolideira
 Public tipoPolimento As objTipoPolimento
-Private tamanho As objTamanho
-Private tipoMaterial As objTipoMaterial
+Public estoque As objEstoqueChapa
+Private tamanhos As Collection
 
 ' Construtor para cadastro
-Public Sub carregarChapaCadastro(nomeMaterial As String, compBruto As String, _
-                        altBruto As String, custo As String, total As String, _
-                        polideira As objPolideira, tipoPolimento As objTipoPolimento)
-
-    ' Atribuições
-    Me.nomeMaterial = nomeMaterial
-    Me.compBruto = compBruto
-    Me.altBruto = altBruto
-    Me.custo = custo
-    Me.total = total
-    Set Me.polideira = polideira
-    Set Me.tipoPolimento = tipoPolimento
-End Sub
-
-' Construtor para manipulção
-Public Sub carregarChapaManipulacao(idSistema As String, nomeMaterial As String, _
-                        compBruto As String, altBruto As String, custo As String, _
-                        total As String, polideira As objPolideira, tipoPolimento As objTipoPolimento)
+Public Sub carregarChapaCadastro(idSistema As String, nomeMaterial As String, qtdEstoque As String, idPedreira As String, _
+                    custoPolimento As String, custoTotal As String, compBruto As String, altBruto As String, qtdM2Bruto As String, _
+                    bloco As objBloco, polideira As objPolideira, tipoPolimento As objTipoPolimento, estoque As objEstoqueChapa, _
+                    tamanhos As Collection)
 
     ' Atribuições
     Me.idSistema = idSistema
     Me.nomeMaterial = nomeMaterial
+    Me.qtdEstoque = qtdEstoque
+    Me.idPedreira = idPedreira
+    Me.custoPolimento = custoPolimento
+    Me.custoTotal = custoTotal
     Me.compBruto = compBruto
     Me.altBruto = altBruto
-    Me.custo = custo
-    Me.total = total
-    Set Me.polideira = polideira
-    Set Me.tipoPolimento = tipoPolimento
+    Me.qtdM2Bruto = qtdM2Bruto
+    Set bloco = bloco
+    Set polideira = polideira
+    Set tipoPolimento = tipoPolimento
+    Set estoque = estoque
+    Set tamanhos = tamanhos
 End Sub
 
-' Adiciona os tamanhos das chapas
-Public Sub addTamanhos(comp As String, alt As String, qtdM2 As String, qtdEstoque As String, esp As String, _
-            tipoMaterial As objTipoMaterial)
+' Construtor para manipulção
+Public Sub carregarChapaManipulacao(idSistema As String, nomeMaterial As String, qtdEstoque As String, idPedreira As String, _
+                    custoPolimento As String, custoTotal As String, compBruto As String, altBruto As String, qtdM2Bruto As String, _
+                    bloco As objBloco, polideira As objPolideira, tipoPolimento As objTipoPolimento, estoque As objEstoqueChapa, _
+                    tamanhos As Collection)
+
     ' Atribuições
-    Me.tamanho = New objTamanho
-    Set Me.tipoMaterial = objTipoMaterial
-    
-    ' Criação do objeto
-    tamanho.carregarTamanhoCadastro comp, alt, qtdM2, qtdEstoque, esp, tipoMaterial
-    
-    ' Adição do tamanho
-    tamanhos.Add tamanho
+    Me.idSistema = idSistema
+    Me.nomeMaterial = nomeMaterial
+    Me.qtdEstoque = qtdEstoque
+    Me.idPedreira = idPedreira
+    Me.custoPolimento = custoPolimento
+    Me.custoTotal = custoTotal
+    Me.compBruto = compBruto
+    Me.altBruto = altBruto
+    Me.qtdM2Bruto = qtdM2Bruto
+    Set bloco = bloco
+    Set polideira = polideira
+    Set tipoPolimento = tipoPolimento
+    Set estoque = estoque
+    Set tamanhos = tamanhos
 End Sub
+
+' Gets e sets
+Public Function getBloco() As objBloco
+    getBloco = bloco
+End Function
+
+Public Function setBloco(bloco As objBloco)
+    Set Me.bloco = bloco
+End Function
+
+Public Function getPolideira() As objPolideira
+    getPolideira = polideira
+End Function
+
+Public Function setPolideira(bloco As objPolideira)
+    Set Me.polideira = polideira
+End Function
+
+Public Function getTipoPolimento() As objTipoPolimento
+    getTipoPolimento = tipoPolimento
+End Function
+
+Public Function setTipoPolimento(tipoPolimento As objTipoPolimento)
+    Set Me.tipoPolimento = tipoPolimento
+End Function
+
+Public Function getEstoque() As objEstoqueChapa
+    getEstoque = estoque
+End Function
+
+Public Function setEstoque(estoque As objEstoqueChapa)
+    Set Me.estoque = estoque
+End Function
+
+Public Function getTamanhos() As Collection
+    getTamanhos = tamanhos
+End Function
+
+Public Function setTamanhos(tamanhos As Collection)
+    Set Me.tamanhos = tamanhos
+End Function

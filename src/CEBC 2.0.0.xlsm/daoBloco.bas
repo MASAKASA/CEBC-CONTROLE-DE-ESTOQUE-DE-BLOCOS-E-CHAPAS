@@ -25,7 +25,7 @@ Function cadastrarEEditar(bloco As objBloco)
     ' Seta true em cadastro
     cadastro = True
     
-    'Faz a consulta para saber se o código do bloco já exite
+    ' Faz a consulta para saber se o código do bloco já exite
     strSql = "SELECT * FROM blocos WHERE Id_Bloco = '" & bloco.idSistema & "';"
     
     ' Abrindo conexão com banco
@@ -538,10 +538,8 @@ Function pesquisarPorIdsVariados(idsParaPesquisa As Collection) As Collection
     
     ' Fechar conexão com banco
     Call fecharConexaoBanco
-    
     ' Retorno
     Set pesquisarPorIdsVariados = listaBlocos
-    
     ' Libera espaço
     Set listaBlocos = Nothing
 End Function
@@ -577,7 +575,7 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
     dataInicial = M_METODOS_GLOBAL.ConverterFormatoData(dataInicial)
     dataFinal = M_METODOS_GLOBAL.ConverterFormatoData(dataFinal)
     
-    'String SQL para a consulta
+    ' String SQL para a consulta
     strSql = "SELECT * FROM Blocos"
     strLike = ""
     strWhere = ""
@@ -585,16 +583,16 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
     strBetween = "Data_Cadastro BETWEEN #" & dataInicial & "# AND #" & dataFinal & "# "
     strOrderBY = "ORDER BY Descricao;"
     
-    'Construindo a cláusula LIKE
+    ' Construindo a cláusula LIKE
 '    If descricaoBloco <> "" Then
 '        strLike = "Descricao LIKE '*" & descricaoBloco & "*'"
 '
 '    End If
     
-    'Abrindo conexão com banco para pesquisar os blocos
+    ' Abrindo conexão com banco para pesquisar os blocos
     Call conctarBanco
     
-    'Construindo a cláusula WHERE baseada nos filtros selecionados
+    ' Construindo a cláusula WHERE baseada nos filtros selecionados
     If idBlocoPedreira <> "" Then
         strWhere = "Id_bloco_Pedreira = '" & idBlocoPedreira & "'"
     End If
@@ -624,7 +622,7 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
         strWhere = strWhere & "Tem_Nota = '" & temNota & "'"
     End If
     
-    'Construindo a String para Status baseada nos filtros selecionados
+    ' Construindo a String para Status baseada nos filtros selecionados
     If statusPedreira <> "" Then
         idStatus = retornarIdObjeto( _
                         "SELECT * FROM Status WHERE Nome_Status = '" & statusPedreira & "';", "Id_Status")
@@ -676,12 +674,12 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
         strFkStatus = strFkStatus & idStatus
     End If
     
-    'Finalizando a String para Status baseada nos filtros selecionados
+    ' Finalizando a String para Status baseada nos filtros selecionados
     If strFkStatus <> "" Then
         strFkStatus = "Fk_Status IN (" & strFkStatus & ")"
     End If
     
-    'Adicionar a cláusula WHERE à consulta
+    ' Adicionar a cláusula WHERE à consulta
     If strWhere <> "" Or strFkStatus <> "" Then
         If strWhere <> "" And strFkStatus = "" Then
             If strLike <> "" Then

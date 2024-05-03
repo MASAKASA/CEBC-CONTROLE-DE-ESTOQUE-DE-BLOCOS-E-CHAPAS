@@ -1369,9 +1369,7 @@ End Sub
 ' Botão btnLTxtPesquisarChapas tela estoque m²
 Private Sub btnLTxtPesquisarChapas_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
-    MsgBox "Chama Serviço pesquisar chapa, tela estoque m²"
-    ' Seta o foco
-    txtMaterialChapaPesquisa.SetFocus
+    Call pesquisarChapasFilter
 End Sub
 ' Botão btnLTxtLimparFiltrosChapas tela estoque m²
 Private Sub btnLTxtLimparFiltrosChapas_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -1895,6 +1893,29 @@ End Sub
 
 '-----------------------------------------------------------------PESQUISAR-------------------------------------------------------
 '                                                                 ---------
+' Pesquisa blocos com filtros tela estoque m³
+Private Sub pesquisarChapasFilter()
+    ' Variaveis do metodo
+    Dim listaChapas As Collection
+    Dim estoqueZero As String
+    
+    ' Atribuição das variaveies
+    If obEstoqueZeroNao.Value = True Then
+        estoqueZero = "NÃO"
+    Else
+        estoqueZero = "SIM"
+    End If
+    
+    ' Faz pesquisa com filtros no banco de dados e retorna uma lista
+    Set listaChapas = daoChapa.listarChapasFilter(txtMaterialChapaPesquisa.Value, txtIdBlocoChapaPesquisa.Value, _
+                        txtIdchapaEstoque.Value, cbPolideiraChapaPesquisa.Value, cbTipoPolimentoPesquisa.Value, estoqueZero)
+            
+    ' Carrega a lista
+    Call carregarList(ListEstoqueChapas, listaChapas)
+    
+    ' Libera espeço na memoria
+    Set listaChapas = Nothing
+End Sub
 ' Pesquisa blocos com filtros tela estoque m³
 Private Sub pesquisarBlocosFilter()
     ' Variaveis do metodo
