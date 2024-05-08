@@ -95,7 +95,7 @@ Function pesquisarPorId(id As String) As objStatus
     'Abrindo conexão com banco
     Call conctarBanco
     ' Criando e abrindo Recordset para consulta
-    Set rs = ObjectFactory.factoryRsBloco(rs)
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
@@ -133,7 +133,7 @@ Function pesquisarPorNome(nomeStatus As String) As objStatus
     'Abrindo conexão com banco
     Call conctarBanco
     ' Criando e abrindo Recordset para consulta
-    Set rs = ObjectFactory.factoryRsBloco(rs)
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
@@ -169,7 +169,7 @@ Function listarStatus() As Collection
     ' Criação e atribuição dos objeto
     Set listaStatus = ObjectFactory.factoryLista(listaStatus)
     ' Criando e abrindo Recordset para consulta
-    Set rs = ObjectFactory.factoryRsBloco(rs)
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     

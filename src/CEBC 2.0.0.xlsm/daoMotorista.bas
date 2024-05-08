@@ -95,7 +95,7 @@ Function pesquisarPorId(id As String) As objMotoista
     'Abrindo conexão com banco
     Call conctarBanco
     ' Criando e abrindo Recordset para consulta
-    Set rs = ObjectFactory.factoryRsBloco(rs)
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
@@ -133,7 +133,7 @@ Function pesquisarPorNome(nomeMotorista) As objMotoista
     'Abrindo conexão com banco
     Call conctarBanco
     ' Criando e abrindo Recordset para consulta
-    Set rs = ObjectFactory.factoryRsBloco(rs)
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
@@ -169,7 +169,7 @@ Function listarMotoristas() As Collection
     ' Criação e atribuição dos objeto
     Set listaMotoristas = ObjectFactory.factoryLista(listaMotoristas)
     ' Criando e abrindo Recordset para consulta
-    Set rs = ObjectFactory.factoryRsBloco(rs)
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     

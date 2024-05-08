@@ -22,7 +22,7 @@ Public bloco As objBloco
 Public polideira As objPolideira
 Public tipoPolimento As objTipoPolimento
 Public estoque As objEstoqueChapa
-Private tamanhos As Collection
+Public tamanhos As Collection
 
 ' Construtor para cadastro
 Public Sub carregarChapaCadastro(idSistema As String, nomeMaterial As String, qtdEstoque As String, idPedreira As String, _
@@ -40,11 +40,11 @@ Public Sub carregarChapaCadastro(idSistema As String, nomeMaterial As String, qt
     Me.compBruto = compBruto
     Me.altBruto = altBruto
     Me.qtdM2Bruto = qtdM2Bruto
-    Set bloco = bloco
-    Set polideira = polideira
-    Set tipoPolimento = tipoPolimento
-    Set estoque = estoque
-    Set tamanhos = tamanhos
+    Set Me.bloco = bloco
+    Set Me.polideira = polideira
+    Set Me.tipoPolimento = tipoPolimento
+    Set Me.estoque = estoque
+    Set Me.tamanhos = tamanhos
 End Sub
 
 ' Construtor para manipulção
@@ -63,11 +63,11 @@ Public Sub carregarChapaManipulacao(idSistema As String, nomeMaterial As String,
     Me.compBruto = compBruto
     Me.altBruto = altBruto
     Me.qtdM2Bruto = qtdM2Bruto
-    Set bloco = bloco
-    Set polideira = polideira
-    Set tipoPolimento = tipoPolimento
-    Set estoque = estoque
-    Set tamanhos = tamanhos
+    Set Me.bloco = bloco
+    Set Me.polideira = polideira
+    Set Me.tipoPolimento = tipoPolimento
+    Set Me.estoque = estoque
+    Set Me.tamanhos = tamanhos
 End Sub
 
 ' Gets e sets

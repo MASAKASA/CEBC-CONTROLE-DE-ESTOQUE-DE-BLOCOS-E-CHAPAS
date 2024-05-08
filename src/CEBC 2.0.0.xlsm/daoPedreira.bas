@@ -95,7 +95,7 @@ Function pesquisarPorId(id As String) As objPedreira
     'Abrindo conexão com banco
     Call conctarBanco
     ' Criando e abrindo Recordset para consulta
-    Set rs = ObjectFactory.factoryRsBloco(rs)
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
@@ -133,7 +133,7 @@ Function pesquisarPorNome(nomePedreira As String) As objPedreira
     'Abrindo conexão com banco
     Call conctarBanco
     ' Criando e abrindo Recordset para consulta
-    Set rs = ObjectFactory.factoryRsBloco(rs)
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
@@ -169,7 +169,7 @@ Function listarPedreiras() As Collection
     ' Criação e atribuição dos objeto
     Set listaPedreiras = ObjectFactory.factoryLista(listaPedreiras)
     ' Criando e abrindo Recordset para consulta
-    Set rs = ObjectFactory.factoryRsBloco(rs)
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     

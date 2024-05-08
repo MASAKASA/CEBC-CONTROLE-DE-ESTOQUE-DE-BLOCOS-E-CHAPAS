@@ -35,10 +35,12 @@ Dim chapa As objChapa
 Dim pedreira As objPedreira
 Dim polideira As objPolideira
 Dim serraria As objSerraria
+Dim tamanho As objTamanho
 Dim tipoMaterial As objTipoMaterial
 Dim tipoPolimento As objTipoPolimento
 Dim statusObj As objStatus
 Dim estoque As objEstoque
+Dim estoqueChapa As objEstoqueChapa
 
 ' Inicialização do formControle
 Private Sub UserForm_Initialize()
@@ -404,7 +406,15 @@ End Sub
 ' Botão btnLTxtADDEstoque tela estoque m³
 Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     
-        ' Verifica se tem algum item selecionado
+    ' Variaveis do metodo
+    Dim temCadastro As Boolean
+    Dim chapaCadastro As objChapa
+    Dim tamanhos As Collection
+    Dim idChapa As String
+    Dim descricaoChapa As String
+    Dim valorTotalSerrada As String
+    
+    ' Verifica se tem algum item selecionado
     If Me.ListEstoqueM3.ListIndex = -1 Then
         ' Mensagem usuário
         errorStyle.Informativo SELECIONE_TEM_MENSAGEM, SELECIONE_TEM_TITULO
@@ -425,27 +435,63 @@ Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As 
     formControle.Controls("btnLMenuBloco").Width = 189
     formControle.Controls("btnLMenuBloco").TextAlign = fmTextAlignLeft
     
-    ' Muda abra da multPage para tela editar bloco
-    Me.MultiPageCEBC.Value = 3
     ' Seta número de pagina para poder voltar
     paginaAnterior = 1
-    ' Seta o foco
-    cbPolideiraChapa.SetFocus
     
     ' Chama serviço para pesquisa do bloco
     Set bloco = daoBloco.pesquisarPorId(Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0)) ' Envia o id do bloco
     
-    ' Carregar os comboBox da tela
-    Call carregarTiposMateriais(Me.cbTipoMaterialEditar)
-    Call carregarPedreiras(Me.cbPedreiraEditar)
-    Call carregarSerrarias(Me.cbSerrariaEditar)
-    Call carregarPolideiras(Me.cbPolideiraEditar)
-    Call carregarEstoque(Me.cbEstoqueEditar)
-    Call carregarTemNota(Me.cbNotaBlocoEditar)
-    Call carregarCustoMedio(Me.cbCustoMedioEditar)
+    ' Pesquisa se já existe cadastro de chapas com id do bloco
+    temCadastro = daoChapa.pesquisarPorIdPedreira(bloco.numeroBlocoPedreira)
     
-    ' Carrega os dados na tela editar bloco
-    Call carregarDadosBlocoTelaEdicaoBloco(bloco)
+    If temCadastro = True Then
+        ' Direciona para tela de estoque de chapas para que possa ser escolhido qual chapa será adicionada no estoque
+        Me.MultiPageCEBC.Value = 4
+        ' Seta numero do bloco para pesquisa
+        txtIdBlocoChapaPesquisa.Value = bloco.numeroBlocoPedreira
+        ' Chama Serviço
+        Call pesquisarChapasFilter
+        ' Mensagem que já existe cadastro de chapa com esse numero da pedreira
+        errorStyle.Informativo ESCOLHA_CHAPA_MENSAGEM, ESCOLHA_CHAPA_TITULO
+    Else
+        ' Direciona para tela lançamento e edição de chapa
+        Me.MultiPageCEBC.Value = 6
+        ' Carrega combox da tela lançamento e edição de chapa
+        Call carregarTiposMateriais(Me.cbTipoMaterialChapaC)
+        Call carregarEstoqueChapas(Me.cbEstoqueChapaC)
+        Call carregarTiposMateriais(Me.cbTiposMateriaisChapas)
+        
+        ' limpa a lista para carregamento com tipo de polimento só com 'bruto'
+        cbTipoPolimentoChapa.Clear
+        cbTipoPolimentoChapa.AddItem "BRUTO"
+        
+        ' Cria chapa e direciona para tela de lançamento e edição de chapa para colocar demais informações
+        Set chapaCadastro = ObjectFactory.factoryChapa(chapaCadastro)
+        Set polideira = ObjectFactory.factoryPolideira(polideira)
+        Set tipoPolimento = daoTipoPolimento.pesquisarPorNome("BRUTO")
+        Set estoqueChapa = daoEstoqueChapa.pesquisarPorNome("CASA DO GRANITO")
+        Set tamanhos = ObjectFactory.factoryLista(tamanhos)
+        
+        ' Formatar id, descrição da chapa e valor total serrada
+        idChapa = M_METODOS_GLOBAL.formatarIdChapa(bloco.idSistema, "BT")
+        descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(bloco.nomeMaterial, "BRUTO")
+        valorTotalSerrada = M_METODOS_GLOBAL.calcularValor(bloco.qtdM2Serrada, bloco.valorMetroSerrada)
+        
+        chapaCadastro.carregarChapaCadastro idChapa, descricaoChapa, bloco.qtdChapas, bloco.numeroBlocoPedreira, bloco.valorMetroSerrada, _
+                            valorTotalSerrada, bloco.compBrutoChapaBruta, bloco.altBrutoChapaBruta, bloco.qtdM2Serrada, bloco, polideira, tipoPolimento, _
+                            estoqueChapa, tamanhos
+                            
+        ' Carrega os dados na tela lançamento e edição de chapa
+        Call carregarDadosChapaTelaEdicaoChapa(chapaCadastro, bloco)
+        
+        ' Libera espaço em memoria
+        Set chapaCadastro = Nothing
+        Set polideira = Nothing
+        Set tipoPolimento = Nothing
+        Set estoqueChapa = Nothing
+        Set tamanhos = Nothing
+    End If
+    
     ' Libera espaço em memoria
     Set bloco = Nothing
 End Sub
@@ -1632,61 +1678,114 @@ End Sub
 '-----------------------------------------------------------------TELA LANÇAMENTO E EDIÇÃO CHAPA-----------------------------------
 '                                                                 ------------------------------
 ' Carrega os campos com os dados da chapa tela lançamento e edição chapa
-Private Sub carregarDadosChapaTelaEdicaoChapa() ' Irá receber o objeto Chapa para poder carregar os campos e algum campos do bloco
+Private Sub carregarDadosChapaTelaEdicaoChapa(chapa As objChapa, bloco As objBloco)
+    ' Variaveis do medoto
+    Dim i As Integer
+    
     ' Dados bloco
-    txtIdBlocoPedreiraChapa.Value = "20745-MOON-LIGHT-BL"
-    txtDecricaoBlocoChapa.Value = "BLOCO BRANCO DALLAS MOON-LIGHT"
-    txtQtdDisponivelChapaBloco.Value = "71"
-    txtNBlocoPedreiraChapa.Value = "20745"
-    txtTipoMaterialChapa.Value = "EXTRA"
+    txtIdBlocoPedreiraChapa.Value = bloco.idSistema
+    txtDecricaoBlocoChapa.Value = bloco.nomeMaterial
+    txtQtdDisponivelChapaBloco.Value = bloco.qtdChapas
+    txtNBlocoPedreiraChapa.Value = bloco.numeroBlocoPedreira
+    txtTipoMaterialChapa.Value = bloco.tipoMaterial.nome
     
     ' Dados chapa
-    txtIdChapaSistema.Value = "20745-MOON-LIGHT-PO"
-    txtDescricaoChapa.Value = "BRANCO DALLAS MOON-LIGHT POLIDO"
-    txtEstoqueChapa.Value = "71"
+    txtIdChapaSistema.Value = chapa.idSistema
+    txtDescricaoChapa.Value = chapa.nomeMaterial
+    txtEstoqueChapa.Value = chapa.qtdEstoque
     
     ' Dimensões e custos
-    Call selecaoItem("cbPolideiraChapa", "SÃO ROQUE")
-    Call selecaoItem("cbTipoPolimentoChapa", "POLIDO")
-    Call selecaoItem("cbTipoMaterialChapaC", "COMERCIAL SATAND")
-    Call selecaoItem("cbEstoqueChapaC", "CASA DO GRANITO")
-    txtCompLiquidoChapa.Value = "3,0000"
-    txtAlturaLiquidoChapa.Value = "2,0000"
-    txtQtdChapaC.Value = "71"
-    txtCompBrutoChapa.Value = "3,5000"
-    txtAlturaBrutaChapa.Value = "2,5000"
-    txtEspChapa.Value = "02"
-    txtQtsM2Chapa.Value = "426,0000"
-    txtCustoChapa.Value = "71,50"
-    txtTotalChapas.Value = "30.459,00"
+    Call selecaoItem("cbPolideiraChapa", chapa.polideira.nome)
+    Call selecaoItem("cbTipoPolimentoChapa", chapa.tipoPolimento.nome)
+    Call selecaoItem("cbEstoqueChapaC", chapa.estoque.nome)
+    txtQtdChapaC.Value = chapa.qtdEstoque
+    txtCompBrutoChapa.Value = M_METODOS_GLOBAL.formatarComPontos(Format(chapa.compBruto, "0.0000"))
+    txtAlturaBrutaChapa.Value = M_METODOS_GLOBAL.formatarComPontos(Format(chapa.altBruto, "0.0000"))
+    txtQtsM2Chapa.Value = M_METODOS_GLOBAL.formatarComPontos(Format(chapa.qtdM2Bruto, "0.0000"))
+    txtCustoChapa.Value = M_METODOS_GLOBAL.formatarComPontos(Format(chapa.custoPolimento, "0.00"))
+    txtTotalChapas.Value = M_METODOS_GLOBAL.formatarComPontos(Format(chapa.custoTotal, "0.00"))
     
-    ' Tamanhos diferentes
     ' Carrega lista com tamanhos das chapas
-    Call carregarListTamanhosChapas(ListTamanhosChapas) ' Irá enviar id chapa para carregamento
-   
-    ' Se Status do bloco for finalizado deixar visivel lBlocoFinalizadoChapa e cbAbrirParaEdicao e desabilitar todos os campos
+    Call carregarListTamanhosChapas(ListTamanhosChapas, chapa.tamanhos) ' Irá enviar id chapa para carregamento
+        
+    ' Verifica se a lista só tem um tamanho
+    If chapa.tamanhos.Count = 1 Then
+        For i = 1 To chapa.tamanhos.Count
+            ' Seta o ojeto
+            Set tamanho = chapa.tamanhos(i)
+            
+            ' Tamanho único
+            Call selecaoItem("cbTipoMaterialChapaC", tamanho.tipoMaterial.nome)
+            txtCompLiquidoChapa.Value = M_METODOS_GLOBAL.formatarComPontos(Format(tamanho.compremento, "0.0000"))
+            txtAlturaLiquidoChapa.Value = M_METODOS_GLOBAL.formatarComPontos(Format(tamanho.altura, "0.0000"))
+            txtEspChapa.Value = tamanho.espessura
+
+            ' Libera espaço na memoria
+            Set tamanho = Nothing
+        Next i
+    End If
     
+    ' Se Status do bloco for finalizado deixar visivel lBlocoFinalizadoChapa e cbAbrirParaEdicao e desabilitar todos os campos
+    If bloco.status.nome = "FECHADO" Then
+        lBlocoFinalizadoChapa.Visible = True
+        cbAbrirParaEdicao.Visible = True
+        Call desabilitaCamposChapas
+    Else
+        lBlocoFinalizadoChapa.Visible = False
+        cbAbrirParaEdicao.Visible = False
+        Call habilitaCamposChapas
+    End If
 End Sub
+
+' Habilita e desabilita campos para edição tela lançamento e edição de chapa
+Private Sub cbAbrirParaEdicao_Click()
+    If cbAbrirParaEdicao.Value = True Then
+        Call habilitaCamposChapas
+    Else
+        Call desabilitaCamposChapas
+    End If
+End Sub
+
+' Logica para criar id da chapa no sistema tela lançamento e edição de chapa
+Private Sub cbTipoPolimentoChapa_Change()
+    
+'    ' Varuaveis do metodo
+'    Dim codFinal As String
+'    Dim posicao As Integer
+'
+'    '
+'    posicao = Len(cbTipoPolimentoChapa.Value) - 2
+'    codFinal = Mid(cbTipoPolimentoChapa.Value, posicao, 3)
+'    ' Comparação para logica
+'    If cbTipoPolimentoChapa.Value = "BRUTO" Then
+'
+'    End If
+End Sub
+
 ' Botão btnLImgCadastrarPolideiraChapa tela lançamento e edição chapa
 Private Sub btnLImgCadastrarPolideiraChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço cadastrar Polideira, tela lançamento e edição chapa"
 End Sub
+
 ' Botão btnLImgCadastrarTipoPolideiraChapa tela lançamento e edição chapa
 Private Sub btnLImgCadastrarTipoPolideiraChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço cadastrar tipo polimento, tela lançamento e edição chapa"
 End Sub
+
 ' Botão btnLImgCadastrarTipoMaterialChapa tela lançamento e edição chapa
 Private Sub btnLImgCadastrarTipoMaterialChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço tipo material, tela lançamento e edição chapa"
 End Sub
+
 ' Botão btnLImgCadastrarTipoMaterialChapaTamanhos tela lançamento e edição chapa
 Private Sub btnLImgCadastrarTipoMaterialChapaTamanhos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço tipo material, tela lançamento e edição chapa"
 End Sub
+
 ' Botão btnLTxtAdicionarTamanhoChapa tela lançamento e edição chapa
 Private Sub btnLTxtAdicionarTamanhoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
@@ -1694,6 +1793,7 @@ Private Sub btnLTxtAdicionarTamanhoChapa_MouseDown(ByVal Button As Integer, ByVa
     ' Seta o foco
     cbTiposMateriaisChapas.SetFocus
 End Sub
+
 ' Botão btnLTxtEditarTamanhoChapa tela lançamento e edição chapa
 Private Sub btnLTxtEditarTamanhoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
@@ -1701,6 +1801,7 @@ Private Sub btnLTxtEditarTamanhoChapa_MouseDown(ByVal Button As Integer, ByVal S
     ' Seta o foco
     cbTiposMateriaisChapas.SetFocus
 End Sub
+
 ' Botão btnLTxtTirarDaLista tela lançamento e edição chapa
 Private Sub btnLTxtTirarDaLista_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
@@ -1708,6 +1809,7 @@ Private Sub btnLTxtTirarDaLista_MouseDown(ByVal Button As Integer, ByVal Shift A
     ' Seta o foco
     cbTiposMateriaisChapas.SetFocus
 End Sub
+
 ' Botão btnLTxtSalvarChapa tela lançamento e edição chapa
 Private Sub btnLTxtSalvarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
@@ -1715,6 +1817,7 @@ Private Sub btnLTxtSalvarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As
     ' Seta o foco
     cbPolideiraChapa.SetFocus
 End Sub
+
 ' Botão btnLTxtVoltarChapa tela lançamento e edição chapa
 Private Sub btnLTxtVoltarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Volta para tela que chamou
@@ -2031,6 +2134,67 @@ End Sub
 
 '-----------------------------------------------------------------DESABILITA  E HABILITA CAMPOS-----------------------------------
 '                                                                 -----------------------------
+' Desabilita campos da tela lançamento e edição de chapas
+Private Sub desabilitaCamposChapas()
+    txtIdChapaSistema.Enabled = False
+    txtDescricaoChapa.Enabled = False
+    txtEstoqueChapa.Enabled = False
+    txtIdBlocoPedreiraChapa.Enabled = False
+    txtDecricaoBlocoChapa.Enabled = False
+    txtQtdDisponivelChapaBloco.Enabled = False
+    txtNBlocoPedreiraChapa.Enabled = False
+    txtTipoMaterialChapa.Enabled = False
+    cbPolideiraChapa.Enabled = False
+    cbTipoPolimentoChapa.Enabled = False
+    cbTipoMaterialChapaC.Enabled = False
+    cbEstoqueChapaC.Enabled = False
+    txtCompLiquidoChapa.Enabled = False
+    txtAlturaLiquidoChapa.Enabled = False
+    txtQtdChapaC.Enabled = False
+    txtCompBrutoChapa.Enabled = False
+    txtAlturaBrutaChapa.Enabled = False
+    txtEspChapa.Enabled = False
+    txtQtsM2Chapa.Enabled = False
+    txtCustoChapa.Enabled = False
+    txtTotalChapas.Enabled = False
+    cbTiposMateriaisChapas.Enabled = False
+    txtCompTipoMateriaisChapa.Enabled = False
+    txtAltTipoMateriaisChapa.Enabled = False
+    txtQtdM2TipoMateriaisChapas.Enabled = False
+    txtQtdTipoMateriaisChapas.Enabled = False
+    txtEspTiposMateriaisChapa.Enabled = False
+End Sub
+
+' Habilita campos da tela lançamento e edição de chapas
+Private Sub habilitaCamposChapas()
+    txtIdChapaSistema.Enabled = False
+    txtDescricaoChapa.Enabled = True
+    txtEstoqueChapa.Enabled = True
+    txtIdBlocoPedreiraChapa.Enabled = False
+    txtDecricaoBlocoChapa.Enabled = False
+    txtQtdDisponivelChapaBloco.Enabled = False
+    txtNBlocoPedreiraChapa.Enabled = False
+    txtTipoMaterialChapa.Enabled = False
+    cbPolideiraChapa.Enabled = True
+    cbTipoPolimentoChapa.Enabled = True
+    cbTipoMaterialChapaC.Enabled = True
+    cbEstoqueChapaC.Enabled = True
+    txtCompLiquidoChapa.Enabled = True
+    txtAlturaLiquidoChapa.Enabled = True
+    txtQtdChapaC.Enabled = True
+    txtCompBrutoChapa.Enabled = True
+    txtAlturaBrutaChapa.Enabled = True
+    txtEspChapa.Enabled = True
+    txtQtsM2Chapa.Enabled = True
+    txtCustoChapa.Enabled = True
+    txtTotalChapas.Enabled = True
+    cbTiposMateriaisChapas.Enabled = True
+    txtCompTipoMateriaisChapa.Enabled = True
+    txtAltTipoMateriaisChapa.Enabled = True
+    txtQtdM2TipoMateriaisChapas.Enabled = True
+    txtQtdTipoMateriaisChapas.Enabled = True
+    txtEspTiposMateriaisChapa.Enabled = True
+End Sub
 ' Desabilita campos da tela editar bloco
 Private Sub desabilitaCamposBlocoEditar()
     txtIdBlocoEditar.Enabled = False
@@ -2375,6 +2539,7 @@ Private Sub carregarPolideiras(cbPolideiras As MSForms.comboBox)
 
     ' limpa a lista para carregamento
     cbPolideiras.Clear
+    cbPolideiras.AddItem ""
     
     ' Verifica se tem algum dado a pesquisa
     If listaObjetos.Count = -1 Or listaObjetos.Count = 0 Then ' Se não tiver dados
@@ -2428,7 +2593,7 @@ Private Sub carregarTiposPolimento(cbTiposPolimento As MSForms.comboBox)
     Set listaObjetos = Nothing
 End Sub
 
-' Carrega a combobox de estoque carregarCustoMedio
+' Carrega a combobox de estoque tela edição de bloco
 Private Sub carregarEstoque(cbTiposEstoque As MSForms.comboBox)
     ' Variaveis do metodo
     Dim listaObjetos As Collection
@@ -2458,6 +2623,41 @@ Private Sub carregarEstoque(cbTiposEstoque As MSForms.comboBox)
     End If
     ' Libera espaço da memoria
     Set listaObjetos = Nothing
+    Set estoque = Nothing
+End Sub
+
+' Carrega a combobox de estoque tela chapa
+Private Sub carregarEstoqueChapas(cbTiposEstoque As MSForms.comboBox)
+    ' Variaveis do metodo
+    Dim listaObjetos As Collection
+    Dim i As Integer
+    
+    ' Criando a lista
+    Set listaObjetos = daoEstoqueChapa.listarEstoqueChapas
+
+    ' limpa a lista para carregamento
+    cbTiposEstoque.Clear
+    
+    ' Verifica se tem algum dado a pesquisa
+    If listaObjetos.Count = -1 Or listaObjetos.Count = 0 Then ' Se não tiver dados
+        ' Mensagem de erro
+        errorStyle.Informativo SEM_DADOS_MENSAGEM, SEM_DADOS_TITULO
+        Exit Sub
+    Else
+        ' Loop através dos itens da coleção
+        For i = 1 To listaObjetos.Count
+            ' Seta o ojeto
+            Set estoqueChapa = listaObjetos(i)
+            ' Carregamento para lista
+            cbTiposEstoque.AddItem estoqueChapa.nome
+            ' Libera espaço memoria
+            Set estoqueChapa = Nothing
+        Next i
+        
+    End If
+    ' Libera espaço da memoria
+    Set listaObjetos = Nothing
+    Set estoqueChapa = Nothing
 End Sub
 
 ' Carrega a combobox de custo medio
@@ -2572,24 +2772,42 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
 End Sub
 
 ' Carrega a lista ListTamanhosChapas tela edicao chapa
-Private Sub carregarListTamanhosChapas(lista As MSForms.ListBox) ' Irá receber id chapa para carregamento
+Private Sub carregarListTamanhosChapas(ListBox As MSForms.ListBox, listaCollection As Collection)
+    'Variaveis do metodo
+    Dim tamanho As objTamanho
+    Dim i As Integer
+    
     ' Limpar a ListBox
-    lista.Clear
+    ListBox.Clear
     
     ' NOME CABEÇALHO BLOCOS       | TIPO  | ESP   | COMP  | ALT | M²  | QTD |
     ' Tamanho do cabeçalho left   | 192,5 | 331,5 | 362,5 | 411 | 460 | 511 |
     ' Tamanho do cabeçalho width  | 138,5 | 30    | 48    | 48  | 50  | 30  |
     ' Tamanho das colunas da list
-    lista.ColumnWidths = "140,5;30;48;48;50;35;"
-
-    'Adiciona uma linha
-    lista.AddItem
+    ListBox.ColumnWidths = "140,5;30;48;48;50;35;"
     
-    'Adiciona os dados do bloco
-    lista.list(lista.ListCount - 1, 0) = "COMERCIAL SATAND"
-    lista.list(lista.ListCount - 1, 1) = "02"
-    lista.list(lista.ListCount - 1, 2) = M_METODOS_GLOBAL.formatarComPontos(Format("3,0000", "0.0000"))
-    lista.list(lista.ListCount - 1, 3) = M_METODOS_GLOBAL.formatarComPontos(Format("2,0000", "0.0000"))
-    lista.list(lista.ListCount - 1, 4) = M_METODOS_GLOBAL.formatarComPontos(Format("146,0000", "0.0000"))
-    lista.list(lista.ListCount - 1, 5) = "71"
+    ' Verifica se tem algum dado a pesquisa
+    If listaCollection.Count = -1 Or listaCollection.Count = 0 Then ' Se não tiver dados
+        
+    Else
+        ' Loop através dos itens da coleção
+        For i = 1 To listaCollection.Count
+            ' Seta o ojeto
+            Set tamanho = listaCollection(i)
+            
+            ' Adiciona uma linha
+            ListBox.AddItem
+            
+            'Adiciona os dados do bloco
+            ListBox.list(ListBox.ListCount - 1, 0) = tamanho.tipoMaterial.nome
+            ListBox.list(ListBox.ListCount - 1, 1) = tamanho.espessura
+            ListBox.list(ListBox.ListCount - 1, 2) = M_METODOS_GLOBAL.formatarComPontos(Format(tamanho.compremento, "0.0000"))
+            ListBox.list(ListBox.ListCount - 1, 3) = M_METODOS_GLOBAL.formatarComPontos(Format(tamanho.altura, "0.0000"))
+            ListBox.list(ListBox.ListCount - 1, 4) = M_METODOS_GLOBAL.formatarComPontos(Format(tamanho.qtdM2, "0.0000"))
+            ListBox.list(ListBox.ListCount - 1, 5) = tamanho.qtdEstoque
+            
+            ' Libera espaço na memoria
+            Set tamanho = Nothing
+        Next i
+    End If
 End Sub

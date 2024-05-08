@@ -264,12 +264,12 @@ Function pesquisarPorId(id As String) As objBloco
     Set tipoMaterial = ObjectFactory.factoryTipoMaterial(tipoMaterial)
     Set estoque = ObjectFactory.factoryEstoque(estoque)
     
-   'Abrindo conexão com banco
+   ' Abrindo conexão com banco
     Call conctarBanco
     ' String para consulta
     sqlSelectPesquisarPorId = "SELECT * FROM Blocos " & "WHERE Id_Bloco = '" & id & "';"
     ' Criando e abrindo Recordset para consulta
-    Set rsBloco = ObjectFactory.factoryRsBloco(rsBloco)
+    Set rsBloco = ObjectFactory.factoryRsAuxiliar(rsBloco)
     ' Consulta banco
     rsBloco.Open sqlSelectPesquisarPorId, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     ' Retorno da consulta
@@ -303,8 +303,8 @@ Function pesquisarPorId(id As String) As objBloco
         bloco.valorBloco = rsBloco.Fields("Preço_Bloco").Value
         bloco.precoM3Bloco = rsBloco.Fields("Valor_M3").Value
         bloco.freteBloco = rsBloco.Fields("Valor_Frete").Value
-        bloco.valorMetroSerrada = rsBloco.Fields("Valor_Serrada").Value
-        bloco.valorMetroPolimento = rsBloco.Fields("Valor_Polimento").Value
+        bloco.valorMetroSerrada = rsBloco.Fields("Custo_Serrada_M2").Value
+        bloco.valorMetroPolimento = rsBloco.Fields("Custo_Polimento_M2").Value
         bloco.valoresAdicionais = rsBloco.Fields("Valores_Adicionais").Value
         bloco.valorTotalSerrada = rsBloco.Fields("Valor_Serrada").Value
         bloco.valorTotalPolimento = rsBloco.Fields("Valor_Polimento").Value
@@ -411,7 +411,7 @@ Function pesquisarPorIdsVariados(idsParaPesquisa As Collection) As Collection
         ' String para consulta
         sqlSelectPesquisarPorId = "SELECT * FROM Blocos " & "WHERE Id_Bloco = '" & id & "';"
         ' Criando e abrindo Recordset para consulta
-        Set rsBloco = ObjectFactory.factoryRsBloco(rsBloco)
+        Set rsBloco = ObjectFactory.factoryRsAuxiliar(rsBloco)
         ' Consulta banco
         rsBloco.Open sqlSelectPesquisarPorId, CONEXAO_BD, adOpenKeyset, adLockReadOnly
         ' Retorno da consulta
@@ -454,8 +454,8 @@ Function pesquisarPorIdsVariados(idsParaPesquisa As Collection) As Collection
             bloco.valorBloco = rsBloco.Fields("Preço_Bloco").Value
             bloco.precoM3Bloco = rsBloco.Fields("Valor_M3").Value
             bloco.freteBloco = rsBloco.Fields("Valor_Frete").Value
-            bloco.valorMetroSerrada = rsBloco.Fields("Valor_Serrada").Value
-            bloco.valorMetroPolimento = rsBloco.Fields("Valor_Polimento").Value
+            bloco.valorMetroSerrada = rsBloco.Fields("Custo_Serrada_M2").Value
+            bloco.valorMetroPolimento = rsBloco.Fields("Custo_Polimento_M2").Value
             bloco.valoresAdicionais = rsBloco.Fields("Valores_Adicionais").Value
             bloco.valorTotalSerrada = rsBloco.Fields("Valor_Serrada").Value
             bloco.valorTotalPolimento = rsBloco.Fields("Valor_Polimento").Value
@@ -712,7 +712,7 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
     Set listaBlocos = ObjectFactory.factoryLista(listaBlocos)
     
     ' Criando e abrindo Recordset para consulta
-    Set rsBloco = ObjectFactory.factoryRsBloco(rsBloco)
+    Set rsBloco = ObjectFactory.factoryRsAuxiliar(rsBloco)
     ' Consulta banco
     rsBloco.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     ' Retorno da consulta
@@ -759,8 +759,8 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
             bloco.valorBloco = rsBloco.Fields("Preço_Bloco").Value
             bloco.precoM3Bloco = rsBloco.Fields("Valor_M3").Value
             bloco.freteBloco = rsBloco.Fields("Valor_Frete").Value
-            bloco.valorMetroSerrada = rsBloco.Fields("Valor_Serrada").Value
-            bloco.valorMetroPolimento = rsBloco.Fields("Valor_Polimento").Value
+            bloco.valorMetroSerrada = rsBloco.Fields("Custo_Serrada_M2").Value
+            bloco.valorMetroPolimento = rsBloco.Fields("Custo_Polimento_M2").Value
             bloco.valoresAdicionais = rsBloco.Fields("Valores_Adicionais").Value
             bloco.valorTotalSerrada = rsBloco.Fields("Valor_Serrada").Value
             bloco.valorTotalPolimento = rsBloco.Fields("Valor_Polimento").Value

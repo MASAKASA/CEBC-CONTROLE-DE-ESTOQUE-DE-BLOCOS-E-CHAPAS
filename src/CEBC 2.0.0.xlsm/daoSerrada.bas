@@ -95,7 +95,7 @@ Function pesquisarPorId(id As String) As objSerraria
     'Abrindo conexão com banco
     Call conctarBanco
     ' Criando e abrindo Recordset para consulta
-    Set rs = ObjectFactory.factoryRsBloco(rs)
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
@@ -133,7 +133,7 @@ Function pesquisarPorNome(nomeSerraria As String) As objSerraria
     'Abrindo conexão com banco
     Call conctarBanco
     ' Criando e abrindo Recordset para consulta
-    Set rs = ObjectFactory.factoryRsBloco(rs)
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
@@ -168,7 +168,7 @@ Function listarSerrarias() As Collection
     ' Criação e atribuição dos objeto
     Set listaSerrarias = ObjectFactory.factoryLista(listaSerrarias)
     ' Criando e abrindo Recordset para consulta
-    Set rs = ObjectFactory.factoryRsBloco(rs)
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     

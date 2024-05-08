@@ -16,7 +16,7 @@ Function cadastrarEEditar(chapa As objChapa)
     Dim fkObject As Variant ' fk para consultas extras
     Dim strSql As String ' String para consultas
     Dim campos() As String
-    Dim valoresCamposBloco As String
+    Dim valoresCamposChapa As String
     Dim cadastro As Boolean
     Dim i As Long
     
@@ -64,50 +64,32 @@ Function cadastrarEEditar(chapa As objChapa)
         campos(12) = "'" & chapa.polideira.id & "', "
         campos(13) = "'" & chapa.bloco.idSistema & "');"
         
-        'Concatenando os valores
+        ' Concatenando os valores
         For i = 1 To 13
-            valoresCamposBloco = valoresCamposBloco & campos(i)
+            valoresCamposChapa = valoresCamposChapa & campos(i)
         Next i
     
-        'Concatenando comando SQL e cadastrando bloco no banco de dados
-        strSql = "INSERT INTO Blocos ( Id_Bloco, Descricao, Valores_Adicionais, Preço_Bloco, Custo_Total, valor_M3, " _
-            & "Quantidade_M3, Id_bloco_Pedreira, Larg_Liquida_Bloco, Alt_Liquida_Bloco, Comp_Liquida_Bloco, " _
-            & "Data_cadastro, Observacao, Fk_Tipo_Material, Valor_Frete, Fk_Estoque, Fk_Pedreira, Fk_Status, " _
-            & "Comp_Bruto_Bloco, Alt_Bruto_Bloco, Larg_Bruto_Bloco, Tem_Nota, Custo_Medio ) VALUES " & valoresCamposBloco
+        ' Concatenando comando SQL e cadastrando bloco no banco de dados
+        strSql = "INSERT INTO Chapas ( Id_Chapa, Descricao, Custo_Polimento, Custo_Total, Qtd_Estoque, Qtd_Bruto_M2, " _
+                    & "Comp_Bruto, Alt_Bruto, Id_bloco_Pedreira, Fk_Polimento, Fk_Estoque, Fk_Polidoria, Fk_Bloco ) " _
+                    & "VALUES " & valoresCamposChapa
         
-        rsBloco.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
-            
-        
+        rsChapa.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
     Else ' Se edição
         
         ' Edição do bloco com serraria e polideira
-        strSql = "UPDATE Blocos SET Descricao = '" & bloco.nomeMaterial & "', " _
-            & "Observacao = '" & bloco.observacao & "', Id_bloco_Pedreira = '" & bloco.numeroBlocoPedreira & "', " _
-            & "Data_cadastro = '" & bloco.dataCadastro & "', Quantidade_M3 = '" & bloco.qtdM3 & "', " _
-            & "Quantidade_Serrada_M2 = '" & bloco.qtdM2Serrada & "', Quantidade_Polimento_M2 = '" & bloco.qtdM2Polimento & "', " _
-            & "Total_chapas = '" & bloco.qtdChapas & "', Tem_Nota = '" & bloco.nota & "', " _
-            & "Custo_Medio = '" & bloco.consultarCustoMedio & "', Comp_Bruto_Bloco = '" & bloco.compBrutoBloco & "', " _
-            & "Alt_Bruto_Bloco = '" & bloco.altBrutoBloco & "', Larg_Bruto_Bloco = '" & bloco.largBrutoBloco & "', " _
-            & "Comp_Liquida_Bloco = '" & bloco.compLiquidoBloco & "', Alt_Liquida_Bloco = '" & bloco.altLiquidoBloco & "', " _
-            & "Larg_Liquida_Bloco = '" & bloco.largLiquidoBloco & "', Comp_Bruto_Chapa_Bruta = '" & bloco.compBrutoChapaBruta & "', " _
-            & "Alt_Bruto_Chapa_Bruta = '" & bloco.altBrutoChapaBruta & "', Comp_Liquido_Chapa_Bruta = '" & bloco.compLiquidoChapaBruta & "', " _
-            & "Alt_Liquido_Chapa_Bruta = '" & bloco.altBrutoChapaBruta & "', Comp_Bruto_Chapa_Polida = '" & bloco.compBrutoChapaPolida & "', " _
-            & "Alt_Bruto_Chapa_Polida = '" & bloco.altBrutoChapaPolida & "', Comp_Liquido_Chapa_Polida = '" & bloco.compLiquidoChapaBruta & "', " _
-            & "Alt_Liquido_Chapa_Polida = '" & bloco.altLiquidoChapaPolida & "', Valores_Adicionais = '" & bloco.valoresAdicionais & "', " _
-            & "Preço_Bloco = '" & bloco.valorBloco & "', Valor_M3 = '" & bloco.precoM3Bloco & "', " _
-            & "Valor_Frete = '" & bloco.freteBloco & "', Custo_Serrada_M2 = '" & bloco.valorMetroSerrada & "', " _
-            & "Custo_Polimento_M2 = '" & bloco.valorMetroPolimento & "', Valor_Serrada = '" & bloco.valorTotalSerrada & "', " _
-            & "Valor_Polimento = '" & bloco.valorTotalPolimento & "', Custo_Material = '" & bloco.custoMaterial & "', " _
-            & "Custo_Total = '" & bloco.valorTotalBloco & "', Fk_Tipo_Material = '" & bloco.tipoMaterial.id & "', " _
-            & "Fk_Pedreira = '" & bloco.pedreira.id & "', Fk_Estoque = '" & bloco.estoque.id & "', " _
-            & "Fk_Polideira = '" & bloco.polideira.id & "', Fk_Serraria = '" & bloco.serraria.id & "', " _
-            & "Fk_Status = '" & bloco.status.id & "' WHERE Id_Bloco = '" & bloco.idSistema & "';"
+        strSql = "UPDATE Chapas SET Descricao = '" & chapa.nomeMaterial & "', " _
+            & "Custo_Polimento = '" & chapa.custoPolimento & "', Custo_Total = '" & chapa.custoTotal & "', " _
+            & "Qtd_Estoque = '" & chapa.qtdEstoque & "', Qtd_Bruto_M2 = '" & chapa.qtdM2Bruto & "', " _
+            & "Comp_Bruto = '" & chapa.compBruto & "', Alt_Bruto = '" & chapa.altBruto & "', " _
+            & "Id_bloco_Pedreira = '" & chapa.idPedreira & "', Fk_Polimento = '" & chapa.tipoPolimento.id & "', " _
+            & "Fk_Estoque = '" & chapa.estoque.id & "', Fk_Polidoria = '" & chapa.polideira.id & "', " _
+            & "Fk_Bloco = '" & chapa.bloco.idSistema & "' WHERE Id_Chapa = '" & chapa.idSistema & "';"
             
-        rsBloco.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
-        
+        rsChapa.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
     End If
-    
-    Set rsBloco = Nothing
+    ' Libera espaço da memoria
+    Set rsChapa = Nothing
     'Fechando conexão com banco
     Call fecharConexaoBanco
 End Function
@@ -118,8 +100,112 @@ Function excluir()
 End Function
 
 ' Pesquisa objeto por id
-Function pesquisarPorId()
+Function pesquisarPorId(id As String) As objChapa
+    'Metodos do metodo
+    ' String para consultas
+    Dim sqlSelectPesquisarPorId As String ' String para consultas
+    Dim fkObject As String ' fk para consultas extras
+    Dim rsChapa As ADODB.Recordset ' Recordset para consulta principal
+    
+    ' Criação e atribuição dos objetos
+    Set bloco = ObjectFactory.factoryBloco(bloco)
+    Set polideira = ObjectFactory.factoryPolideira(polideira)
+    Set tipoPolimento = ObjectFactory.factoryTipoPolimento(tipoPolimento)
+    Set estoque = ObjectFactory.factoryEstoque(estoque)
+    
+    'Abrindo conexão com banco
+    Call conctarBanco
+    ' String para consulta
+    sqlSelectPesquisarPorId = "SELECT * FROM Chapas " & "WHERE Id_Chapa = '" & id & "';"
+    ' Criando e abrindo Recordset para consulta
+    Set rsChapa = ObjectFactory.factoryRsAuxiliar(rsChapa)
+    ' Consulta banco
+    rsChapa.Open sqlSelectPesquisarPorId, CONEXAO_BD, adOpenKeyset, adLockReadOnly
+    ' Retorno da consulta
+    While Not rsChapa.EOF
+        ' Atribuição dos atributos
+        chapa.idSistema = rsChapa.Fields("Id_Chapa").Value
+        chapa.nomeMaterial = rsChapa.Fields("Descricao").Value
+        chapa.custoPolimento = rsChapa.Fields("Custo_Polimento").Value
+        chapa.custoTotal = rsChapa.Fields("Custo_Total").Value
+        chapa.qtdEstoque = rsChapa.Fields("Qtd_Estoque").Value
+        chapa.qtdM2Bruto = rsChapa.Fields("Qtd_Bruto_M2").Value
+        chapa.compBruto = rsChapa.Fields("Comp_Bruto").Value
+        chapa.altBruto = rsChapa.Fields("Alt_Bruto").Value
+        chapa.idPedreira = rsChapa.Fields("Id_bloco_Pedreira").Value
+        
+        'Atribuições dos objetos em bloco
+        ' fk para consulta
+        fkObject = rsChapa.Fields("Fk_Polimento").Value
+        ' String para consulta
+        sqlSelectPesquisarPorId = "SELECT * FROM Tipo_Polimento WHERE Id_Polimento = " & fkObject & ";"
+        ' Setando Objeto
+        chapa.setTipoPolimento retornarObjeto(tipoPolimento, sqlSelectPesquisarPorId, "Id_Polimento", "Nome_Polimento")
+        
+        ' fk para consulta
+        fkObject = rsChapa.Fields("Fk_Estoque").Value
+        ' String para consulta
+        sqlSelectPesquisarPorId = "SELECT * FROM Estoque_chapas WHERE Id_Estoque = " & fkObject & ";"
+        ' Setando Objeto
+        chapa.setEstoque retornarObjeto(estoque, sqlSelectPesquisarPorId, "Id_Estoque", "Nome_Empresa")
+        
+        ' fk para consulta
+        fkObject = rsChapa.Fields("Fk_Estoque").Value
+        ' String para consulta
+        sqlSelectPesquisarPorId = "SELECT * FROM Polideiras WHERE Id_Estoque = " & fkObject & ";"
+        ' Setando Objeto
+        chapa.setPolideira retornarObjeto(estoque, sqlSelectPesquisarPorId, "Id_Polidoria", "Nome_Polidoria")
+        
+        ' fk para consulta
+        fkObject = rsChapa.Fields("Fk_Bloco").Value
+        ' Setando Objeto
+        chapa.setBloco daoBloco.pesquisarPorId(fkObject)
+        
+        ' fk para consulta
+        chapa.setTamanhos daoTamanho.pesquisarPorIdChapa(chapa.idSistema)
+        
+        rsChapa.MoveNext
+    Wend
+    ' Retorno
+    Set pesquisarPorId = chapa
+    
+    ' Libera espaço na memoria
+    Set tipoPolimento = Nothing
+    Set polideira = Nothing
+    Set estoque = Nothing
+    Set bloco = Nothing
+    Set chapa = Nothing
+End Function
 
+' Pesquisa objeto por id
+Function pesquisarPorIdPedreira(idPedreira As String) As Boolean
+    'Metodos do metodo
+    ' String para consultas
+    Dim sqlSelectPesquisarPorId As String ' String para consultas
+    Dim rs As ADODB.Recordset ' Recordset para consulta principal
+    Dim temCadastro As Boolean
+    
+    ' Seta não para verificação de cadastro
+    temCadastro = False
+    
+    'Abrindo conexão com banco
+    Call conctarBanco
+    ' String para consulta
+    sqlSelectPesquisarPorId = "SELECT * FROM Chapas " & "WHERE Id_bloco_Pedreira = '" & idPedreira & "';"
+    ' Criando e abrindo Recordset para consulta
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
+    ' Consulta banco
+    rs.Open sqlSelectPesquisarPorId, CONEXAO_BD, adOpenKeyset, adLockReadOnly
+    ' Retorno da consulta
+    While Not rs.EOF
+        ' Seta true em temCadastro porquê achou um cadastro
+        temCadastro = True
+        
+        rs.MoveNext
+    Wend
+    
+    ' Retorno
+    pesquisarPorIdPedreira = temCadastro
 End Function
 
 ' Pesquisa objeto por nome

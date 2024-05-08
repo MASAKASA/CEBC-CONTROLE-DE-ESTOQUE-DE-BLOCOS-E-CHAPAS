@@ -23,7 +23,7 @@ Function cadastrarEEditar(lista As Collection)
         ' String para consulta
         sqlSelectPesquisarPorId = "SELECT * FROM Blocos " & "WHERE Id_Bloco = '" & id & "';"
         ' Criando e abrindo Recordset para consulta
-        Set rsBloco = ObjectFactory.factoryRsBloco(rsBloco)
+        Set rsBloco = ObjectFactory.factoryRsAuxiliar(rsBloco)
         ' Consulta banco
         rsBloco.Open sqlSelectPesquisarPorId, CONEXAO_BD, adOpenKeyset, adLockReadOnly
         ' Retorno da consulta

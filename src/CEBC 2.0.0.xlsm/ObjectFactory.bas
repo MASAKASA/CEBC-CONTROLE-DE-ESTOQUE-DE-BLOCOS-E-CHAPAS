@@ -2,26 +2,6 @@ Attribute VB_Name = "ObjectFactory"
 Option Explicit
 
 ' Criação da instância da rsAuxiliar
-Public Function factoryRsBloco(rsBloco As ADODB.Recordset) As ADODB.Recordset
-    ' Verificação se a instância já foi criada
-    If Not rsBloco Is Nothing Then
-        ' Verifica se a consulta está aberta
-        If rsBloco.State = 1 Then
-            ' A conexão está aberta não faz nada
-            Exit Function
-        Else
-            ' Abre para conexão
-            Set rsBloco = New ADODB.Recordset
-        End If
-    Else
-        ' Abre para conexão
-        Set rsBloco = New ADODB.Recordset
-    End If
-    ' Retorna a instância
-    Set factoryRsBloco = rsBloco
-End Function
-
-' Criação da instância da rsAuxiliar
 Public Function factoryRsAuxiliar(rsAuxiliar As ADODB.Recordset) As ADODB.Recordset
     ' Verificação se a instância já foi criada
     If Not rsAuxiliar Is Nothing Then
@@ -172,10 +152,10 @@ Public Function factoryEstoque(variavelEstoque As objEstoque) As objEstoque
 End Function
 
 ' Criação da instância de estoque de chapas
-Public Function factoryEstoqueChapas(variavelEstoque As objEstoqueChapa) As objEstoque
+Public Function factoryEstoqueChapas(variavelEstoque As objEstoqueChapa) As objEstoqueChapa
     ' Verificação se a instância já foi criada
     If variavelEstoque Is Nothing Then
-        Set variavelEstoque = New objEstoque
+        Set variavelEstoque = New objEstoqueChapa
     End If
     ' Retorna a instância
     Set factoryEstoqueChapas = variavelEstoque

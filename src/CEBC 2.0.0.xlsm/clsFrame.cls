@@ -75,6 +75,7 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLImgExportarEstoqueM2").top = 6
         Case "fTiraEfeitoBotoesAcoesListChapas"
             formControle.Controls("btnLTxtNovoAvulso").Font.Size = botoesTextoFontSizeSmall
+            formControle.Controls("btnLTxtNovoChapa").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtEditarChapa").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtTrocaEstoque").Font.Size = botoesTextoFontSizeSmall
             

@@ -95,7 +95,7 @@ Function pesquisarPorId(id As String) As objTipoPolimento
     'Abrindo conexão com banco
     Call conctarBanco
     ' Criando e abrindo Recordset para consulta
-    Set rs = ObjectFactory.factoryRsBloco(rs)
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
@@ -128,13 +128,14 @@ Function pesquisarPorNome(nomeTipoPolimento As String) As objTipoPolimento
     
     ' String para consulta
     strSql = "SELECT * FROM Tipo_Polimento" _
-        & " WHERE Id_Polimento = '" & nomeTipoPolimento & "';"
+        & " WHERE Nome_Polimento = '" & nomeTipoPolimento & "';"
         
     'Abrindo conexão com banco
     Call conctarBanco
     ' Criando e abrindo Recordset para consulta
-    Set rs = ObjectFactory.factoryRsBloco(rs)
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco
+    
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
     While Not rs.EOF
@@ -169,7 +170,7 @@ Function listarTipoPolideiras() As Collection
     ' Criação e atribuição dos objeto
     Set listaTiposPolimentos = ObjectFactory.factoryLista(listaTiposPolimentos)
     ' Criando e abrindo Recordset para consulta
-    Set rs = ObjectFactory.factoryRsBloco(rs)
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     

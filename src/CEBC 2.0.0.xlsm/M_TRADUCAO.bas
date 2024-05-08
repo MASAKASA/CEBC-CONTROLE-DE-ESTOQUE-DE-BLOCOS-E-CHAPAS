@@ -27,6 +27,8 @@ Global STATUS_SERRARIA_MENSAGEM As String
 Global STATUS_SERRARIA_TITULO As String
 
 ' TELA ESTOQUE BLOCOS M³
+Global ESCOLHA_CHAPA_MENSAGEM As String
+Global ESCOLHA_CHAPA_TITULO As String
 Global SELECIONE_TEM_MENSAGEM As String
 Global SELECIONE_TEM_TITULO As String
 Global EXPORTADO_SUCESSO_MENSAGEM As String
@@ -69,6 +71,8 @@ Public Sub carregarTraducaoErros()
     NOME_PEDREIRA_TITULO = "Nome da pedreira não informada"
     
     ' TELA ESTOQUE BLOCOS M³
+    ESCOLHA_CHAPA_MENSAGEM = "Escolha chapa para adição no estoque!"
+    ESCOLHA_CHAPA_TITULO = "Escolha chapa"
     SELECIONE_TEM_MENSAGEM = "Selecione um item da lista!"
     SELECIONE_TEM_TITULO = "Nada selecioando"
     EXPORTADO_SUCESSO_MENSAGEM = "Dados exportados para PDF com sucesso!"
