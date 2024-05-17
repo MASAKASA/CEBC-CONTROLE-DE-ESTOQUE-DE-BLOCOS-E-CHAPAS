@@ -46,7 +46,6 @@ End Function
 
 ' Conta o tamanho da matriz
 Function TamanhoDaMatriz(matriz As Variant) As Integer
-
     'Dim minhaMatriz() As Integer ' Declare sua matriz aqui
     Dim tamanho As Integer
     
@@ -58,7 +57,6 @@ End Function
 
 ' Inicia a contagem do regolio
 Sub relogioIniciar()
-
     'Variaveis do metodo
     Dim dataAtual As Date
     Dim dia As Integer
@@ -95,13 +93,11 @@ End Sub
 
 ' Finaliza a contagem do relogio
 Sub pararRelogio()
-
     INICIAR_RELOGIO = False
 End Sub
 
 ' Retorna a data formatada
 Function formataDataPesquisa(data) As String
-    
     'Variaveis do metodo
     Dim textoDigitado As String
     Dim textoFormatado As String
@@ -120,24 +116,20 @@ Function formataDataPesquisa(data) As String
         If Len(textoFormatado) = 2 Then
                 
             textoFormatado = Mid(textoFormatado, 1, 2) & "/"
-            
         End If
         
         If Len(textoFormatado) = 5 Then
                 
             textoFormatado = Mid(textoFormatado, 1, 5) & "/"
-            
         End If
     Next i
     
     'Retorno
     formataDataPesquisa = textoFormatado
-    
 End Function
 
 ' Formata o id da chada
 Function formatarIdChapa(idBloco, tipoPolimento) As String
-    
     'Variaveis do metodo
     Dim descricaoBloco As String
     Dim idChapa As String
@@ -164,12 +156,10 @@ Function formatarIdChapa(idBloco, tipoPolimento) As String
     idChapa = Mid(descricaoBloco, 1, posicaoUnderline) & tipoPolimento
     
     formatarIdChapa = idChapa
-    
 End Function
 
 ' Formata o nome da chada
 Function formatarNomeChapa(nomeBloco, tipoPolimento) As String
-    
     'Variaveis do metodo
     Dim descricaoBloco As String
     Dim descricaoChapa As String
@@ -183,12 +173,10 @@ Function formatarNomeChapa(nomeBloco, tipoPolimento) As String
     descricaoChapa = Mid(descricaoBloco, 7, Len(descricaoBloco)) & " " & tipoPolimento
     
     formatarNomeChapa = descricaoChapa
-    
 End Function
 
 ' Calcula o custo do material
 Function custoBloco(valorBloco, valorFrete, valorSerrada, valorPolimento, valoresAdicionais) As Double
-    
     'Variaveis do metodo
     Dim bloco As Double
     Dim frete As Double
@@ -209,12 +197,10 @@ Function custoBloco(valorBloco, valorFrete, valorSerrada, valorPolimento, valore
     
     'Retorno custo por m²
     custoBloco = custo
-    
 End Function
 
 ' Calcula o custo do material
 Function custoMaterialM2(valorBloco, valorFrete, valoresAdicionais, valorSerrada, valorPolimento, qtdM2) As Double
-    
     'Variaveis do metodo
     Dim bloco As Double
     Dim frete As Double
@@ -244,12 +230,10 @@ Function custoMaterialM2(valorBloco, valorFrete, valoresAdicionais, valorSerrada
     
     'Retorno custo por m²
     custoMaterialM2 = custoM2
-    
 End Function
 
 ' Função para retornar metros com quatro digitos após a virgula
 Function formatarMetros(quantidade As String)
-    
     'Variaveis do metodo
     Dim textoDigitado As String
     Dim textoFormatado As String
@@ -325,7 +309,6 @@ End Function
 
 ' Função para retornar valor com dois digitos após a virgula
 Function formatarValor(valor As String)
-
     ' Variaveis do metodo
     Dim textoDigitado As String
     Dim textoFormatado As String
@@ -410,7 +393,6 @@ End Function
 
 ' Formata e calcula a subtração no m² da chapa
 Function subtracaoM2(m2Estoque As String, m2Despache As String) As Double
-    
     'Variaveis do metodo
     Dim textoFormatado As String
     Dim estoque As Double
@@ -426,12 +408,10 @@ Function subtracaoM2(m2Estoque As String, m2Despache As String) As Double
     
     'Retornar valor calcuculado e formatado
     subtracaoM2 = totalM2
-    
 End Function
 
 ' Calcula o custo do material por metro
 Function calcularCustoMaterial(totalMetro As String, valorBloco As String) As Double
-    
     'Variaveis do metodo
     Dim totalM As Double
     Dim valorB As Double
@@ -453,7 +433,6 @@ Function calcularCustoMaterial(totalMetro As String, valorBloco As String) As Do
 End Function
 'Formata e calcula o total do bloco
 Function calcularValor(totalMetro As String, valorMetro As String) As Double
-    
     'Variaveis do metodo
     Dim textoFormatado As String
     Dim totalM As Double
@@ -469,11 +448,9 @@ Function calcularValor(totalMetro As String, valorMetro As String) As Double
     
     'Retornar valor calcuculado e formatado
     calcularValor = totalBloco
-    
 End Function
 'Formata e calcula o total do serrada e polimento do bloco
 Function calcularValorServicos(totalMetro As String, valorMetro As String) As Double
-    
     'Variaveis do metodo
     Dim textoFormatado As String
     Dim totalM As Double
@@ -489,11 +466,9 @@ Function calcularValorServicos(totalMetro As String, valorMetro As String) As Do
     
     'Retornar valor calcuculado e formatado
     calcularValorServicos = totalBloco
-    
 End Function
 ' Calcula o m³
 Function calcularM3(compr As String, alt As String, larg As String) As Double
-    
     'Variaveis do medoto
     Dim comprimento As Double
     Dim altura As Double
@@ -510,12 +485,10 @@ Function calcularM3(compr As String, alt As String, larg As String) As Double
     
     'Retornando o m³
     calcularM3 = totalM3
-    
 End Function
 
 ' Calcula o m²
 Function calcularM2(compr As String, alt As String, qtd As String) As Double
-    
     'Variaveis do medoto
     Dim comprimento As Double
     Dim altura As Double
@@ -535,12 +508,10 @@ Function calcularM2(compr As String, alt As String, qtd As String) As Double
     
     'Retornando o m³
     calcularM2 = totalM2
-    
 End Function
 
 ' Formata com pontos para melhor visualiação
 Function formatarComPontos(texto As String) As String
-
     'Variareis do metodo
     Dim textoFormatado As String
     Dim textoEdicao As String
@@ -564,7 +535,6 @@ Function formatarComPontos(texto As String) As String
        Case 4
             textoFormatado = Mid(numerosInteiros, 1, 1) & "." & Mid(numerosInteiros, 2, 3) & "," & numerosDecimais
        Case 5
-            
             'Percorre os caracteres para saber se tem .
             For i = 1 To Len(textoEdicao)
             
@@ -598,12 +568,10 @@ Function formatarComPontos(texto As String) As String
     End Select
         
     formatarComPontos = textoFormatado
-
 End Function
 
 ' Extrai a última palavra do texto
 Function ExtrairUltimaPalavra(texto As String) As String
-    
     'Variaveis do metodo
     Dim palavras() As String
     Dim ultimaPalavra As String

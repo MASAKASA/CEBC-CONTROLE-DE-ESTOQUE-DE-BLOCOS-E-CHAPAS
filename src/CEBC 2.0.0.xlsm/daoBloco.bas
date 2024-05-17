@@ -248,7 +248,7 @@ Function excluir(id As String)
 End Function
 
 ' Pesquisa objeto por id
-Function pesquisarPorId(id As String) As objBloco
+Function pesquisarPorId(id As String, conexaoFechar As Boolean) As objBloco
     'Metodos do metodo
     ' String para consultas
     Dim sqlSelectPesquisarPorId As String ' String para consultas
@@ -371,9 +371,13 @@ Function pesquisarPorId(id As String) As objBloco
     ' Libera recurso Recordset
     rsBloco.Close
     Set rsBloco = Nothing
-    ' Fechar conexão com banco
-    Call fecharConexaoBanco
     
+    ' Fecha a conexão se não for pesquisa de chapa quem chamou esse metodo
+    If conexaoFechar = True Then
+        ' Fechar conexão com banco
+        Call fecharConexaoBanco
+    End If
+
     ' Retorno
     Set pesquisarPorId = bloco
     
@@ -398,7 +402,7 @@ Function pesquisarPorIdsVariados(idsParaPesquisa As Collection) As Collection
     Dim idLista As Variant
     Dim i As Integer
     
-    ' Criação da lista
+    ' Criação da lista para adição e retorno
     Set listaBlocos = ObjectFactory.factoryLista(listaBlocos)
     
     ' Abrindo conexão com banco
@@ -409,7 +413,7 @@ Function pesquisarPorIdsVariados(idsParaPesquisa As Collection) As Collection
         id = idLista
         
         ' String para consulta
-        sqlSelectPesquisarPorId = "SELECT * FROM Blocos " & "WHERE Id_Bloco = '" & id & "';"
+        sqlSelectPesquisarPorId = "SELECT * FROM Blocos " & "WHERE Id_Bloco = '" & id & "' ORDER BY Descricao;"
         ' Criando e abrindo Recordset para consulta
         Set rsBloco = ObjectFactory.factoryRsAuxiliar(rsBloco)
         ' Consulta banco
@@ -519,7 +523,7 @@ Function pesquisarPorIdsVariados(idsParaPesquisa As Collection) As Collection
             ' Adiciona na lista
             listaBlocos.Add bloco
             
-            ' Libera espaço para nova pesquisa se ouver
+            ' Libera espaço da memoria
             Set bloco = Nothing
             Set pedreira = Nothing
             Set serraria = Nothing

@@ -134,7 +134,7 @@ Function excluir()
 End Function
 
 ' Pesquisa objeto por id
-Function pesquisarPorIdChapa(idChapa As String) As Collection
+Function pesquisarPorIdChapa(idChapa As String, conexaoFechar As Boolean) As Collection
     ' Metodos do metodo
     ' String para consultas
     Dim sqlSelectPesquisarPorId As String ' String para consultas
@@ -168,7 +168,7 @@ Function pesquisarPorIdChapa(idChapa As String) As Collection
         
         ' Atribuições do objetos em tamanho
         ' fk para consulta
-        fkObject = rsBloco.Fields("Fk_Tipo_Material").Value
+        fkObject = rs.Fields("Fk_Tipo_Material").Value
         ' String para consulta
         sqlSelectPesquisarPorId = "SELECT * FROM Tipo_Material WHERE Id_Tipo_Material = " & fkObject & ";"
         ' Setando Objeto
@@ -187,8 +187,11 @@ Function pesquisarPorIdChapa(idChapa As String) As Collection
     ' Libera recurso Recordset
     rs.Close
     Set rs = Nothing
-    ' Fechar conexão com banco
-    Call fecharConexaoBanco
+    ' Fecha a conexão se não for pesquisa de chapa quem chamou esse metodo
+    If conexaoFechar = True Then
+        ' Fechar conexão com banco
+        Call fecharConexaoBanco
+    End If
     ' Retorno
     Set pesquisarPorIdChapa = listaTamanhos
     ' Liberando memoria

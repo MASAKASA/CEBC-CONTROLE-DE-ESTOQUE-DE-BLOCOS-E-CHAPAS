@@ -83,7 +83,7 @@ Public Function getPolideira() As objPolideira
     getPolideira = polideira
 End Function
 
-Public Function setPolideira(bloco As objPolideira)
+Public Function setPolideira(polideira As objPolideira)
     Set Me.polideira = polideira
 End Function
 

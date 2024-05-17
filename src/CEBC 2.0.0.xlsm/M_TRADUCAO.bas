@@ -2,13 +2,21 @@ Attribute VB_Name = "M_TRADUCAO"
 Option Explicit
 
 ' Variaveis globais para os erros
+' TELA ESTOQUE M²
+
+' TELA CADASTRO AVULSO
+Global AVULSO_JA_CADASTRADO_MENSAGEM As String
+Global AVULSO_JA_CADASTRADO_TITULO As String
+Global NOME_AVULSO_MENSAGEM As String
+Global NOME_AVULSO_TITULO As String
+
 ' TELA EDIÇÃO DE BLOCO
 Global HABILITE_EDICAO_MENSAGEM As String
 Global HABILITE_EDICAO_TITULO As String
 
 ' TELA CADASTRO DE BLOCO
-Global SUCESSO_EDICAO_MENSAGEM As String
-Global SUCESSO_EDICAO_TITULO As String
+Global BLOCO_JA_CADASTRADO_MENSAGEM As String
+Global BLOCO_JA_CADASTRADO_TITULO As String
 Global ERRO_DESCONHECIDO_MENSAGEM As String
 Global ERRO_DESCONHECIDO_TITULO As String
 Global CADASTRO_CONFIRMADO_MENSAGEM As String
@@ -46,6 +54,12 @@ Global ADICIONE_STATUS_TITULO As String
 ' Carrega as variaveis dos erros
 Public Sub carregarTraducaoErros()
     ' Mensagem para usuário
+    ' TELA CADASTRO AVULSO
+    AVULSO_JA_CADASTRADO_MENSAGEM = "Avulso já cadastrado no sistema!"
+    AVULSO_JA_CADASTRADO_TITULO = "Cadastro duplicado"
+    NOME_AVULSO_MENSAGEM = "Adicione uma descrição!"
+    NOME_AVULSO_TITULO = "Descrição não informada"
+
     ' TELA EDIÇÃO DE BLOCO
     HABILITE_EDICAO_MENSAGEM = "Habilite edição!"
     HABILITE_EDICAO_TITULO = "Edição desabilitada"
@@ -53,13 +67,13 @@ Public Sub carregarTraducaoErros()
     ' TELA CADASTRO DE BLOCO
     ERRO_DESCONHECIDO_MENSAGEM = "Erro desconhecido! Procurar o suporte!"
     ERRO_DESCONHECIDO_TITULO = "Erro desconhecido"
-    SUCESSO_EDICAO_MENSAGEM = "Edição feita com sucesso!"
-    SUCESSO_EDICAO_TITULO = "Edição"
+    BLOCO_JA_CADASTRADO_MENSAGEM = "Bloco já cadastrado no sistema!"
+    BLOCO_JA_CADASTRADO_TITULO = "Cadastrado duplicado"
     CADASTRO_CONFIRMADO_MENSAGEM = "Cadastrado com sucesso!"
     CADASTRO_CONFIRMADO_TITULO = "Cadastro confirmado"
     ACAO_CANCELADA_MENSAGEM = "A ação foi cancelada!"
     ACAO_CANCELADA_TITULO = "Cancelamento"
-    CONFIRMACAO_CADASTRO_MENSAGEM = "Confira se o número e descrição/material do bloco estão corretos, pois a junção deles irá criar o ID do bloco no sistema. ID do bloco não poderá ser alterado posteriormente. Tudo conferido e podemos seguir com o cadastro?"
+    CONFIRMACAO_CADASTRO_MENSAGEM = "Confira se o número e descrição/material estão corretos, pois a junção deles irá criar o ID do bloco no sistema. ID não poderá ser alterado posteriormente. Tudo conferido e podemos seguir com o cadastro?"
     CONFIRMACAO_CADASTRO_TITULO = "Atenção - Confirmação"
     NOME_BLOCO_MENSAGEM = "Adicone a descrição do bloco!"
     NOME_BLOCO_PEDREIRA_TITULO = "Descrição do bloco não informada"
