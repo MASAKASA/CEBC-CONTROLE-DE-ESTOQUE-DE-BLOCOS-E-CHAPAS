@@ -1474,8 +1474,13 @@ Private Sub btnLTxtNovoAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As 
         End If
     Next i
     
-    ' Pesquisa pelas chapas avulsas e importadas
-    Set listaAvulsosCadastradosHoje = daoChapa.pesquisarPorListaIdsPedreira(idsChapaAvulso)
+    If idsChapaAvulso.Count = 0 Or idsChapaAvulso.Count = -1 Then
+        ' Apanas cria o objeto
+        Set listaAvulsosCadastradosHoje = ObjectFactory.factoryLista(listaAvulsosCadastradosHoje)
+    Else
+        ' Pesquisa pelas chapas avulsas e importadas
+        Set listaAvulsosCadastradosHoje = daoChapa.pesquisarPorListaIdsPedreira(idsChapaAvulso)
+    End If
     
     ' Chama metodo para carregar lista e blocos cadastros do dia atual
     Call carregarList(ListMateriais, listaAvulsosCadastradosHoje)
@@ -3300,12 +3305,15 @@ Private Sub carregarTiposPolimentoAlgum(cbTiposPolimento As MSForms.comboBox, li
     ' Variaveis do metodo
     Dim listaObjetos As Collection
     Dim polimento As Variant
+    Dim totalLista As Integer
+    Dim temNaLista As Boolean
     Dim i As Integer
     Dim j As Integer
     
     ' Criando a lista
     Set listaObjetos = daoTipoPolimento.listarTipoPolideiras
-
+    ' Inicia com false
+    temNaLista = False
     ' limpa a lista para carregamento
     cbTiposPolimento.Clear
     
@@ -3319,17 +3327,27 @@ Private Sub carregarTiposPolimentoAlgum(cbTiposPolimento As MSForms.comboBox, li
         For i = 1 To listaObjetos.Count
             ' Seta o ojeto
             Set tipoPolimento = listaObjetos(i)
-            
+            ' Laço nos polimentos já cadastrados
             For j = 1 To lista.Count
+                ' Seta para comparação
                 polimento = lista(j)
                 
-                If tipoPolimento.nome <> polimento Then
-                    If tipoPolimento.nome <> "BRUTO" Then
-                        ' Carregamento para lista
-                        cbTiposPolimento.AddItem tipoPolimento.nome
-                    End If
+                ' Compara se tem na lista
+                If tipoPolimento.nome = polimento Then
+                    temNaLista = True
+                    Exit For
                 End If
             Next j
+            ' Se tiver na lista adiciona no combox
+            If temNaLista = False Then
+                ' Carregamento para lista
+                cbTiposPolimento.AddItem tipoPolimento.nome
+                ' Volta com false para proxima verificação
+                temNaLista = False
+                
+            Else
+                temNaLista = False
+            End If
             
             ' Libera espaço memoria
             Set tipoPolimento = Nothing
