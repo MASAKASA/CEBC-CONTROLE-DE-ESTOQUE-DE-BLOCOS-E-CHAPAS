@@ -104,12 +104,12 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLTxtVoltarEdicaoBloco").Font.Size = botoesTextoFontSizeSmall
             
         ' Tela lançamento e edição chapa
-        Case "fTiraEfeitoBotoesMaterialChapa"
-            formControle.Controls("btnLImgCadastrarPolideiraChapa").top = 24
-            formControle.Controls("btnLImgCadastrarTipoPolideiraChapa").top = 78
-            formControle.Controls("btnLImgCadastrarTipoMaterialChapa").top = 132
+        Case "fTiraEfeitoBotoesLancamentoEdicaoChapa"
+            formControle.Controls("btnLImgCadastrarTipoPolideiraChapa").top = 30
+            
         Case "fTiraEfeitoBotoesTamanhoChapa"
-            formControle.Controls("btnLImgCadastrarTipoMaterialChapaTamanhos").top = 24
+            formControle.Controls("btnLImgCadastrarTipoMaterialChapa").top = 30
+            formControle.Controls("btnLImgCadastrarPolideiraChapa").top = 84
             formControle.Controls("btnLTxtAdicionarTamanhoChapa").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtEditarTamanhoChapa").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtTirarDaLista").Font.Size = botoesTextoFontSizeSmall

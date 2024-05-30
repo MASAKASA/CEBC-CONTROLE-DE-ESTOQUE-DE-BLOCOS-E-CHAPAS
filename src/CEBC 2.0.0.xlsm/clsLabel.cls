@@ -385,13 +385,11 @@ Private Sub efeitoBotoesImagem_MouseDown(ByVal Button As Integer, ByVal Shift As
             
         ' Tela lançamento e edição chapa
         Case "btnLImgCadastrarPolideiraChapa"
-            efeitoBotoesImagem.top = 24
+            efeitoBotoesImagem.top = 84
         Case "btnLImgCadastrarTipoPolideiraChapa"
-            efeitoBotoesImagem.top = 78
+            efeitoBotoesImagem.top = 30
         Case "btnLImgCadastrarTipoMaterialChapa"
-            efeitoBotoesImagem.top = 132
-        Case "btnLImgCadastrarTipoMaterialChapaTamanhos"
-            efeitoBotoesImagem.top = 24
+            efeitoBotoesImagem.top = 30
     End Select
 End Sub
 'Efeito de passagem por cima do mouse
@@ -434,13 +432,11 @@ Private Sub efeitoBotoesImagem_MouseMove(ByVal Button As Integer, ByVal Shift As
             
         ' Tela lançamento e edição chapa
         Case "btnLImgCadastrarPolideiraChapa"
-            efeitoBotoesImagem.top = 22
+            efeitoBotoesImagem.top = 82
         Case "btnLImgCadastrarTipoPolideiraChapa"
-            efeitoBotoesImagem.top = 76
+            efeitoBotoesImagem.top = 28
         Case "btnLImgCadastrarTipoMaterialChapa"
-            efeitoBotoesImagem.top = 130
-        Case "btnLImgCadastrarTipoMaterialChapaTamanhos"
-            efeitoBotoesImagem.top = 22
+            efeitoBotoesImagem.top = 28
     End Select
 End Sub
 'Efeito ao clicar com o mouse

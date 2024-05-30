@@ -459,7 +459,6 @@ Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As 
         ' Carrega combox da tela lançamento e edição de chapa
         Call carregarTiposMateriais(Me.cbTipoMaterialChapaC)
         Call carregarEstoqueChapas(Me.cbEstoqueChapaC)
-        Call carregarTiposMateriais(Me.cbTiposMateriaisChapas)
         
         ' limpa a lista para carregamento com tipo de polimento só com 'bruto'
         cbTipoPolimentoChapa.Clear
@@ -467,9 +466,7 @@ Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As 
         
         ' Cria chapa e direciona para tela de lançamento e edição de chapa para colocar demais informações
         Set chapaCadastro = ObjectFactory.factoryChapa(chapaCadastro)
-        Set polideira = ObjectFactory.factoryPolideira(polideira)
         Set tipoPolimento = daoTipoPolimento.pesquisarPorNome("BRUTO")
-        Set estoqueChapa = daoEstoqueChapa.pesquisarPorNome("CASA DO GRANITO")
         Set tamanhos = ObjectFactory.factoryLista(tamanhos)
         
         ' Formatar id, descrição da chapa e valor total serrada
@@ -477,18 +474,16 @@ Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As 
         descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(bloco.nomeMaterial, "BRUTO")
         valorTotalSerrada = M_METODOS_GLOBAL.calcularValor(bloco.qtdM2Serrada, bloco.valorMetroSerrada)
         
-        chapaCadastro.carregarChapaCadastro idChapa, descricaoChapa, bloco.qtdChapas, bloco.numeroBlocoPedreira, bloco.valorMetroSerrada, _
-                            valorTotalSerrada, bloco.compBrutoChapaBruta, bloco.altBrutoChapaBruta, bloco.qtdM2Serrada, bloco, polideira, tipoPolimento, _
-                            estoqueChapa, tamanhos
+        chapaCadastro.carregarChapa idChapa, descricaoChapa, valorTotalSerrada, bloco.qtdChapas, bloco.qtdM2Serrada, _
+                        bloco.compBrutoChapaBruta, bloco.altBrutoChapaBruta, bloco.numeroBlocoPedreira, tipoPolimento, _
+                        bloco, tamanhos
                             
         ' Carrega os dados na tela lançamento e edição de chapa
         Call carregarDadosChapaTelaEdicaoChapa(chapaCadastro, bloco)
         
         ' Libera espaço em memoria
         Set chapaCadastro = Nothing
-        Set polideira = Nothing
         Set tipoPolimento = Nothing
-        Set estoqueChapa = Nothing
         Set tamanhos = Nothing
     End If
     
@@ -1275,7 +1270,7 @@ Private Sub btnLTxtSalvarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Sh
     Dim blocoPesquisa As objBloco
     
     ' Verifica se esta habilitado para edição bloco finalizado
-    Set blocoPesquisa = daoBloco.pesquisarPorId(txtIdBlocoEditar.Value)
+    Set blocoPesquisa = daoBloco.pesquisarPorId(txtIdBlocoEditar.Value, True)
     
     If blocoPesquisa.status.nome = "FECHADO" Then
         If cbAbrirBlocoEditar.Value = False Then
@@ -1331,7 +1326,7 @@ Private Sub btnLTxtSalvarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Sh
     Call daoBloco.cadastrarEEditar(bloco)
     
     ' Chama serviço para pesquisa do bloco
-    Set bloco = daoBloco.pesquisarPorId(bloco.idSistema) ' Envia o id do bloco
+    Set bloco = daoBloco.pesquisarPorId(bloco.idSistema, True) ' Envia o id do bloco
     
     ' Recarrega os dados na tela editar bloco
     Call carregarDadosBlocoTelaEdicaoBloco(bloco)
@@ -1346,7 +1341,7 @@ Private Sub btnLTxtSalvarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Sh
     Set bloco = Nothing
     
     ' Mensagem de edição realizada com sucesso.
-    errorStyle.Informativo SUCESSO_EDICAO_MENSAGEM, SUCESSO_EDICAO_TITULO
+    errorStyle.Informativo HABILITE_EDICAO_MENSAGEM, HABILITE_EDICAO_TITULO
 End Sub
 ' Botão btnLTxtVoltarEdicaoBloco tela editar bloco
 Private Sub btnLTxtVoltarEdicaoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -1525,7 +1520,6 @@ Private Sub btnLTxtNovoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As I
     Call carregarPolideiras(Me.cbPolideiraChapa)
     Call carregarTiposMateriais(Me.cbTipoMaterialChapaC)
     Call carregarEstoqueChapas(Me.cbEstoqueChapaC)
-    Call carregarTiposMateriais(Me.cbTiposMateriaisChapas)
     
     ' Loop através dos itens da coleção para obter os polimentos já cadastrados
     For i = 1 To listaChapasPesquisa.Count
@@ -1542,9 +1536,7 @@ Private Sub btnLTxtNovoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As I
     ' Chama serviço para pesquisa do bloco
     Set bloco = daoBloco.pesquisarPorId(chapaPesquisa.bloco.idSistema, True) ' Envia o id do bloco e true para fechar conexão ao final da pesquisar
     Set chapaCadastro = ObjectFactory.factoryChapa(chapaCadastro)
-    Set polideira = daoPolideira.pesquisarPorNome(chapaPesquisa.polideira.nome)
     Set tipoPolimento = ObjectFactory.factoryTipoPolimento(tipoPolimento)
-    Set estoqueChapa = daoEstoqueChapa.pesquisarPorNome("CASA DO GRANITO")
     Set tamanhos = ObjectFactory.factoryLista(tamanhos)
     
     ' Formatar id, descrição da chapa e valor total serrada
@@ -1552,11 +1544,9 @@ Private Sub btnLTxtNovoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As I
     descricaoChapa = Mid(bloco.nomeMaterial, 7, Len(bloco.nomeMaterial))
     valorTotalSerrada = "0,00"
     
-    
-    
-    chapaCadastro.carregarChapaCadastro idChapa, descricaoChapa, bloco.qtdChapas, bloco.numeroBlocoPedreira, bloco.valorMetroSerrada, _
-                        valorTotalSerrada, bloco.compBrutoChapaBruta, bloco.altBrutoChapaBruta, bloco.qtdM2Serrada, bloco, polideira, tipoPolimento, _
-                        estoqueChapa, tamanhos
+    ' Cria o objeto
+    chapaCadastro.carregarChapa idChapa, descricaoChapa, valorTotalSerrada, bloco.numeroBlocoPedreira, _
+                        tipoPolimento, bloco, polideira, tamanhos
                         
     ' Carrega os dados na tela lançamento e edição de chapa
     Call carregarDadosChapaTelaEdicaoChapa(chapaCadastro, bloco)
@@ -1573,26 +1563,40 @@ End Sub
 
 ' Botão btnLTxtEditarChapa tela estoque m²
 Private Sub btnLTxtEditarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    
+    ' Variaveis do metodos
+    Dim chapaPesquisa As objChapa
+    
+    ' Verifica se tem algum item selecionado
+    If Me.ListEstoqueChapas.ListIndex = -1 Then
+        ' Mensagem usuário
+        errorStyle.Informativo ESCOLHA_CHAPA_MENSAGEM, ESCOLHA_CHAPA_TITULO
+        Exit Sub
+    End If
+    
     ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 6
     ' Seta número de pagina para poder voltar
     paginaAnterior = 4
-    ' Seta o foco
-    cbPolideiraChapa.SetFocus
-    
-    ' Chama serviço para pesquisa da chapa
-    
     
     ' Carrega os ComboBox da tela
     Call carregarPolideiras(cbPolideiraChapa)
     Call carregarTiposPolimento(cbTipoPolimentoChapa)
     Call carregarTiposMateriais(cbTipoMaterialChapaC)
     Call carregarEstoque(cbEstoqueChapaC)
-    Call carregarTiposMateriais(cbTiposMateriaisChapas)
     
-    ' Carrega os dados na tela editar chapa
-    Call carregarDadosChapaTelaEdicaoChapa ' Irá enviar o objeto chapa para poder carregar os campos
+    ' Pesquisa pela chapa e o bloco do mesmo
+    Set chapaPesquisa = daoChapa.pesquisarPorId(Me.ListEstoqueChapas.list(Me.ListEstoqueChapas.ListIndex, 0))
+    Set bloco = daoBloco.pesquisarPorId(chapaPesquisa.bloco.idSistema, True) ' Envia o id do bloco e true para fechar conexão ao final da pesquisar
+    
+    ' Carrega os dados na tela lançamento e edição de chapa
+    Call carregarDadosChapaTelaEdicaoChapa(chapaPesquisa, bloco)
+    
+    ' Libera espaço em memoria
+    Set bloco = Nothing
+    Set chapaPesquisa = Nothing
 End Sub
+    
 ' Botão btnLTxtTrocaEstoque tela estoque m²
 Private Sub btnLTxtTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Muda abra da multPage
@@ -2497,24 +2501,18 @@ End Sub
 Private Sub btnLTxtAdicionarTamanhoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço adicionar tamanhos, tela lançamento e edição chapa"
-    ' Seta o foco
-    cbTiposMateriaisChapas.SetFocus
 End Sub
 
 ' Botão btnLTxtEditarTamanhoChapa tela lançamento e edição chapa
 Private Sub btnLTxtEditarTamanhoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço editar tamanho chapa, tela lançamento e edição chapa"
-    ' Seta o foco
-    cbTiposMateriaisChapas.SetFocus
 End Sub
 
 ' Botão btnLTxtTirarDaLista tela lançamento e edição chapa
 Private Sub btnLTxtTirarDaLista_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço tira tamanho da lista, tela lançamento e edição chapa"
-    ' Seta o foco
-    cbTiposMateriaisChapas.SetFocus
 End Sub
 
 ' Botão btnLTxtSalvarChapa tela lançamento e edição chapa
@@ -2546,7 +2544,7 @@ Private Sub btnLTxtVoltarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As
         formControle.Controls("btnLMenuChapa").Width = 189
         formControle.Controls("btnLMenuChapa").TextAlign = fmTextAlignLeft
         
-            ' Seta o foco
+        ' Seta o foco
         txtMaterialBlocoPesquisa.SetFocus
     Else
         ' Seta o foco
@@ -3468,7 +3466,7 @@ End Sub
 
 '-----------------------------------------------------------------CARREAGMENTO DAS LIST-----------------------------------
 '                                                                 ---------------------
-' Carrega a lista
+' Carrega a lista bloco
 Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collection)
    'Variaveis do metodo
     Dim objeto As objBloco
@@ -3508,19 +3506,19 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
                 ' Adiciona os dados do bloco
                 ListBox.list(ListBox.ListCount - 1, 0) = objetoChapa.idSistema
                 ListBox.list(ListBox.ListCount - 1, 1) = objetoChapa.nomeMaterial
-                ListBox.list(ListBox.ListCount - 1, 2) = objetoChapa.qtdEstoque
-                ListBox.list(ListBox.ListCount - 1, 3) = _
-                                        M_METODOS_GLOBAL.formatarComPontos(Format(objetoChapa.compBruto, "0.0000"))
-                ListBox.list(ListBox.ListCount - 1, 4) = _
-                                        M_METODOS_GLOBAL.formatarComPontos(Format(objetoChapa.altBruto, "0.0000"))
-                ListBox.list(ListBox.ListCount - 1, 5) = _
-                                        M_METODOS_GLOBAL.formatarComPontos(Format(objetoChapa.qtdM2Bruto, "0.0000"))
-                ListBox.list(ListBox.ListCount - 1, 6) = objetoChapa.tipoPolimento.nome
-                ListBox.list(ListBox.ListCount - 1, 7) = "02"
+                'ListBox.list(ListBox.ListCount - 1, 2) = objetoChapa.qtdEstoque
+'                ListBox.list(ListBox.ListCount - 1, 3) = _
+'                                        M_METODOS_GLOBAL.formatarComPontos(Format(objetoChapa.compBruto, "0.0000"))
+'                ListBox.list(ListBox.ListCount - 1, 4) = _
+'                                        M_METODOS_GLOBAL.formatarComPontos(Format(objetoChapa.altBruto, "0.0000"))
+'                ListBox.list(ListBox.ListCount - 1, 5) = _
+'                                        M_METODOS_GLOBAL.formatarComPontos(Format(objetoChapa.qtdM2Bruto, "0.0000"))
+'                ListBox.list(ListBox.ListCount - 1, 6) = objetoChapa.tipoPolimento.nome
+'                ListBox.list(ListBox.ListCount - 1, 7) = "02"
                 ListBox.list(ListBox.ListCount - 1, 8) = _
-                                        M_METODOS_GLOBAL.formatarComPontos(Format(objetoChapa.custoPolimento, "0.00"))
+                                        M_METODOS_GLOBAL.formatarComPontos(Format(0, "currency"))
                 ListBox.list(ListBox.ListCount - 1, 9) = _
-                                        M_METODOS_GLOBAL.formatarComPontos(Format(objetoChapa.custoTotal, "0.00"))
+                                        M_METODOS_GLOBAL.formatarComPontos(Format(objetoChapa.valorTotal, "currency"))
                 
                 ' Libera espaço da memoria
                 Set objetoChapa = Nothing
@@ -3545,13 +3543,13 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
                                         M_METODOS_GLOBAL.formatarComPontos(Format(objeto.largLiquidoBloco, "0.0000"))
                 ListBox.list(ListBox.ListCount - 1, 5) = objeto.qtdChapas
                 ListBox.list(ListBox.ListCount - 1, 6) = _
-                                        M_METODOS_GLOBAL.formatarComPontos(Format(objeto.precoM3Bloco, "0.00"))
+                                        M_METODOS_GLOBAL.formatarComPontos(Format(objeto.precoM3Bloco, "currency"))
                 ListBox.list(ListBox.ListCount - 1, 7) = _
-                                        M_METODOS_GLOBAL.formatarComPontos(Format(objeto.valoresAdicionais, "0.00"))
+                                        M_METODOS_GLOBAL.formatarComPontos(Format(objeto.valoresAdicionais, "currency"))
                 ListBox.list(ListBox.ListCount - 1, 8) = _
-                                        M_METODOS_GLOBAL.formatarComPontos(Format(objeto.freteBloco, "0.00"))
+                                        M_METODOS_GLOBAL.formatarComPontos(Format(objeto.freteBloco, "currency"))
                 ListBox.list(ListBox.ListCount - 1, 9) = _
-                                        M_METODOS_GLOBAL.formatarComPontos(Format(objeto.valorBloco, "0.00"))
+                                        M_METODOS_GLOBAL.formatarComPontos(Format(objeto.valorBloco, "currency"))
                 
                 ' Total de blocos pesquisados
                 lQtdBlocos.Caption = i
@@ -3569,6 +3567,7 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
     ' Libera espaço da memoria
     Set listaObjeto = Nothing
 End Sub
+
 
 ' Carrega a lista ListTamanhosChapas tela edicao chapa
 Private Sub carregarListTamanhosChapas(ListBox As MSForms.ListBox, listaCollection As Collection)

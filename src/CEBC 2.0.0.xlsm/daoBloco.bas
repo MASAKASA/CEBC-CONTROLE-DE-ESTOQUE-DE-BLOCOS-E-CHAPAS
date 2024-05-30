@@ -248,7 +248,7 @@ Function excluir(id As String)
 End Function
 
 ' Pesquisa objeto por id
-Function pesquisarPorId(id As String, conexaoFechar As Boolean) As objBloco
+Function pesquisarPorId(id As Variant, conexaoFechar As Boolean) As objBloco
     'Metodos do metodo
     ' String para consultas
     Dim sqlSelectPesquisarPorId As String ' String para consultas
