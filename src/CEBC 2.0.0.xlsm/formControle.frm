@@ -2354,13 +2354,13 @@ Private Sub carregarDadosChapaTelaEdicaoChapa(chapa As objChapa, bloco As objBlo
     ' Dados chapa
     txtIdChapaSistema.Value = chapa.idSistema
     txtDescricaoChapa.Value = chapa.nomeMaterial
-    txtEstoqueChapa.Value = chapa.qtdEstoque
+    'txtEstoqueChapa.Value = chapa.qtdEstoque
     
     ' Dimensões e custos
-    Call selecaoItem("cbPolideiraChapa", chapa.polideira.nome)
+    'Call selecaoItem("cbPolideiraChapa", chapa.polideira.nome)
     Call selecaoItem("cbTipoPolimentoChapa", chapa.tipoPolimento.nome)
     Call selecaoItem("cbEstoqueChapaC", chapa.estoque.nome)
-    txtQtdChapaC.Value = chapa.qtdEstoque
+    'txtQtdChapaC.Value = chapa.qtdEstoque
     txtCompBrutoChapa.Value = M_METODOS_GLOBAL.formatarComPontos(Format(chapa.compBruto, "0.0000"))
     txtAlturaBrutaChapa.Value = M_METODOS_GLOBAL.formatarComPontos(Format(chapa.altBruto, "0.0000"))
     txtQtsM2Chapa.Value = M_METODOS_GLOBAL.formatarComPontos(Format(chapa.qtdM2Bruto, "0.0000"))
@@ -3471,8 +3471,16 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
    'Variaveis do metodo
     Dim objeto As objBloco
     Dim objetoChapa As objChapa
+    Dim objetoTamanho As objTamanho
     Dim i As Integer
+    Dim j As Integer
     Dim qtdChapas As Integer
+    Dim qtdEstoque As Integer
+    Dim mediaComp As Double
+    Dim mediaAlt As Double
+    Dim totalM2 As Double
+    Dim valorPolimento As String
+    Dim esp As String
     
     ' Limpar a ListBox
     ListBox.Clear
@@ -3506,23 +3514,58 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
                 ' Adiciona os dados do bloco
                 ListBox.list(ListBox.ListCount - 1, 0) = objetoChapa.idSistema
                 ListBox.list(ListBox.ListCount - 1, 1) = objetoChapa.nomeMaterial
-                'ListBox.list(ListBox.ListCount - 1, 2) = objetoChapa.qtdEstoque
-'                ListBox.list(ListBox.ListCount - 1, 3) = _
-'                                        M_METODOS_GLOBAL.formatarComPontos(Format(objetoChapa.compBruto, "0.0000"))
-'                ListBox.list(ListBox.ListCount - 1, 4) = _
-'                                        M_METODOS_GLOBAL.formatarComPontos(Format(objetoChapa.altBruto, "0.0000"))
-'                ListBox.list(ListBox.ListCount - 1, 5) = _
-'                                        M_METODOS_GLOBAL.formatarComPontos(Format(objetoChapa.qtdM2Bruto, "0.0000"))
-'                ListBox.list(ListBox.ListCount - 1, 6) = objetoChapa.tipoPolimento.nome
-'                ListBox.list(ListBox.ListCount - 1, 7) = "02"
+                
+                For j = 1 To objetoChapa.tamanhos.Count
+                    Set tamanho = objetoChapa.tamanhos.Item(j)
+                    
+                    qtdEstoque = qtdEstoque + CInt(tamanho.qtdEstoque)
+                    mediaComp = mediaComp + CDbl(tamanho.compremento)
+                    mediaAlt = mediaAlt + CDbl(tamanho.altura)
+                    totalM2 = totalM2 + CDbl(tamanho.qtdM2)
+                    valorPolimento = tamanho.valorPolimento
+                    esp = tamanho.espessura
+                    
+                    ' Soma total de chapa da pesquisa
+                    qtdChapas = qtdChapas + CInt(tamanho.qtdEstoque)
+                    
+                    ' Libera espaço da memoria
+                    Set objetoTamanho = Nothing
+                Next j
+                
+                ListBox.list(ListBox.ListCount - 1, 2) = qtdEstoque
+                
+                ' Media comprimento
+                mediaComp = mediaComp / objetoChapa.tamanhos.Count
+                ListBox.list(ListBox.ListCount - 1, 3) = _
+                                        M_METODOS_GLOBAL.formatarComPontos(Format(mediaComp, "0.0000"))
+                
+                ' Media altura
+                mediaAlt = mediaAlt / objetoChapa.tamanhos.Count
+                ListBox.list(ListBox.ListCount - 1, 4) = _
+                                        M_METODOS_GLOBAL.formatarComPontos(Format(mediaAlt, "0.0000"))
+                                        
+                ListBox.list(ListBox.ListCount - 1, 5) = _
+                                        M_METODOS_GLOBAL.formatarComPontos(Format(totalM2, "0.0000"))
+                ListBox.list(ListBox.ListCount - 1, 6) = objetoChapa.tipoPolimento.nome
+                ListBox.list(ListBox.ListCount - 1, 7) = esp
                 ListBox.list(ListBox.ListCount - 1, 8) = _
-                                        M_METODOS_GLOBAL.formatarComPontos(Format(0, "currency"))
+                                        M_METODOS_GLOBAL.formatarComPontos(Format(valorPolimento, "currency"))
                 ListBox.list(ListBox.ListCount - 1, 9) = _
                                         M_METODOS_GLOBAL.formatarComPontos(Format(objetoChapa.valorTotal, "currency"))
+                
+                ' Limpando as variaveis
+                qtdEstoque = 0
+                mediaComp = 0
+                mediaAlt = 0
+                totalM2 = 0
+                valorPolimento = ""
+                esp = "02"
                 
                 ' Libera espaço da memoria
                 Set objetoChapa = Nothing
             Next i
+            ' Total de chapas
+            lqtdChapasListaEstoque.Caption = qtdChapas
         Else
             ' Loop através dos itens da coleção
             For i = 1 To listaCollection.Count
