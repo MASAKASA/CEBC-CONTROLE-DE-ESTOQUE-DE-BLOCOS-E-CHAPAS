@@ -1605,6 +1605,12 @@ Private Sub btnLTxtTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift A
     txtQtdMaterialParaTroca01.SetFocus
 End Sub
 
+' Botão btnLTxtTamanhos tela estoque m²
+Private Sub btnLTxtTamanhos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    ' Abre tela com tamanhos da chapa
+    formTamanhos.Show
+End Sub
+
 '-----------------------------------------------------------------TELA CADASTRO AVULSO-----------------------------------
 '                                                                 --------------------
 ' txtIdBlocoAvulso tela cadastro avulso
