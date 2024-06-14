@@ -353,43 +353,43 @@ Private Sub efeitoBotoesImagem_MouseDown(ByVal Button As Integer, ByVal Shift As
     Select Case efeitoBotoesImagem.name
         ' Tela cadastrar bloco
         Case "btnLImgCadastrarPedreira"
-            efeitoBotoesImagem.top = 24
+            efeitoBotoesImagem.Top = 24
         Case "btnLImgCadastrarSerrariaCB"
-            efeitoBotoesImagem.top = 78
+            efeitoBotoesImagem.Top = 78
         Case "btnLImgCadastroTipoMaterial"
-            efeitoBotoesImagem.top = 24
+            efeitoBotoesImagem.Top = 24
         
         ' Tela despache
         Case "btnLImgCadastrarMotoristaDespache"
-            efeitoBotoesImagem.top = 28
+            efeitoBotoesImagem.Top = 28
         Case "btnLImgCadastrarDestinoDespache"
-            efeitoBotoesImagem.top = 76
+            efeitoBotoesImagem.Top = 76
             
         ' Tela estoque m³
         Case "btnLImgExportarEstoqueM3"
-            efeitoBotoesImagem.top = 18
+            efeitoBotoesImagem.Top = 18
             
         ' Tela estoque m²
         Case "btnLImgExportarEstoqueM2"
-            efeitoBotoesImagem.top = 6
+            efeitoBotoesImagem.Top = 6
             
         ' Tela cadastro chapas avulso
         Case "btnLImgCadastrarMaterialAvulso"
-            efeitoBotoesImagem.top = 24
+            efeitoBotoesImagem.Top = 24
         Case "btnLImgCadastrarPolimentoAvulso"
-            efeitoBotoesImagem.top = 78
+            efeitoBotoesImagem.Top = 78
             
         ' Tela carregos
         Case "btnLImgExportarCarregoPDF"
-            efeitoBotoesImagem.top = 24
+            efeitoBotoesImagem.Top = 24
             
         ' Tela lançamento e edição chapa
         Case "btnLImgCadastrarPolideiraChapa"
-            efeitoBotoesImagem.top = 84
+            efeitoBotoesImagem.Top = 84
         Case "btnLImgCadastrarTipoPolideiraChapa"
-            efeitoBotoesImagem.top = 30
+            efeitoBotoesImagem.Top = 30
         Case "btnLImgCadastrarTipoMaterialChapa"
-            efeitoBotoesImagem.top = 30
+            efeitoBotoesImagem.Top = 30
     End Select
 End Sub
 'Efeito de passagem por cima do mouse
@@ -398,45 +398,45 @@ Private Sub efeitoBotoesImagem_MouseMove(ByVal Button As Integer, ByVal Shift As
     Select Case efeitoBotoesImagem.name
         ' Tela cadastrar bloco
         Case "btnLImgCadastrarPedreira"
-            efeitoBotoesImagem.top = 22
+            efeitoBotoesImagem.Top = 22
          Case "btnLImgCadastrarSerrariaCB"
-            efeitoBotoesImagem.top = 76
+            efeitoBotoesImagem.Top = 76
         Case "btnLImgCadastroTipoMaterial"
-            efeitoBotoesImagem.top = 22
+            efeitoBotoesImagem.Top = 22
         
         ' Tela despache
         Case "btnLImgCadastrarMotoristaDespache"
-            efeitoBotoesImagem.top = 28
+            efeitoBotoesImagem.Top = 28
         Case "btnLImgCadastrarDestinoDespache"
-            efeitoBotoesImagem.top = 76
+            efeitoBotoesImagem.Top = 76
         Case "btnLImgExportarListaDespache"
-            efeitoBotoesImagem.top = 4
+            efeitoBotoesImagem.Top = 4
             
         ' Tela estoque m³
         Case "btnLImgExportarEstoqueM3"
-            efeitoBotoesImagem.top = 16
+            efeitoBotoesImagem.Top = 16
             
         ' Tela estoque m²
         Case "btnLImgExportarEstoqueM2"
-            efeitoBotoesImagem.top = 4
+            efeitoBotoesImagem.Top = 4
             
         ' Tela cadastro chapas avulso
         Case "btnLImgCadastrarMaterialAvulso"
-            efeitoBotoesImagem.top = 22
+            efeitoBotoesImagem.Top = 22
         Case "btnLImgCadastrarPolimentoAvulso"
-            efeitoBotoesImagem.top = 76
+            efeitoBotoesImagem.Top = 76
             
         ' Tela carregos
         Case "btnLImgExportarCarregoPDF"
-            efeitoBotoesImagem.top = 22
+            efeitoBotoesImagem.Top = 22
             
         ' Tela lançamento e edição chapa
         Case "btnLImgCadastrarPolideiraChapa"
-            efeitoBotoesImagem.top = 82
+            efeitoBotoesImagem.Top = 82
         Case "btnLImgCadastrarTipoPolideiraChapa"
-            efeitoBotoesImagem.top = 28
+            efeitoBotoesImagem.Top = 28
         Case "btnLImgCadastrarTipoMaterialChapa"
-            efeitoBotoesImagem.top = 28
+            efeitoBotoesImagem.Top = 28
     End Select
 End Sub
 'Efeito ao clicar com o mouse

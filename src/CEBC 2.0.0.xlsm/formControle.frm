@@ -25,17 +25,18 @@ Dim frameEfeito() As clsFrame
 Dim errorStyle As clsErrorStyle
 
 ' Variaveis para manipulação
-Dim paginaAnterior As Integer
+Public paginaAnterior As Integer
 Dim status() As String
 Dim listaObjeto As Collection
+Dim frm As formTamanhos
 
 ' Variaveis de objetos
 Dim bloco As objBloco
-Dim chapa As objChapa
+Public chapa As objChapa
 Dim pedreira As objPedreira
 Dim polideira As objPolideira
 Dim serraria As objSerraria
-Dim tamanho As objTamanho
+Public tamanho As objTamanho
 Dim tipoMaterial As objTipoMaterial
 Dim tipoPolimento As objTipoPolimento
 Dim statusObj As objStatus
@@ -410,7 +411,7 @@ Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As 
     Dim temCadastro As Boolean
     Dim chapaCadastro As objChapa
     Dim tamanhos As Collection
-    Dim idChapa As String
+    Dim idchapa As String
     Dim descricaoChapa As String
     Dim valorTotalSerrada As String
     
@@ -470,11 +471,11 @@ Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As 
         Set tamanhos = ObjectFactory.factoryLista(tamanhos)
         
         ' Formatar id, descrição da chapa e valor total serrada
-        idChapa = M_METODOS_GLOBAL.formatarIdChapa(bloco.idSistema, "BT")
+        idchapa = M_METODOS_GLOBAL.formatarIdChapa(bloco.idSistema, "BT")
         descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(bloco.nomeMaterial, "BRUTO")
         valorTotalSerrada = M_METODOS_GLOBAL.calcularValor(bloco.qtdM2Serrada, bloco.valorMetroSerrada)
         
-        chapaCadastro.carregarChapa idChapa, descricaoChapa, valorTotalSerrada, bloco.qtdChapas, bloco.qtdM2Serrada, _
+        chapaCadastro.carregarChapa idchapa, descricaoChapa, valorTotalSerrada, bloco.qtdChapas, bloco.qtdM2Serrada, _
                         bloco.compBrutoChapaBruta, bloco.altBrutoChapaBruta, bloco.numeroBlocoPedreira, tipoPolimento, _
                         bloco, tamanhos
                             
@@ -1494,7 +1495,7 @@ Private Sub btnLTxtNovoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As I
     Dim tamanhos As Collection
     Dim chapaPesquisa As objChapa
     Dim chapaCadastro As objChapa
-    Dim idChapa As String
+    Dim idchapa As String
     Dim descricaoChapa As String
     Dim valorTotalSerrada As String
     Dim i As Integer
@@ -1540,12 +1541,12 @@ Private Sub btnLTxtNovoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As I
     Set tamanhos = ObjectFactory.factoryLista(tamanhos)
     
     ' Formatar id, descrição da chapa e valor total serrada
-    idChapa = bloco.numeroBlocoPedreira
+    idchapa = bloco.numeroBlocoPedreira
     descricaoChapa = Mid(bloco.nomeMaterial, 7, Len(bloco.nomeMaterial))
     valorTotalSerrada = "0,00"
     
     ' Cria o objeto
-    chapaCadastro.carregarChapa idChapa, descricaoChapa, valorTotalSerrada, bloco.numeroBlocoPedreira, _
+    chapaCadastro.carregarChapa idchapa, descricaoChapa, valorTotalSerrada, bloco.numeroBlocoPedreira, _
                         tipoPolimento, bloco, polideira, tamanhos
                         
     ' Carrega os dados na tela lançamento e edição de chapa
@@ -1599,14 +1600,44 @@ End Sub
     
 ' Botão btnLTxtTrocaEstoque tela estoque m²
 Private Sub btnLTxtTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    
+    ' Verifica se tem algum item selecionado
+    If Me.ListEstoqueChapas.ListIndex = -1 Then
+        ' Mensagem usuário
+        errorStyle.Informativo ESCOLHA_CHAPA_MENSAGEM, ESCOLHA_CHAPA_TITULO
+        Exit Sub
+    End If
+    
     ' Muda abra da multPage
     Me.MultiPageCEBC.Value = 7
+    ' Seta pagina anterior
+    paginaAnterior = 4
     ' Seta o foco
-    txtQtdMaterialParaTroca01.SetFocus
+    cbTipoPolimentoTroca.SetFocus
+    
+    ' Pesquisa pela chapa e o bloco do mesmo
+    Set chapa = daoChapa.pesquisarPorId(Me.ListEstoqueChapas.list(Me.ListEstoqueChapas.ListIndex, 0))
+    
+    ' Abre tela com tamanhos da chapa
+    formTamanhos.Show
 End Sub
 
 ' Botão btnLTxtTamanhos tela estoque m²
 Private Sub btnLTxtTamanhos_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    
+    ' Verifica se tem algum item selecionado
+    If Me.ListEstoqueChapas.ListIndex = -1 Then
+        ' Mensagem usuário
+        errorStyle.Informativo ESCOLHA_CHAPA_MENSAGEM, ESCOLHA_CHAPA_TITULO
+        Exit Sub
+    End If
+    
+    ' Seta pagina anterior
+    paginaAnterior = 4
+    
+    ' Pesquisa pela chapa
+    Set chapa = daoChapa.pesquisarPorId(Me.ListEstoqueChapas.list(Me.ListEstoqueChapas.ListIndex, 0))
+    
     ' Abre tela com tamanhos da chapa
     formTamanhos.Show
 End Sub
@@ -1950,7 +1981,7 @@ Private Sub btnLTxtCadastrarChapaAvulso_MouseDown(ByVal Button As Integer, ByVal
     Dim temNota As String
     
     'Variaveis para as chapa
-    Dim idChapa As String
+    Dim idchapa As String
     Dim descricaoChapa As String
     Dim totalChapas As String
     Dim alturaChapas As String
@@ -1994,7 +2025,7 @@ Private Sub btnLTxtCadastrarChapaAvulso_MouseDown(ByVal Button As Integer, ByVal
     espessura = UCase(txtEspessuraAvulso.Value)
     idEstoqueChapa = "1"
     tipoMaterial = ComboBoxTipoMaterialL.Value
-    idChapa = Util.formatarIdChapa(idBloco, "A")
+    idchapa = Util.formatarIdChapa(idBloco, "A")
     descricaoChapa = UCase(TextBoxMaterialAvulso.Value)
     nomePolideira = "IMPORTADO"
     
@@ -2080,55 +2111,55 @@ Private Sub btnLTxtCadastrarChapaAvulso_MouseDown(ByVal Button As Integer, ByVal
 
     ElseIf ComboBoxTipoPolimentoL.Value = "POLIDO" Then
 
-        idChapa = Util.formatarIdChapa(idBloco, "PO")
+        idchapa = Util.formatarIdChapa(idBloco, "PO")
         descricaoChapa = Util.formatarNomeChapa(descricao, "POLIDO")
         tipoPolimento = "POLIDO"
 
     ElseIf ComboBoxTipoPolimentoL.Value = "BI POLIDO" Then
 
-        idChapa = Util.formatarIdChapa(idBloco, "BPO")
+        idchapa = Util.formatarIdChapa(idBloco, "BPO")
         descricaoChapa = Util.formatarNomeChapa(descricao, "BI POLIDO")
         tipoPolimento = "BI POLIDO"
 
     ElseIf ComboBoxTipoPolimentoL.Value = "ESCOVADO" Then
 
-        idChapa = Util.formatarIdChapa(idBloco, "ES")
+        idchapa = Util.formatarIdChapa(idBloco, "ES")
         descricaoChapa = Util.formatarNomeChapa(descricao, "ESCOVADO")
         tipoPolimento = "ESCOVADO"
 
     ElseIf ComboBoxTipoPolimentoL.Value = "BI ESCOVADO" Then
 
-        idChapa = Util.formatarIdChapa(idBloco, "BES")
+        idchapa = Util.formatarIdChapa(idBloco, "BES")
         descricaoChapa = Util.formatarNomeChapa(descricao, "BI ESCOVADO")
         tipoPolimento = "BI ESCOVADO"
 
     ElseIf ComboBoxTipoPolimentoL.Value = "LEVIGADO" Then
 
-        idChapa = Util.formatarIdChapa(idBloco, "LE")
+        idchapa = Util.formatarIdChapa(idBloco, "LE")
         descricaoChapa = Util.formatarNomeChapa(descricao, "LEVIGADO")
         tipoPolimento = "LEVIGADO"
 
     ElseIf ComboBoxTipoPolimentoL.Value = "FLAMIADO" Then
 
-        idChapa = Util.formatarIdChapa(idBloco, "FL")
+        idchapa = Util.formatarIdChapa(idBloco, "FL")
         descricaoChapa = Util.formatarNomeChapa(descricao, "FLAMIADO")
         tipoPolimento = "FLAMIADO"
 
     ElseIf ComboBoxTipoPolimentoL.Value = "RIPADO" Then
 
-        idChapa = Util.formatarIdChapa(idBloco, "RI")
+        idchapa = Util.formatarIdChapa(idBloco, "RI")
         descricaoChapa = Util.formatarNomeChapa(descricao, "RIPADO")
         tipoPolimento = "RIPADO"
 
     ElseIf ComboBoxTipoPolimentoL.Value = "RIPADO" Then
 
-        idChapa = Util.formatarIdChapa(idBloco, "MA")
+        idchapa = Util.formatarIdChapa(idBloco, "MA")
         descricaoChapa = Util.formatarNomeChapa(descricao, "MATTE")
         tipoPolimento = "MATTE"
         
     ElseIf ComboBoxTipoPolimentoL.Value = "RIPADO" Then
 
-        idChapa = Util.formatarIdChapa(idBloco, "RP")
+        idchapa = Util.formatarIdChapa(idBloco, "RP")
         descricaoChapa = Util.formatarNomeChapa(descricao, "RESIN PINTADO")
         tipoPolimento = "RESIN PINTADO"
     End If
@@ -2272,7 +2303,7 @@ Private Sub btnLTxtCadastrarChapaAvulso_MouseDown(ByVal Button As Integer, ByVal
         End If
         
         'Cadastra chapa
-        Call cadastrarChapa(idChapa, descricaoChapa, custoSimples, custoSimples, totalChapas, m2Chapas, _
+        Call cadastrarChapa(idchapa, descricaoChapa, custoSimples, custoSimples, totalChapas, m2Chapas, _
                 comprimentoChapas, alturaChapas, espessura, idBlocoPedreira, tipoPolimento, idEstoqueChapa, _
                 tipoMaterial, nomePolideira, idBloco)
                 
@@ -2561,24 +2592,192 @@ End Sub
 
 '-----------------------------------------------------------------TELA TROCA ESTOQUE-----------------------------------
 '                                                                 ------------------
+' Botão txtQtdMaterialParaTroca02 tela troca estoque
+Private Sub txtQtdMaterialParaTroca02_Change()
+    ' Variaveis do metodo
+    Dim textoDigitado As String
+    Dim textoFormatado As String
+    Dim lancamento As Integer
+    Dim estoque As Integer
+    Dim i As Integer
+
+    ' Recebi o texto digitadado pelo usúario
+    textoDigitado = txtQtdMaterialParaTroca02.Value
+ 
+    ' Remove todos os caracteres não numéricos
+    For i = 1 To Len(textoDigitado)
+        If IsNumeric(Mid(textoDigitado, i, 1)) Then
+            textoFormatado = textoFormatado & Mid(textoDigitado, i, 1)
+        End If
+        
+        'Remove o zero na esquerda do texto
+        If Len(textoFormatado) = 2 Then
+            If Left(textoFormatado, 1) = 0 Then
+                textoFormatado = Mid(textoFormatado, 2, 1)
+            End If
+        End If
+    Next i
+    
+    If textoDigitado = "" Then
+        textoFormatado = "0"
+    End If
+    
+    txtQtdMaterialParaTroca02.Value = textoFormatado
+    
+    'Conversão para comparação
+    lancamento = CInt(txtQtdMaterialParaTroca02.Value)
+    estoque = CInt(txtQtdDispovelMaterialParaTroca01.Value)
+    
+    'Confere se tem no estoque
+    If lancamento > estoque Then
+        ' Mensagem de retorno
+        errorStyle.Informativo VALOR_SUPERIOR_MENSAGEM, VALOR_SUPERIOR_TITULO
+        Exit Sub
+    End If
+End Sub
+
 ' Botão btnLTxtAdicionarTrocaEstoque tela troca estoque
 Private Sub btnLTxtAdicionarTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    ' Chama Serviço
-    MsgBox "Chama Serviço adicionar material para troca, tela troca estoque"
-    ' Seta o foco
-    txtMaterialParaTroca02.SetFocus
+    ' Variaveis do metodo
+    Dim chapaTroca As objChapa
+    Dim idchapa As String
+    Dim descricaoChapa As String
+    Dim codFinal As String
+    Dim posicao As Integer
+    Dim idBloco As String
+    Dim descricao As String
+    Dim temChapa As Boolean
+    
+    If txtQtdMaterialParaTroca02.Value = "0" Then
+        Exit Sub
+    End If
+    
+    ' Id e descricao do bloco
+    idBloco = chapa.bloco.idSistema
+    descricao = chapa.bloco.nomeMaterial
+     
+    'Captura o tipo de polimento, cria o id e descrição da chapa
+    If cbTipoPolimentoTroca.Value = "BI POLIDO" Then
+        idchapa = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "BPO")
+        descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "BI POLIDO")
+        
+    ElseIf cbTipoPolimentoTroca.Value = "ESCOVADO" Then
+        idchapa = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "ES")
+        descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "ESCOVADO")
+        
+    ElseIf cbTipoPolimentoTroca.Value = "BI ESCOVADO" Then
+        idchapa = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "BES")
+        descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "BI ESCOVADO")
+        
+    ElseIf cbTipoPolimentoTroca.Value = "LEVIGADO" Then
+        idchapa = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "LE")
+        descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "LEVIGADO")
+        
+    ElseIf cbTipoPolimentoTroca.Value = "FLAMIADO" Then
+        idchapa = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "FL")
+        descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "FLAMIADO")
+        
+    ElseIf cbTipoPolimentoTroca.Value = "RIPADO" Then
+        idchapa = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "RI")
+        descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "RIPADO")
+        
+    ElseIf cbTipoPolimentoTroca.Value = "POLIDO" Then
+        idchapa = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "PO")
+        descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "POLIDO")
+        
+    ElseIf cbTipoPolimentoTroca.Value = "MATTE" Then
+        idchapa = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "MA")
+        descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "MATTE")
+        
+    ElseIf cbTipoPolimentoTroca.Value = "RESIN PINTADO" Then
+        idchapa = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "RP")
+        descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "RESIN PINTADO")
+        
+    ElseIf cbTipoPolimentoTroca.Value = "BRUTO" Then
+        idchapa = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "BT")
+        descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "BRUTO")
+    End If
+    
+    ' Pesquisa se chapa tem cadastro
+    temChapa = daoChapa.temIdChapa(idchapa)
+    
+    If temChapa = True Then
+        ' Seta chapa
+        Set chapaTroca = daoChapa.pesquisarPorId(idchapa)
+        
+        Call carregarListTrocasQtdChapas(ListMateriaisParaTroca, chapa, tamanho)
+        
+        Call carregarListTrocasQtdChapas(ListTrocarPor, chapaTroca, tamanho)
+    End If
 End Sub
 ' Botão btnLTxtTrocarEstoque tela troca estoque
 Private Sub btnLTxtTrocarEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    ' Chama Serviço
-    MsgBox "Chama Serviço troca de estoque, tela troca estoque"
+    ' Variaveis do metodo
+    Dim chapaTroca As objChapa
+    Dim chapaSerTrocada As objChapa
+    Dim tamanhoTroca As objTamanho
+    Dim tamanhoSerTrocada As objTamanho
+    Dim m2Diferenca As Double
+    Dim totalCusto As Double
+    Dim totalTamanho As Double
+    Dim qtdDiferenca As Integer
+    Dim i As Integer
+    Dim j As Integer
+    
+    ' Verifica se tem algum item selecionado
+    If Me.ListMateriaisParaTroca.ListCount = 0 Or Me.ListTrocarPor.ListCount = 0 Then
+        ' Mensagem usuário
+        errorStyle.Informativo ADICIONE_CHAPA_MENSAGEM, ADICIONE_CHAPA_TITULO
+        Exit Sub
+    End If
+    
+    ' Busca chapa e tamanho no banco para atualização
+    Set chapaTroca = daoChapa.pesquisarPorId(ListMateriaisParaTroca.list(ListMateriaisParaTroca.ListCount - 1, 0))
+    Set chapaSerTrocada = daoChapa.pesquisarPorId(ListTrocarPor.list(ListTrocarPor.ListCount - 1, 0))
+    Set tamanhoTroca = daoTamanho.pesquisarPorIdTamanho(ListMateriaisParaTroca.list(ListMateriaisParaTroca.ListCount - 1, 4))
+    Set tamanhoSerTrocada = daoTamanho.pesquisarPorIdTamanho(ListMateriaisParaTroca.list(ListMateriaisParaTroca.ListCount - 1, 4))
+    
+    ' Atualizações na memoria
+    For i = 1 To chapaTroca.tamanhos.Count
+        ' Seta o ojeto
+        Set tamanho = chapaTroca.tamanhos(i)
+        
+        If tamanho.id = tamanhoTroca.id Then
+            ' Subtração
+            qtdDiferenca = CInt(tamanho.qtdEstoque) - CDbl(ListMateriaisParaTroca.list(ListMateriaisParaTroca.ListCount - 1, 2))
+            m2Diferenca = CDbl(tamanho.qtdM2) - CDbl(ListMateriaisParaTroca.list(ListMateriaisParaTroca.ListCount - 1, 3))
+            
+            ' Cofere se é pra trocar tudo
+            If qtdDiferenca = 0 Then
+                ' Atribuições
+                chapaTroca.tamanhos.Remove (i)
+                
+                tamanhoSerTrocada.setChapa chapaSerTrocada
+                chapaSerTrocada.tamanhos.Add tamanhoSerTrocada
+                
+                ' Atualizações entre objetos
+                For j = 1 To chapaTroca.tamanhos.Count
+                    ' Seta o ojeto
+                    Set tamanho = chapaTroca.tamanhos(j)
+                    
+                    totalTamanho = CDbl(tamanho.qtdM2) * CDbl(tamanho.valorPolimento)
+                    
+                    totalCusto = totalCusto + totalTamanho
+                Next j
+            Else
+                
+            End If
+            ' Sai do for porque já achou o tamanho
+            Exit For
+        End If
+    Next i
+    ' Atualiazações no disco
+    
 End Sub
 ' Botão btnLTxtVoltarTrocaEstoque tela troca estoque
 Private Sub btnLTxtVoltarTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    ' Chama Serviço
-    MsgBox "Chama Serviço voltar, tela troca estoque"
-    ' Seta o foco
-    txtMaterialChapaPesquisa.SetFocus
+    ' Muda abra da multPage para tela estoque de chapas
+    Me.MultiPageCEBC.Value = 4
 End Sub
 
 '-----------------------------------------------------------------TELA DESPACHE-----------------------------------
@@ -3617,7 +3816,6 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
     Set listaObjeto = Nothing
 End Sub
 
-
 ' Carrega a lista ListTamanhosChapas tela edicao chapa
 Private Sub carregarListTamanhosChapas(ListBox As MSForms.ListBox, listaCollection As Collection)
     'Variaveis do metodo
@@ -3627,11 +3825,11 @@ Private Sub carregarListTamanhosChapas(ListBox As MSForms.ListBox, listaCollecti
     ' Limpar a ListBox
     ListBox.Clear
     
-    ' NOME CABEÇALHO BLOCOS       | TIPO  | ESP   | COMP  | ALT | M²  | QTD |
-    ' Tamanho do cabeçalho left   | 192,5 | 331,5 | 362,5 | 411 | 460 | 511 |
-    ' Tamanho do cabeçalho width  | 138,5 | 30    | 48    | 48  | 50  | 30  |
+    ' NOME CABEÇALHO TAMANHOS     | TIPO  | COMP | ALT | M²  | QTD    | ESP    | CUSTO  | POLIDEIRA | ESTOQUE
+    ' Tamanho do cabeçalho left   | 7,05  | 146  | 195 | 244 | 295,05 | 331,05 | 361,55 | 437,5     | 551
+    ' Tamanho do cabeçalho width  | 138,5 | 48   | 48  | 50  | 35     | 30     | 75     | 112       | 114,5
     ' Tamanho das colunas da list
-    ListBox.ColumnWidths = "140,5;30;48;48;50;35;"
+    ListBox.ColumnWidths = "138,5;48;48;50;35;30;75;112,5;114,5"
     
     ' Verifica se tem algum dado a pesquisa
     If listaCollection.Count = -1 Or listaCollection.Count = 0 Then ' Se não tiver dados
@@ -3657,4 +3855,43 @@ Private Sub carregarListTamanhosChapas(ListBox As MSForms.ListBox, listaCollecti
             Set tamanho = Nothing
         Next i
     End If
+End Sub
+
+' Carrega a lista ListMateriaisParaTroca tela troca de estoque
+Private Sub carregarListTrocasQtdChapas(ListBox As MSForms.ListBox, chapaTroca As objChapa, tamanhoTroca As objTamanho)
+    
+    ' Variaveis do metodo
+    Dim qtd As Integer
+    Dim m2 As Double
+    Dim comp As Double
+    Dim alt As Double
+    
+    ' Atribiucoes
+    comp = CDbl(txtCompMaterialParaTroca.Value)
+    alt = CDbl(txtAltMaterialParaTroca.Value)
+    qtd = CDbl(txtQtdMaterialParaTroca02.Value)
+    
+    m2 = comp * alt * qtd
+    
+    ' Limpar a ListBox
+    ListBox.Clear
+    
+    ' NOME CABEÇALHO TAMANHOS     | COD | DESCRIÇÃO | QTD   | M²
+    ' Tamanho do cabeçalho left   | 7   | 118       | 346,5 | 399
+    ' Tamanho do cabeçalho width  | 110 | 228       | 52    | 81
+    ' Tamanho das colunas da list
+    ListBox.ColumnWidths = "110;228;52;81;"
+    
+    ' Adiciona uma linha
+    ListBox.AddItem
+    
+    'Adiciona os dados do bloco
+    ListBox.list(ListBox.ListCount - 1, 0) = chapaTroca.idSistema
+    ListBox.list(ListBox.ListCount - 1, 1) = chapaTroca.nomeMaterial
+    ListBox.list(ListBox.ListCount - 1, 2) = txtQtdMaterialParaTroca02.Value
+    ListBox.list(ListBox.ListCount - 1, 3) = m2
+    ListBox.list(ListBox.ListCount - 1, 4) = tamanhoTroca.id
+    
+    ' Libera espaço na memoria
+    Set chapaTroca = Nothing
 End Sub

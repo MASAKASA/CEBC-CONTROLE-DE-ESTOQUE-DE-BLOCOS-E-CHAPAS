@@ -35,12 +35,11 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLMenuCadastros").Font.Size = menuFontSizeSmall
             formControle.Controls("btnLMenuUsuarios").Font.Size = menuFontSizeSmall
             
-            
         ' Tela cadastrar bloco
         Case "fTiraEfeitoBotoesPedreiraBloco"
-            formControle.Controls("btnLImgCadastrarPedreira").top = 24
-            formControle.Controls("btnLImgCadastrarSerrariaCB").top = 78
-            formControle.Controls("btnLImgCadastroTipoMaterial").top = 24
+            formControle.Controls("btnLImgCadastrarPedreira").Top = 24
+            formControle.Controls("btnLImgCadastrarSerrariaCB").Top = 78
+            formControle.Controls("btnLImgCadastroTipoMaterial").Top = 24
         Case "fTiraEfeitoBotoesAcoesBloco"
             formControle.Controls("btnLTxtCadastrarBloco").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtVoltarCadastroBloco").Font.Size = botoesTextoFontSizeSmall
@@ -48,8 +47,8 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
         
         ' Tela despache
         Case "fTiraEfeitoBotoesCabecalho"
-            formControle.Controls("btnLImgCadastrarMotoristaDespache").top = 30
-            formControle.Controls("btnLImgCadastrarDestinoDespache").top = 78
+            formControle.Controls("btnLImgCadastrarMotoristaDespache").Top = 30
+            formControle.Controls("btnLImgCadastrarDestinoDespache").Top = 78
         Case "fTiraEfeitoBotoesMaterial"
             formControle.Controls("btnLTxtAdicionar").Font.Size = botoesTextoFontSizeSmall
         Case "fTiraEfeitoBotoesAcoesDespachar"
@@ -61,7 +60,7 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLTxtPesquisarBlocos").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtLimparFiltrosBlocos").Font.Size = botoesTextoFontSizeSmall
         Case "fTiraEfeitoBotoesExportarBlocosM3"
-            formControle.Controls("btnLImgExportarEstoqueM3").top = 18
+            formControle.Controls("btnLImgExportarEstoqueM3").Top = 18
         Case "fTiraEfeitoBotoesAcoesListaBlocos"
             formControle.Controls("btnLTxtNovoBloco").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtEditarBloco").Font.Size = botoesTextoFontSizeSmall
@@ -72,7 +71,7 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLTxtPesquisarChapas").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtLimparFiltrosChapas").Font.Size = botoesTextoFontSizeSmall
         Case "fTiraEfeitoBotoesExportarChapasM2"
-            formControle.Controls("btnLImgExportarEstoqueM2").top = 6
+            formControle.Controls("btnLImgExportarEstoqueM2").Top = 6
         Case "fTiraEfeitoBotoesAcoesListChapas"
             formControle.Controls("btnLTxtNovoAvulso").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtNovoChapa").Font.Size = botoesTextoFontSizeSmall
@@ -82,8 +81,8 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             
         ' Tela cadastro chapas avulso
         Case "fTiraEfeitoBotoesMaterialAvulso"
-            formControle.Controls("btnLImgCadastrarMaterialAvulso").top = 24
-            formControle.Controls("btnLImgCadastrarPolimentoAvulso").top = 78
+            formControle.Controls("btnLImgCadastrarMaterialAvulso").Top = 24
+            formControle.Controls("btnLImgCadastrarPolimentoAvulso").Top = 78
         Case "fTiraEfeitoBotoesAcoesAvulso"
             formControle.Controls("btnLTxtCadastrarChapaAvulso").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtVoltarCadatradoChapasAvulso").Font.Size = botoesTextoFontSizeSmall
@@ -94,7 +93,7 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLTxtPesquisarCarregos").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtLimparListas").Font.Size = botoesTextoFontSizeSmall
         Case "fTiraEfeitoBotoesExportarCarrego"
-            formControle.Controls("btnLImgExportarCarregoPDF").top = 24
+            formControle.Controls("btnLImgExportarCarregoPDF").Top = 24
         Case "fTiraEfeitoBotoesAcoesListCarrego"
             formControle.Controls("btnLTxtEditarCarrego").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtVoltarCArrego").Font.Size = botoesTextoFontSizeSmall
@@ -106,11 +105,11 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             
         ' Tela lançamento e edição chapa
         Case "fTiraEfeitoBotoesLancamentoEdicaoChapa"
-            formControle.Controls("btnLImgCadastrarTipoPolideiraChapa").top = 30
+            formControle.Controls("btnLImgCadastrarTipoPolideiraChapa").Top = 30
             
         Case "fTiraEfeitoBotoesTamanhoChapa"
-            formControle.Controls("btnLImgCadastrarTipoMaterialChapa").top = 30
-            formControle.Controls("btnLImgCadastrarPolideiraChapa").top = 84
+            formControle.Controls("btnLImgCadastrarTipoMaterialChapa").Top = 30
+            formControle.Controls("btnLImgCadastrarPolideiraChapa").Top = 84
             formControle.Controls("btnLTxtAdicionarTamanhoChapa").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtEditarTamanhoChapa").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtTirarDaLista").Font.Size = botoesTextoFontSizeSmall
@@ -148,5 +147,11 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLTxtListUsuario").Font.Size = botoesTextoFontSizeSmall
         Case "fTiraEfeitoBotoesLogUsuarios"
             formControle.Controls("btnLTxtListUsuarioLog").Font.Size = botoesTextoFontSizeSmall
+            
+        ' Tela tamanhos das chapas
+        Case "fTiraEfeitoBotoesAcoesChapaTamanhos"
+            formTamanhos.Controls("btnLTxtAdicionarTamanho").Font.Size = botoesTextoFontSizeSmall
+            formTamanhos.Controls("btnLTxtTrocar").Font.Size = botoesTextoFontSizeSmall
+            formTamanhos.Controls("btnLTxtVoltarTamanhos").Font.Size = botoesTextoFontSizeSmall
     End Select
 End Sub

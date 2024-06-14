@@ -132,13 +132,13 @@ End Function
 Function formatarIdChapa(idBloco, tipoPolimento) As String
     'Variaveis do metodo
     Dim descricaoBloco As String
-    Dim idChapa As String
+    Dim idchapa As String
     Dim posicaoUnderline As Integer
     Dim i As Long
     
     'Atribuições das variaveis
     descricaoBloco = idBloco
-    idChapa = ""
+    idchapa = ""
     posicaoUnderline = 0
     
     'Acha a posição do último do traço
@@ -153,9 +153,9 @@ Function formatarIdChapa(idBloco, tipoPolimento) As String
     Next i
     
     'Cria a id da chapa
-    idChapa = Mid(descricaoBloco, 1, posicaoUnderline) & tipoPolimento
+    idchapa = Mid(descricaoBloco, 1, posicaoUnderline) & tipoPolimento
     
-    formatarIdChapa = idChapa
+    formatarIdChapa = idchapa
 End Function
 
 ' Formata o nome da chada

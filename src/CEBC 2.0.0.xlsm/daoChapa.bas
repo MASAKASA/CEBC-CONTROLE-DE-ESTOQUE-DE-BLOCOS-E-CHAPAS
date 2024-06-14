@@ -113,7 +113,7 @@ Function pesquisarPorId(id As String) As objChapa
     'Abrindo conexão com banco
     Call conctarBanco
     ' String para consulta
-    sqlSelectPesquisarPorId = "SELECT * FROM Chapas " & "WHERE id_Chapa = '" & id & "';"
+    sqlSelectPesquisarPorId = "SELECT * FROM Chapas WHERE id_Chapa = '" & id & "';"
     ' Criando e abrindo Recordset para consulta
     Set rsChapa = ObjectFactory.factoryRsAuxiliar(rsChapa)
     Set chapa = ObjectFactory.factoryChapa(chapa)
@@ -139,9 +139,12 @@ Function pesquisarPorId(id As String) As objChapa
         fkObject = rsChapa.Fields("fk_bloco").Value
         ' Setando Objeto
         chapa.setBloco daoBloco.pesquisarPorId(fkObject, False)
-        
         ' fk para consulta
-        'chapa.setTamanhos daoTamanho.pesquisarPorIdChapa(chapa.idSistema, False)
+        chapa.setTamanhos daoTamanho.pesquisarPorIdChapa(chapa.idSistema, False)
+        
+        For Each tamanho In chapa.getTamanhos
+            tamanho.setChapa chapa
+        Next tamanho
         
         rsChapa.MoveNext
     Wend
@@ -152,6 +155,39 @@ Function pesquisarPorId(id As String) As objChapa
     Set tipoPolimento = Nothing
     Set bloco = Nothing
     Set chapa = Nothing
+End Function
+
+' Pesquisa objeto por id
+Function temIdChapa(idchapa As String) As Boolean
+    'Metodos do metodo
+    ' String para consultas
+    Dim sqlSelectPesquisarPorId As String ' String para consultas
+    Dim rs As ADODB.Recordset ' Recordset para consulta principal
+    Dim temCadastro As Boolean
+    
+    ' Seta não para verificação de cadastro
+    temCadastro = False
+    
+    'Abrindo conexão com banco
+    Call conctarBanco
+    ' String para consulta
+    sqlSelectPesquisarPorId = "SELECT * FROM Chapas WHERE Id_Chapa = '" & idchapa & "';"
+    ' Criando e abrindo Recordset para consulta
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
+    ' Consulta banco
+    rs.Open sqlSelectPesquisarPorId, CONEXAO_BD, adOpenKeyset, adLockReadOnly
+    ' Retorno da consulta
+    While Not rs.EOF
+        ' Seta true em temCadastro porquê achou um cadastro
+        temCadastro = True
+        
+        rs.MoveNext
+    Wend
+    
+    ' Fechar conexão com banco
+    Call fecharConexaoBanco
+    ' Retorno
+    temIdChapa = temCadastro
 End Function
 
 ' Pesquisa objeto por id
@@ -168,7 +204,7 @@ Function pesquisarPorIdPedreira(numeroBlocoPedreira As String) As Boolean
     'Abrindo conexão com banco
     Call conctarBanco
     ' String para consulta
-    sqlSelectPesquisarPorId = "SELECT * FROM Chapas " & "WHERE numero_bloco_pedreira = '" & numeroBlocoPedreira & "';"
+    sqlSelectPesquisarPorId = "SELECT * FROM Chapas WHERE numero_bloco_pedreira = '" & numeroBlocoPedreira & "';"
     ' Criando e abrindo Recordset para consulta
     Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco
@@ -201,7 +237,7 @@ Function pesquisarPorFKBloco(idBloco As String) As Collection
     'Abrindo conexão com banco
     Call conctarBanco
     ' String para consulta
-    sqlSelectPesquisarPorId = "SELECT * FROM Chapas " & "WHERE fk_bloco = '" & idBloco & "';"
+    sqlSelectPesquisarPorId = "SELECT * FROM Chapas WHERE fk_bloco = '" & idBloco & "';"
     ' Criando e abrindo Recordset para consulta
     Set rsChapa = ObjectFactory.factoryRsAuxiliar(rsChapa)
     ' Consulta banco
@@ -274,7 +310,7 @@ Function pesquisarPorListaIdsPedreira(listaIdsParaPesquisa As Collection) As Col
         numeroBlocoPedreira = idLista
         
         ' String para consulta
-        sqlSelectPesquisarPorId = "SELECT * FROM Chapas " & "WHERE numero_bloco_pedreira = '" & numeroBlocoPedreira & "' ORDER BY Descricao;"
+        sqlSelectPesquisarPorId = "SELECT * FROM Chapas WHERE numero_bloco_pedreira = '" & numeroBlocoPedreira & "' ORDER BY Descricao;"
         ' Criando e abrindo Recordset para consulta
         Set rsChapa = ObjectFactory.factoryRsAuxiliar(rsChapa)
         ' Consulta banco

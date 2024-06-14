@@ -2,7 +2,13 @@ Attribute VB_Name = "M_TRADUCAO"
 Option Explicit
 
 ' Variaveis globais para os erros
-' TELA ESTOQUE M²
+' TROCA ESTOQUE
+Global ADICIONE_CHAPA_MENSAGEM As String
+Global ADICIONE_CHAPA_TITULO As String
+
+' TELA TROCA ESTOQUE
+Global VALOR_SUPERIOR_MENSAGEM As String
+Global VALOR_SUPERIOR_TITULO As String
 
 ' TELA CADASTRO AVULSO
 Global AVULSO_JA_CADASTRADO_MENSAGEM As String
@@ -54,6 +60,14 @@ Global ADICIONE_STATUS_TITULO As String
 ' Carrega as variaveis dos erros
 Public Sub carregarTraducaoErros()
     ' Mensagem para usuário
+    ' TROCA ESTOQUE
+    ADICIONE_CHAPA_MENSAGEM = "Adicione chapa para troca!"
+    ADICIONE_CHAPA_TITULO = "Sem chapas"
+
+    ' TELA TROCA ESTOQUE
+    VALOR_SUPERIOR_MENSAGEM = "A quantidade para lançamento é maior do que a dispónivel em estoque!"
+    VALOR_SUPERIOR_TITULO = "Sem estoque"""
+    
     ' TELA CADASTRO AVULSO
     AVULSO_JA_CADASTRADO_MENSAGEM = "Avulso já cadastrado no sistema!"
     AVULSO_JA_CADASTRADO_TITULO = "Cadastro duplicado"
@@ -85,7 +99,7 @@ Public Sub carregarTraducaoErros()
     NOME_PEDREIRA_TITULO = "Nome da pedreira não informada"
     
     ' TELA ESTOQUE BLOCOS M³
-    ESCOLHA_CHAPA_MENSAGEM = "Escolha chapa para adição no estoque!"
+    ESCOLHA_CHAPA_MENSAGEM = "Selecione uma chapa na lista!"
     ESCOLHA_CHAPA_TITULO = "Escolha chapa"
     SELECIONE_TEM_MENSAGEM = "Selecione um item da lista!"
     SELECIONE_TEM_TITULO = "Nada selecioando"
