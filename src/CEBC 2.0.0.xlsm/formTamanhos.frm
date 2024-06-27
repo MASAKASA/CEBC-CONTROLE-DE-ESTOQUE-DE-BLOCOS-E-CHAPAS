@@ -93,8 +93,10 @@ Private Sub btnLTxtTrocar_MouseDown(ByVal Button As Integer, ByVal Shift As Inte
 
     ' Variaveis no metodo
     Dim listaPolimentosJaCadastras As Collection
+    Dim listaChapasMesmaPedreira As Collection
     Dim tamanhoChapa As objTamanho
     Dim chapaPesquisa As objChapa
+    Dim i As Integer
     
     ' Verifica se tem algum dado a pesquisa
     If Me.ListTamanhosChapas.ListIndex = -1 Then ' Se não tiver dados
@@ -105,13 +107,17 @@ Private Sub btnLTxtTrocar_MouseDown(ByVal Button As Integer, ByVal Shift As Inte
     
     ' Seta tamanho e tipos de polimentos
     Set tamanhoChapa = daoTamanho.pesquisarPorIdTamanho(Me.ListTamanhosChapas.list(Me.ListTamanhosChapas.ListIndex, 8))
+    Set listaChapasMesmaPedreira = daoChapa.listaChapasMesmaPedreira(txtNumeroPedreira.Value)
     Set listaPolimentosJaCadastras = ObjectFactory.factoryLista(listaPolimentosJaCadastras)
     
-    ' Seta o ojeto
-    Set chapaPesquisa = daoChapa.pesquisarPorId(txtIdChapaSitema.Value)
-    ' Seta os polimentos já cadastrados
-    listaPolimentosJaCadastras.Add chapaPesquisa.tipoPolimento.nome
- 
+    For i = 1 To listaChapasMesmaPedreira.Count
+        ' Seta o ojeto
+        Set chapaPesquisa = listaChapasMesmaPedreira.Item(i)
+        
+        ' Seta os polimentos já cadastrados
+        listaPolimentosJaCadastras.Add chapaPesquisa.tipoPolimento.nome
+    Next i
+    
     ' Carrega só os tipos deferentes
     Call carregarTiposPolimentoAlgum(formControle.cbTipoPolimentoTroca, listaPolimentosJaCadastras)
     
@@ -199,57 +205,19 @@ End Sub
 ' Carrega a combobox de tipo polimento com algum tipos
 Private Sub carregarTiposPolimentoAlgum(cbTiposPolimento As MSForms.comboBox, lista As Collection)
     ' Variaveis do metodo
-    Dim listaObjetos As Collection
-    Dim tipoPolimento As objTipoPolimento
-    Dim polimento As Variant
-    Dim totalLista As Integer
-    Dim temNaLista As Boolean
+    Dim tipo As Variant
     Dim i As Integer
-    Dim j As Integer
     
-    ' Criando a lista
-    Set listaObjetos = daoTipoPolimento.listarTipoPolideiras
-    ' Inicia com false
-    temNaLista = False
     ' limpa a lista para carregamento
     cbTiposPolimento.Clear
     
-    ' Verifica se tem algum dado a pesquisa
-    If listaObjetos.Count = -1 Or listaObjetos.Count = 0 Then ' Se não tiver dados
-        ' Mensagem de erro
-        errorStyle.Informativo SEM_DADOS_MENSAGEM, SEM_DADOS_TITULO
-        Exit Sub
-    Else
-        ' Loop através dos itens da coleção
-        For i = 1 To listaObjetos.Count
-            ' Seta o ojeto
-            Set tipoPolimento = listaObjetos(i)
-            ' Laço nos polimentos já cadastrados
-            For j = 1 To lista.Count
-                ' Seta para comparação
-                polimento = lista(j)
-                
-                ' Compara se tem na lista
-                If tipoPolimento.nome = polimento Then
-                    temNaLista = True
-                    Exit For
-                End If
-            Next j
-            ' Se tiver na lista adiciona no combox
-            If temNaLista = False Then
-                ' Carregamento para lista
-                cbTiposPolimento.AddItem tipoPolimento.nome
-                ' Volta com false para proxima verificação
-                temNaLista = False
-                
-            Else
-                temNaLista = False
-            End If
-            
-            ' Libera espaço memoria
-            Set tipoPolimento = Nothing
-        Next i
-    End If
-    ' Libera espaço da memoria
-    Set listaObjetos = Nothing
+    ' Loop através dos itens da coleção
+    For i = 1 To lista.Count
+        ' Pega tipo da lista
+        tipo = lista.Item(i)
+        
+        ' Carregamento para lista
+        cbTiposPolimento.AddItem tipo
+    Next i
+    
 End Sub

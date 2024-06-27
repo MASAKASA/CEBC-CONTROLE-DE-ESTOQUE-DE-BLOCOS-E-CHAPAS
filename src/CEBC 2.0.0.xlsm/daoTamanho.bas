@@ -18,6 +18,7 @@ Function cadastrarEEditar(lista As Collection, fecharConexao As Boolean)
     Dim valoresCampos As String
     Dim cadastro As Boolean
     Dim i As Long
+    Dim j As Long
 
     ' Seta true em cadastro
     cadastro = True
@@ -25,18 +26,19 @@ Function cadastrarEEditar(lista As Collection, fecharConexao As Boolean)
     ' Abrindo conexão com banco
     Call conctarBanco
     
-    ' Criando e abrindo Recordset para consulta
-    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
-    Set rsAuxiliar = ObjectFactory.factoryRsAuxiliar(rsAuxiliar)
-    
     ' Loop através dos itens da coleção
     For i = 1 To lista.Count
+    
+            ' Criando e abrindo Recordset para consulta
+        Set rs = ObjectFactory.factoryRsAuxiliar(rs)
+        Set rsAuxiliar = ObjectFactory.factoryRsAuxiliar(rsAuxiliar)
+        
         ' Seta o ojeto
-        Set tamanho = listaCollection(i)
+        Set tamanho = lista(i)
         
         ' String para consulta
         strSql = "SELECT * FROM Tamanhos_Chapas " & "WHERE id_tamanho = " & tamanho.id & "" _
-                & "AND fK_chapa = '" & tamanho.chapa.idSistema & "';"
+                & " AND fK_chapa = '" & tamanho.chapa.idSistema & "';"
         
         ' Consulta banco
         rsAuxiliar.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
@@ -65,9 +67,9 @@ Function cadastrarEEditar(lista As Collection, fecharConexao As Boolean)
             campos(10) = tamanho.estoque.id & ");"
             
             ' Concatenando os valores
-            For i = 1 To 10
-                valoresCampos = valoresCampos & campos(i)
-            Next i
+            For j = 1 To 10
+                valoresCampos = valoresCampos & campos(j)
+            Next j
             
             ' Concatenando comando SQL e cadastrando bloco no banco de dados
             strSql = "INSERT INTO Tamanhos_Chapas ( fK_chapa, comp_chapa, alt_chapa, qtd_estoque, qtd_m2, " _
@@ -77,32 +79,34 @@ Function cadastrarEEditar(lista As Collection, fecharConexao As Boolean)
             rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
             
             ' Limpa variavel para proximo cadastro
-            campos = ""
             valoresCampos = ""
         Else
             ' Se edição
             
             strSql = "UPDATE Tamanhos_Chapas SET fK_chapa = '" & tamanho.chapa.idSistema & "', " _
                 & "comp_chapa = '" & tamanho.compremento & "', alt_chapa = '" & tamanho.altura & "', " _
-                & "qtd_estoque = '" & tamanho.qtdEstoque & "', qtd_m2 = '" & tamanho.qtdM2 & "', " _
-                & "valor_Polimento = '" & tamanho.valorPolimento & "', esp_chapa = '" & tamanho.espessura & "', " _
+                & "qtd_estoque = " & tamanho.qtdEstoque & ", qtd_m2 = '" & tamanho.qtdM2 & "', " _
+                & "valor_Polimento = " & tamanho.valorPolimento & ", esp_chapa = '" & tamanho.espessura & "', " _
                 & "fk_Tipo_Material = " & tamanho.tipoMaterial.id & ", fk_polidoria = " & tamanho.polideira.id & ", " _
-                & "fk_estoque = " & tamanho.estoque.id & ", WHERE id_tamanho = '" & tamanho.id & "';"
+                & "fk_estoque = " & tamanho.estoque.id & " WHERE id_tamanho = " & tamanho.id & ";"
                         
             ' Abrindo Recordset para consulta
             rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
+            ' Retorna o valor
+            cadastro = True
         End If
+        
+            ' Libera recurso Recordset
+            rsAuxiliar.Close
+            Set rsAuxiliar = Nothing
+            Set rs = Nothing
     Next i
-    
-    ' Libera recurso Recordset
-    rsAuxiliar.Close
-    Set rsAuxiliar = Nothing
-    Set rs = Nothing
+
     ' Libara espaço na memoria
     Set tamanho = Nothing
     
     ' Fecha a conexão se não for pesquisa de chapa quem chamou esse metodo
-    If conexaoFechar = True Then
+    If fecharConexao = True Then
         ' Fechar conexão com banco
         Call fecharConexaoBanco
     End If

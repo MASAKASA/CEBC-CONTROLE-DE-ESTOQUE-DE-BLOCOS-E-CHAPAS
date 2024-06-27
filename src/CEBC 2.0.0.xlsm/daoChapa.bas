@@ -63,7 +63,7 @@ Function cadastrarEEditar(chapa As objChapa)
     
         ' Concatenando comando SQL e cadastrando bloco no banco de dados
         strSql = "INSERT INTO Chapas ( id_chapa, Descricao, valor_Total, numero_bloco_pedreira, fk_tipo_polimento, fk_bloco ) " _
-                    & "VALUES " & valoresCamposChapa
+                    & "VALUES " & valoresCampos
         
         rsChapa.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
         
@@ -188,6 +188,76 @@ Function temIdChapa(idchapa As String) As Boolean
     Call fecharConexaoBanco
     ' Retorno
     temIdChapa = temCadastro
+End Function
+
+' Pesquisa objeto por uma lista de ids do bloco
+Function listaChapasMesmaPedreira(numeroBlocoPedreira As String) As Collection
+    'Metodos do metodo
+    ' String para consultas
+    Dim sqlSelectPesquisarPorId As String ' String para consultas
+    Dim fkObject As String ' fk para consultas extras
+    Dim rsChapa As ADODB.Recordset ' Recordset para consulta principal
+    Dim listaChapas As Collection
+    
+    ' Criação da lista para adição e retorno
+    Set listaChapas = ObjectFactory.factoryLista(listaChapas)
+    
+    'Abrindo conexão com banco
+    Call conctarBanco
+    
+    ' String para consulta
+    sqlSelectPesquisarPorId = "SELECT * FROM Chapas WHERE numero_bloco_pedreira = '" & numeroBlocoPedreira & "' ORDER BY Descricao;"
+    ' Criando e abrindo Recordset para consulta
+    Set rsChapa = ObjectFactory.factoryRsAuxiliar(rsChapa)
+    ' Consulta banco
+    rsChapa.Open sqlSelectPesquisarPorId, CONEXAO_BD, adOpenKeyset, adLockReadOnly
+    ' Retorno da consulta
+    While Not rsChapa.EOF
+        ' Criação e atribuição dos objetos
+        Set chapa = ObjectFactory.factoryChapa(chapa)
+        Set bloco = ObjectFactory.factoryBloco(bloco)
+        Set tipoPolimento = ObjectFactory.factoryTipoPolimento(tipoPolimento)
+    
+        ' Atribuição dos atributos
+        chapa.idSistema = rsChapa.Fields("id_Chapa").Value
+        chapa.nomeMaterial = rsChapa.Fields("descricao").Value
+        chapa.valorTotal = rsChapa.Fields("valor_total").Value
+        chapa.numeroBlocoPedreira = rsChapa.Fields("numero_bloco_pedreira").Value
+        
+        'Atribuições dos objetos em bloco
+        ' fk para consulta
+        fkObject = rsChapa.Fields("fk_tipo_polimento").Value
+        ' String para consulta
+        sqlSelectPesquisarPorId = "SELECT * FROM Tipo_Polimento WHERE id_polimento = " & fkObject & ";"
+        ' Setando Objeto
+        chapa.setTipoPolimento retornarObjeto(tipoPolimento, sqlSelectPesquisarPorId, "id_polimento", "nome_polimento")
+        
+        ' fk para consulta
+        fkObject = rsChapa.Fields("fk_bloco").Value
+        ' Setando Objeto
+        chapa.setBloco daoBloco.pesquisarPorId(fkObject, False)
+        
+        ' fk para consulta
+        chapa.setTamanhos daoTamanho.pesquisarPorIdChapa(chapa.idSistema, False)
+        
+        ' Adciona a chapa na lista
+        listaChapas.Add chapa
+        
+        ' Libera espaço para da momeria
+        Set chapa = Nothing
+        Set bloco = Nothing
+        Set tipoPolimento = Nothing
+        
+        ' Libera recurso Recordset
+        rsChapa.MoveNext
+    Wend
+    
+    ' Fechar conexão com banco
+    Call fecharConexaoBanco
+    ' Retorno
+    Set listaChapasMesmaPedreira = listaChapas
+    ' Libera espaço
+    Set listaChapas = Nothing
 End Function
 
 ' Pesquisa objeto por id

@@ -3,6 +3,8 @@ Option Explicit
 
 ' Variaveis globais para os erros
 ' TROCA ESTOQUE
+Global TROCA_REALIZADA_MENSAGEM As String
+Global TROCA_REALIZADA_TITULO As String
 Global ADICIONE_CHAPA_MENSAGEM As String
 Global ADICIONE_CHAPA_TITULO As String
 
@@ -61,6 +63,8 @@ Global ADICIONE_STATUS_TITULO As String
 Public Sub carregarTraducaoErros()
     ' Mensagem para usuário
     ' TROCA ESTOQUE
+    TROCA_REALIZADA_MENSAGEM = "Troca realizada com sucesso!"
+    TROCA_REALIZADA_TITULO = "Troca realizada"
     ADICIONE_CHAPA_MENSAGEM = "Adicione chapa para troca!"
     ADICIONE_CHAPA_TITULO = "Sem chapas"
 

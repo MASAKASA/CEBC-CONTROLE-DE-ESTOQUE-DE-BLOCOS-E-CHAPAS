@@ -2708,6 +2708,9 @@ Private Sub btnLTxtAdicionarTrocaEstoque_MouseDown(ByVal Button As Integer, ByVa
         Call carregarListTrocasQtdChapas(ListMateriaisParaTroca, chapa, tamanho)
         
         Call carregarListTrocasQtdChapas(ListTrocarPor, chapaTroca, tamanho)
+        
+    Else
+        
     End If
 End Sub
 ' Botão btnLTxtTrocarEstoque tela troca estoque
@@ -2717,6 +2720,7 @@ Private Sub btnLTxtTrocarEstoque_MouseDown(ByVal Button As Integer, ByVal Shift 
     Dim chapaSerTrocada As objChapa
     Dim tamanhoTroca As objTamanho
     Dim tamanhoSerTrocada As objTamanho
+    Dim tamanhoNovo As objTamanho
     Dim m2Diferenca As Double
     Dim totalCusto As Double
     Dim totalTamanho As Double
@@ -2736,12 +2740,13 @@ Private Sub btnLTxtTrocarEstoque_MouseDown(ByVal Button As Integer, ByVal Shift 
     Set chapaSerTrocada = daoChapa.pesquisarPorId(ListTrocarPor.list(ListTrocarPor.ListCount - 1, 0))
     Set tamanhoTroca = daoTamanho.pesquisarPorIdTamanho(ListMateriaisParaTroca.list(ListMateriaisParaTroca.ListCount - 1, 4))
     Set tamanhoSerTrocada = daoTamanho.pesquisarPorIdTamanho(ListMateriaisParaTroca.list(ListMateriaisParaTroca.ListCount - 1, 4))
+    Set tamanhoNovo = ObjectFactory.factoryTamanho(tamanhoNovo)
     
     ' Atualizações na memoria
     For i = 1 To chapaTroca.tamanhos.Count
         ' Seta o ojeto
         Set tamanho = chapaTroca.tamanhos(i)
-        
+        ' Comparação para atribuições
         If tamanho.id = tamanhoTroca.id Then
             ' Subtração
             qtdDiferenca = CInt(tamanho.qtdEstoque) - CDbl(ListMateriaisParaTroca.list(ListMateriaisParaTroca.ListCount - 1, 2))
@@ -2755,24 +2760,98 @@ Private Sub btnLTxtTrocarEstoque_MouseDown(ByVal Button As Integer, ByVal Shift 
                 tamanhoSerTrocada.setChapa chapaSerTrocada
                 chapaSerTrocada.tamanhos.Add tamanhoSerTrocada
                 
-                ' Atualizações entre objetos
+                ' Atualizações custo
                 For j = 1 To chapaTroca.tamanhos.Count
                     ' Seta o ojeto
                     Set tamanho = chapaTroca.tamanhos(j)
-                    
+
                     totalTamanho = CDbl(tamanho.qtdM2) * CDbl(tamanho.valorPolimento)
-                    
+
                     totalCusto = totalCusto + totalTamanho
+
                 Next j
-            Else
+
+                ' Seta custo total
+                chapaTroca.valorTotal = totalCusto
                 
+                ' Atualizações custo
+                For j = 1 To chapaSerTrocada.tamanhos.Count
+                    ' Seta o ojeto
+                    Set tamanho = chapaSerTrocada.tamanhos(j)
+
+                    totalTamanho = CDbl(tamanho.qtdM2) * CDbl(tamanho.valorPolimento)
+
+                    totalCusto = totalCusto + totalTamanho
+
+                Next j
+
+                ' Seta custo total
+                chapaSerTrocada.valorTotal = totalCusto
+            Else
+                ' Atribuições
+                tamanho.qtdEstoque = qtdDiferenca
+                tamanho.qtdM2 = m2Diferenca
+                
+                tamanhoNovo.id = "0"
+                tamanhoNovo.compremento = tamanhoSerTrocada.compremento
+                tamanhoNovo.altura = tamanhoSerTrocada.altura
+                tamanhoNovo.qtdEstoque = qtdDiferenca
+                tamanhoNovo.qtdM2 = m2Diferenca
+                tamanhoNovo.valorPolimento = tamanhoSerTrocada.valorPolimento
+                tamanhoNovo.espessura = tamanhoSerTrocada.espessura
+                
+                tamanhoNovo.setTipoMaterial tamanhoSerTrocada.tipoMaterial
+                tamanhoNovo.setPolideira tamanhoSerTrocada.polideira
+                tamanhoNovo.setEstoque tamanhoSerTrocada.estoque
+                tamanhoNovo.setChapa chapaSerTrocada
+                
+                chapaSerTrocada.tamanhos.Add tamanhoNovo
+                
+                ' Atualizações custo
+                For j = 1 To chapaTroca.tamanhos.Count
+                    ' Seta o ojeto
+                    Set tamanho = chapaTroca.tamanhos(j)
+
+                    totalTamanho = CDbl(tamanho.qtdM2) * CDbl(tamanho.valorPolimento)
+
+                    totalCusto = totalCusto + totalTamanho
+
+                Next j
+
+                ' Seta custo total
+                chapaTroca.valorTotal = totalCusto
+                
+                ' Atualizações custo
+                For j = 1 To chapaSerTrocada.tamanhos.Count
+                    ' Seta o ojeto
+                    Set tamanho = chapaSerTrocada.tamanhos(j)
+
+                    totalTamanho = CDbl(tamanho.qtdM2) * CDbl(tamanho.valorPolimento)
+
+                    totalCusto = totalCusto + totalTamanho
+
+                Next j
+
+                ' Seta custo total
+                chapaSerTrocada.valorTotal = totalCusto
             End If
             ' Sai do for porque já achou o tamanho
             Exit For
         End If
     Next i
-    ' Atualiazações no disco
     
+    ' Atualiazações no disco
+    Call daoChapa.cadastrarEEditar(chapaTroca)
+    Call daoChapa.cadastrarEEditar(chapaSerTrocada)
+    
+    ' Mensagem usuário
+    errorStyle.Informativo TROCA_REALIZADA_MENSAGEM, TROCA_REALIZADA_TITULO
+    
+    ' Muda abra da multPage
+    Me.MultiPageCEBC.Value = 4
+    
+    ' Atualiza a pesquisa
+    Call pesquisarChapasFilter
 End Sub
 ' Botão btnLTxtVoltarTrocaEstoque tela troca estoque
 Private Sub btnLTxtVoltarTrocaEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -3211,6 +3290,21 @@ End Sub
 
 '-----------------------------------------------------------------LIMPAR CAMPOS-----------------------------------
 '                                                                 -------------
+' Limpa os campos de pesquisa da tela estoque M³
+Private Sub limparCamposTrocaEstoque()
+    txtMaterialParaTroca01.Value = ""
+    txtEspParaTroca01.Value = ""
+    txtTipoMaterialParaTroca01.Value = ""
+    txtCompMaterialParaTroca.Value = ""
+    txtAltMaterialParaTroca.Value = ""
+    txtTotalM2T.Value = ""
+    txtQtdDispovelMaterialParaTroca01.Value = ""
+    txtQtdMaterialParaTroca02.Value = 0
+    cbTipoPolimentoTroca.Clear
+    ListMateriaisParaTroca.Clear
+    ListTrocarPor.Clear
+    
+End Sub
 ' Limpa os campos de pesquisa da tela estoque M³
 Private Sub limparCamposPesquisaEstoqueM3()
     txtDataInicioBlocoPesquisa.Value = ""
