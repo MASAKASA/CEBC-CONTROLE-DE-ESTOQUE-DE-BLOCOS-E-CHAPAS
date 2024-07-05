@@ -2,6 +2,14 @@ Attribute VB_Name = "M_TRADUCAO"
 Option Explicit
 
 ' Variaveis globais para os erros
+' TELA CHAPA
+Global SUCESSO_CADASTRO_EDICAO_MENSAGEM As String
+Global SUCESSO_CADASTRO_EDICAO_TITULO As String
+Global SELECIONE_TAMANHO_MENSAGEM As String
+Global SELECIONE_TAMANHO_TITULO As String
+Global TAMANHO_CHAPA_MENSAGEM As String
+Global TAMANHO_CHAPA_TITULO As String
+
 ' TROCA ESTOQUE
 Global TROCA_REALIZADA_MENSAGEM As String
 Global TROCA_REALIZADA_TITULO As String
@@ -17,6 +25,10 @@ Global AVULSO_JA_CADASTRADO_MENSAGEM As String
 Global AVULSO_JA_CADASTRADO_TITULO As String
 Global NOME_AVULSO_MENSAGEM As String
 Global NOME_AVULSO_TITULO As String
+
+' TELA ESTOQUE BLOCOS M²
+Global PESQUISA_SEM_DADOS_MENSAGEM As String
+Global PESQUISA_SEM_DADOS_TITULO As String
 
 ' TELA EDIÇÃO DE BLOCO
 Global HABILITE_EDICAO_MENSAGEM As String
@@ -62,6 +74,14 @@ Global ADICIONE_STATUS_TITULO As String
 ' Carrega as variaveis dos erros
 Public Sub carregarTraducaoErros()
     ' Mensagem para usuário
+    ' TELA CHAPA
+    SUCESSO_CADASTRO_EDICAO_MENSAGEM = "Alteração feito com sucesso!"
+    SUCESSO_CADASTRO_EDICAO_TITULO = "cadastro/edição chapa"
+    SELECIONE_TAMANHO_MENSAGEM = "Seledione um tamanho das lista"
+    SELECIONE_TAMANHO_TITULO = "Sem tamanho"
+    TAMANHO_CHAPA_MENSAGEM = "Adicione os tamanhos das chapas"
+    TAMANHO_CHAPA_TITULO = "Sem tamanho"
+
     ' TROCA ESTOQUE
     TROCA_REALIZADA_MENSAGEM = "Troca realizada com sucesso!"
     TROCA_REALIZADA_TITULO = "Troca realizada"
@@ -77,6 +97,10 @@ Public Sub carregarTraducaoErros()
     AVULSO_JA_CADASTRADO_TITULO = "Cadastro duplicado"
     NOME_AVULSO_MENSAGEM = "Adicione uma descrição!"
     NOME_AVULSO_TITULO = "Descrição não informada"
+
+    ' TELA ESTOQUE BLOCOS M²
+    PESQUISA_SEM_DADOS_MENSAGEM = "Primeiro faço uma pesquisa com retorno"
+    PESQUISA_SEM_DADOS_TITULO = "Sem chapa"
 
     ' TELA EDIÇÃO DE BLOCO
     HABILITE_EDICAO_MENSAGEM = "Habilite edição!"

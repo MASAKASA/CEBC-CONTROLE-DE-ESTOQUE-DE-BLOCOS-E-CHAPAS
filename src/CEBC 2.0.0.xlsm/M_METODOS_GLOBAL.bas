@@ -132,13 +132,13 @@ End Function
 Function formatarIdChapa(idBloco, tipoPolimento) As String
     'Variaveis do metodo
     Dim descricaoBloco As String
-    Dim idchapa As String
+    Dim idChapa As String
     Dim posicaoUnderline As Integer
     Dim i As Long
     
     'Atribuições das variaveis
     descricaoBloco = idBloco
-    idchapa = ""
+    idChapa = ""
     posicaoUnderline = 0
     
     'Acha a posição do último do traço
@@ -153,9 +153,9 @@ Function formatarIdChapa(idBloco, tipoPolimento) As String
     Next i
     
     'Cria a id da chapa
-    idchapa = Mid(descricaoBloco, 1, posicaoUnderline) & tipoPolimento
+    idChapa = Mid(descricaoBloco, 1, posicaoUnderline) & tipoPolimento
     
-    formatarIdChapa = idchapa
+    formatarIdChapa = idChapa
 End Function
 
 ' Formata o nome da chada
@@ -173,6 +173,40 @@ Function formatarNomeChapa(nomeBloco, tipoPolimento) As String
     descricaoChapa = Mid(descricaoBloco, 7, Len(descricaoBloco)) & " " & tipoPolimento
     
     formatarNomeChapa = descricaoChapa
+End Function
+
+' Formata o nome da chada
+Function formatarNomeChapaAvulso(nomeBloco, tipoPolimento) As String
+    'Variaveis do metodo
+    Dim descricaoBloco As String
+    Dim descricaoChapa As String
+    Dim posicaoUnderline As Integer
+    
+    'Atribuições das variaveis
+    descricaoBloco = nomeBloco
+    descricaoChapa = ""
+    
+    'Cria a id da chapa
+    descricaoChapa = Mid(descricaoBloco, 8, Len(descricaoBloco)) & " " & tipoPolimento
+    
+    formatarNomeChapaAvulso = descricaoChapa
+End Function
+
+' Formata o nome da chada
+Function formatarNomeChapaImportado(nomeBloco, tipoPolimento) As String
+    'Variaveis do metodo
+    Dim descricaoBloco As String
+    Dim descricaoChapa As String
+    Dim posicaoUnderline As Integer
+    
+    'Atribuições das variaveis
+    descricaoBloco = nomeBloco
+    descricaoChapa = ""
+    
+    'Cria a id da chapa
+    descricaoChapa = Mid(descricaoBloco, 11, Len(descricaoBloco)) & " " & tipoPolimento
+    
+    formatarNomeChapaImportado = descricaoChapa
 End Function
 
 ' Calcula o custo do material

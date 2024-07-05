@@ -47,22 +47,23 @@ Function cadastrarEEditar(chapa As objChapa)
     If cadastro = True Then ' Se cadastro
         
         ' Realoca espaço da variavel
-        ReDim campos(1 To 6)
+        ReDim campos(1 To 7)
         ' Colocando vingulas, Parenteses e  arpas simples os valores
         campos(1) = "('" & chapa.idSistema & "', "
         campos(2) = "'" & chapa.nomeMaterial & "', "
         campos(3) = "'" & chapa.valorTotal & "', "
         campos(4) = "'" & chapa.numeroBlocoPedreira & "', "
         campos(5) = chapa.tipoPolimento.id & ", "
-        campos(6) = "'" & chapa.bloco.idSistema & "');"
+        campos(6) = "'" & chapa.bloco.idSistema & "', "
+        campos(7) = "'" & chapa.estoqueZero & "');"
         
         ' Concatenando os valores
-        For i = 1 To 6
+        For i = 1 To 7
             valoresCampos = valoresCampos & campos(i)
         Next i
     
         ' Concatenando comando SQL e cadastrando bloco no banco de dados
-        strSql = "INSERT INTO Chapas ( id_chapa, Descricao, valor_Total, numero_bloco_pedreira, fk_tipo_polimento, fk_bloco ) " _
+        strSql = "INSERT INTO Chapas ( id_chapa, Descricao, valor_Total, numero_bloco_pedreira, fk_tipo_polimento, fk_bloco, estoque_zero ) " _
                     & "VALUES " & valoresCampos
         
         rsChapa.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
@@ -78,6 +79,7 @@ Function cadastrarEEditar(chapa As objChapa)
                             & "numero_bloco_pedreira = '" & chapa.numeroBlocoPedreira & "'," _
                             & "fk_tipo_polimento = '" & chapa.tipoPolimento.id & "',  " _
                             & "fk_Bloco = '" & chapa.bloco.idSistema & "' " _
+                            & "estoque_zero = '" & chapa.estoqueZero & "' " _
                             & "WHERE id_Chapa = '" & chapa.idSistema & "';"
             
         rsChapa.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
@@ -158,7 +160,7 @@ Function pesquisarPorId(id As String) As objChapa
 End Function
 
 ' Pesquisa objeto por id
-Function temIdChapa(idchapa As String) As Boolean
+Function temIdChapa(idChapa As String) As Boolean
     'Metodos do metodo
     ' String para consultas
     Dim sqlSelectPesquisarPorId As String ' String para consultas
@@ -171,7 +173,7 @@ Function temIdChapa(idchapa As String) As Boolean
     'Abrindo conexão com banco
     Call conctarBanco
     ' String para consulta
-    sqlSelectPesquisarPorId = "SELECT * FROM Chapas WHERE Id_Chapa = '" & idchapa & "';"
+    sqlSelectPesquisarPorId = "SELECT * FROM Chapas WHERE Id_Chapa = '" & idChapa & "';"
     ' Criando e abrindo Recordset para consulta
     Set rs = ObjectFactory.factoryRsAuxiliar(rs)
     ' Consulta banco

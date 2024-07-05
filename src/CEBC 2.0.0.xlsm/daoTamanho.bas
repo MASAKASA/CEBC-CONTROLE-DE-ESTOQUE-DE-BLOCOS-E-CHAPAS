@@ -205,7 +205,7 @@ Function pesquisarPorIdTamanho(idTamanho As Variant) As objTamanho
 End Function
 
 ' Pesquisa objeto por id da chapa
-Function pesquisarPorIdChapa(idchapa As Variant, conexaoFechar As Boolean) As Collection
+Function pesquisarPorIdChapa(idChapa As Variant, conexaoFechar As Boolean) As Collection
     
     ' Metodos do metodo
     ' String para consultas
@@ -216,7 +216,7 @@ Function pesquisarPorIdChapa(idchapa As Variant, conexaoFechar As Boolean) As Co
     'Abrindo conexão com banco
     Call conctarBanco
     ' String para consulta
-    sqlSelectPesquisarPorId = "SELECT * FROM Tamanhos_Chapas " & "WHERE fK_chapa = '" & idchapa & "';"
+    sqlSelectPesquisarPorId = "SELECT * FROM Tamanhos_Chapas " & "WHERE fK_chapa = '" & idChapa & "';"
     ' Seta a lista
     Set listaTamanhos = ObjectFactory.factoryLista(listaTamanhos)
     ' Criando e abrindo Recordset para consulta
