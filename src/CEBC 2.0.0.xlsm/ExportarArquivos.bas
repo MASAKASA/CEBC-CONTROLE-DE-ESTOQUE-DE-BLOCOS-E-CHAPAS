@@ -65,134 +65,83 @@ Private Sub BtnExportarCarregoPDF_Click()
     'Seleciona a planilha principal
     PlanilhaAuxiliar.Select
 End Sub
-'Botão exportar em pdf as chapas despachadas
-Private Sub BtnExportarEstoqueChapasPDF_Click()
+
+' Salva na planilha os dados e exporta em pdf estoque chapa
+Public Sub exportarEstoqueChapa(listaChapas As Collection, nomeArquivo As String)
     
     'Variaveis do metodo
-    Dim NomeDaPlanilha As String
-    Dim custo As Double
-    Dim qtdM2 As Double
-    Dim comp As Double
-    Dim alt As Double
-    Dim custoPolimento As Double
-    Dim expessura As String
-    Dim idPedreira As String
-    Dim nomeArquivo As String
-    Dim ListBox As Object
+    Dim chapa As objChapa
+    Dim tamanho As objTamanho
+    Dim caminhoSalvar As String
+    Dim totalm2 As Double
+    Dim totalEstoque As Integer
     Dim linha As Integer
-    Dim i As Long
+    Dim i As Integer
+    Dim j As Integer
     
     'Atribuições
-    linha = 8
-    nomeArquivo = txtNomeArquivoEstoqueChapas.Value
-    Set ListBox = ListBoxEstoqueChapas
-    
-    ' Verifique se a ListBox não está vazia
-    If ListBox.ListCount <= 1 Then
-        MsgBox "A Lista está vazia.", vbExclamation
-        Exit Sub
-    End If
-    
-    'Verifica o nome do arquivo
-    If nomeArquivo = "" Or nomeArquivo = "NOME DO ARQUIVO" Then
-        
-        'Deixa o cursor na ser adicionado o id
-        txtNomeArquivoEstoqueChapas.SetFocus
-
-        'Altera cor para melhor visualização
-        txtNomeArquivoEstoqueChapas.BackColor = RGB(255, 182, 193)
-        
-        txtNomeArquivoEstoqueChapas.Value = ""
-
-        'Mensagem de erro
-        MsgBox "Adicione um nome para o arquivo!", vbCritical, "Nome não informado"
-
-        'Para o fluxo do sistema para a correção
-        Exit Sub
-    End If
-    
-    'Volta a cor patrão
-    txtNomeArquivoEstoqueChapas.BackColor = RGB(255, 255, 255)
+    linha = 8  ' Linha da tabela onde vai começar ser setado os dados
+    caminhoSalvar = M_METODOS_GLOBAL.caminhoSalvarEstoqueChapas & nomeArquivo & ".pdf" ' Caminho onde irá ser salvo pdf
     
     'Seleciona a planilha
-    PlanilhaPDFEstoqueChapas.Select
+    PlanPDFEstoqueChapas.Select
     
-    With PlanilhaPDFEstoqueChapas
-        
-        .Range("A9:O1048564").ClearContents ' Apaga se tiver conteúdo na planilha
-        
-        Range("A8").Select
-        Selection.ClearContents
-        Range("B8").Select
-        Selection.ClearContents
-        Range("C8").Select
-        Selection.ClearContents
-        Range("D8").Select
-        Selection.ClearContents
-        ActiveCell.FormulaR1C1 = "0"
-        Range("E8").Select
-        ActiveCell.FormulaR1C1 = "0"
-        Range("F8").Select
-        ActiveCell.FormulaR1C1 = "0"
-        Range("G8").Select
-        ActiveCell.FormulaR1C1 = "0"
-        Range("H8").Select
-        ActiveCell.FormulaR1C1 = "0"
-        Range("I8").Select
-        Selection.ClearContents
-        Range("J8").Select
-        Selection.ClearContents
-        Range("K8").Select
-        Selection.ClearContents
-        Range("L8").Select
-        Selection.ClearContents
+    With PlanPDFEstoqueChapas
+        ' Cria chapa
+        'Set chapa = ObjectFactory.factoryBloco(chapa)
+        ' Apaga se tiver conteúdo na planilha
+        .Range("A8:M1048564").ClearContents
         'Percorre a lista o cola os valores na planilha
-        For i = 1 To ListBox.ListCount - 1
+        For i = 1 To listaChapas.Count
+            ' Seta chapa
+            Set chapa = listaChapas.Item(i)
             
-            custo = ListBox.list(i, 3)
-            qtdM2 = ListBox.list(i, 4)
-            comp = ListBox.list(i, 6)
-            alt = ListBox.list(i, 7)
-            'custoPolimento = ListBox.List(i, 12)
-            expessura = ListBox.list(i, 8)
-            idPedreira = ListBox.list(i, 11)
+            ' Soma m² e estoque total
+            For j = 1 To chapa.tamanhos.Count
+                ' Seta tamanho
+                Set tamanho = chapa.tamanhos.Item(j)
+                
+                ' Soma
+                totalm2 = totalm2 + CDbl(tamanho.qtdM2)
+                totalEstoque = totalEstoque + CInt(tamanho.qtdEstoque)
+                ' Libera espaço memoria
+                Set tamanho = Nothing
+            Next j
             
             'Cola os dados
-            .Cells(linha, 1).Value = ListBox.list(i, 0)
-            .Cells(linha, 2).Value = ListBox.list(i, 1)
-            .Cells(linha, 3).Value = ListBox.list(i, 2)
-            .Cells(linha, 4).Value = custo
-            .Cells(linha, 5).Value = qtdM2
-            .Cells(linha, 6).Value = ListBox.list(i, 5)
-            .Cells(linha, 7).Value = comp
-            .Cells(linha, 8).Value = alt
-            .Cells(linha, 9).Value = expessura
-            .Cells(linha, 10).Value = ListBox.list(i, 9)
-            .Cells(linha, 11).Value = ListBox.list(i, 10)
-            .Cells(linha, 12).Value = idPedreira
-            '.Cells(linha, 13).Value = custoPolimento
+            .Cells(linha, 1).Value = chapa.idSistema
+            .Cells(linha, 2).Value = chapa.nomeMaterial
+            .Cells(linha, 3).Value = chapa.tipoPolimento.nome
+            .Cells(linha, 4).Value = totalm2
+            .Cells(linha, 5).Value = totalEstoque
+            .Cells(linha, 6).Value = chapa.numeroBlocoPedreira
+            .Cells(linha, 7).Value = chapa.valorTotal
             
-            If linha <> 8 Then
-               
-               .Cells(linha, 13).Value = "=[@[CUSTO M²]]*[@[QTD CHAPAS]]"
-            End If
-        
             linha = linha + 1
         Next i
-        
+        ' Libera espaço memoria
+        Set chapa = Nothing
     End With
 
+    ' Filtra só as linhas com conteudo
+    Range("A8").Select
+    ' Tira filtros
+    Selection.AutoFilter
+    Selection.AutoFilter
+    ActiveSheet.ListObjects("ESTOQUE_CHAPAS").Range.AutoFilter Field:=1, _
+    Criteria1:="<>"
     'Exporta para PDF
     ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, fileName:= _
-    "D:\Desktop\" & nomeArquivo & ".pdf", Quality:=xlQualityStandard, IncludeDocProperties:= _
+    caminhoSalvar, Quality:=xlQualityStandard, IncludeDocProperties:= _
     True, IgnorePrintAreas:=False, OpenAfterPublish:=True
-    
-    ' Exiba uma mensagem de confirmação
-    MsgBox "Dados exportados para PDF com sucesso!", vbInformation
-    
+    ' Utilizando metodo para mensagem de sucesso
+    Set msgSucesso = New clsErrorStyle
+    msgSucesso.Informativo EXPORTADO_SUCESSO_MENSAGEM, EXPORTADO_SUCESSO_TITULO
+    ' Tira filtros
+    Selection.AutoFilter
+    Selection.AutoFilter
     'Seleciona a planilha principal
-    PlanilhaAuxiliar.Select
-
+    PlanInicio.Select
 End Sub
 ' Salva na planilha os dados e exporta em pdf estoque bloco
 Public Sub exportarEstoqueBloco(listaBlocos As Collection, nomeArquivo As String)
@@ -265,12 +214,12 @@ Public Sub exportarEstoqueBloco(listaBlocos As Collection, nomeArquivo As String
     True, IgnorePrintAreas:=False, OpenAfterPublish:=True
     ' Utilizando metodo para mensagem de sucesso
     Set msgSucesso = New clsErrorStyle
-    msgSucesso.SemDadosError EXPORTADO_SUCESSO_MENSAGEM, EXPORTADO_SUCESSO_TITULO
+    msgSucesso.Informativo EXPORTADO_SUCESSO_MENSAGEM, EXPORTADO_SUCESSO_TITULO
     ' Tira filtros
     Selection.AutoFilter
     Selection.AutoFilter
     'Seleciona a planilha principal
-    PlanAuxiliar.Select
+    PlanInicio.Select
 End Sub
 'Exportar em pdf as chapas despachadas
 Private Sub exportarMateriaisDespachado()

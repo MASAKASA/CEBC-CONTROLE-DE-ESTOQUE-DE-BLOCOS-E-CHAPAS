@@ -1426,8 +1426,46 @@ End Sub
 
 ' Botão btnLImgExportarEstoqueM2 tela estoque m²
 Private Sub btnLImgExportarEstoqueM2_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    ' Chama Serviço
-    MsgBox "Chama Serviço esportar estoque m², tela estoque m²"
+    ' Variaveis do metodo
+    Dim idsParaPesquisa As Collection
+    Dim id As String
+    Dim i As Integer
+    
+    ' Verifica se tem dados na lista
+    If Me.ListEstoqueChapas.ListCount > 0 Then
+        ' Reatribui espaço na memoria para variavel
+        Set idsParaPesquisa = ObjectFactory.factoryLista(idsParaPesquisa)
+    Else
+        ' Mensagem de erro
+        errorStyle.Informativo LIST_SEM_DADOS_MENSAGEM, LIST_SEM_DADOS_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    
+    ' Verifica se foi digitado nome para o arquivo
+    If txtNomeArquivoEstoqueChapas.Value = "" Or txtNomeArquivoEstoqueChapas.Value = " " Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtNomeArquivoEstoqueChapas, ARQUIVO_SEM_NOME_MENSAGEM, ARQUIVO_SEM_NOME_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+     errorStyle.sairErrorStyleTextBox txtNomeArquivoEstoqueChapas
+    
+    ' Captura ids da lista
+    For i = 0 To Me.ListEstoqueChapas.ListCount - 1
+        idsParaPesquisa.Add Me.ListEstoqueChapas.list(i, 0)
+    Next i
+    
+    ' Pesquisa os ids
+    Set listaObjeto = daoChapa.pesquisarPorListaIdsChapas(idsParaPesquisa)
+    
+    ' Exporta em pdf
+    Call ExportarArquivos.exportarEstoqueChapa(listaObjeto, txtNomeArquivoEstoqueChapas.Value)
+    
+    ' Libera espeço na memoria
+    Set idsParaPesquisa = Nothing
+    Set listaObjeto = Nothing
 End Sub
 
 'Botão btnLTxtNovoAvulso tela estoque m²
@@ -2362,6 +2400,68 @@ End Sub
 
 ' Botão btnLTxtAdicionarTamanhoChapa tela lançamento e edição chapa
 Private Sub btnLTxtAdicionarTamanhoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+        
+    ' Validações
+    ' Verifica o Polideira
+    If cbTipoPolimentoChapa.Value = "" Or cbTipoPolimentoChapa.Value = " " Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleComboBox cbTipoPolimentoChapa, SELECIONE_POLIMENTO_MENSAGEM, SELECIONE_POLIMENTO_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleComboBox cbTipoPolimentoChapa
+    
+    ' Verifica o complimento
+    If txtCompTipoMateriaisChapa.Value = "0,0000" Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtCompTipoMateriaisChapa, INFORMACAO_INVALIDA_MENSAGEM, INFORMACAO_INVALIDA_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtCompTipoMateriaisChapa
+    
+    ' Verifica o altura
+    If txtAltTipoMateriaisChapa.Value = "0,0000" Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtAltTipoMateriaisChapa, INFORMACAO_INVALIDA_MENSAGEM, INFORMACAO_INVALIDA_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtAltTipoMateriaisChapa
+    
+    ' Verifica o espessura
+    If txtEspTiposMateriaisChapa.Value = "" Or txtEspTiposMateriaisChapa.Value = " " Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtEspTiposMateriaisChapa, INFORMACAO_INVALIDA_MENSAGEM, INFORMACAO_INVALIDA_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtEspTiposMateriaisChapa
+    
+    ' Verifica o quantidade
+    If txtQtdTipoMateriaisChapas.Value = "0" Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtQtdTipoMateriaisChapas, INFORMACAO_INVALIDA_MENSAGEM, INFORMACAO_INVALIDA_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtQtdTipoMateriaisChapas
+    
+    ' Verifica o custo
+    If txtCustoChapa.Value = "0,00" Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtCustoChapa, INFORMACAO_INVALIDA_MENSAGEM, INFORMACAO_INVALIDA_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtCustoChapa
+    
     ' Comparação para fazer se é um novo ou edição
     If lTamanhoCadastroEdicao.Caption = "-1" Then
         ' Adiciona uma linha
@@ -2860,6 +2960,12 @@ End Sub
 Private Sub btnLTxtDespachar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Chama Serviço
     MsgBox "Chama Serviço despachar, tela despache"
+End Sub
+
+' Botão btnLTxtSalvarDespache tela despache
+Private Sub btnLTxtSalvarDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    ' Chama Serviço
+    MsgBox "Chama Serviço salvar, tela despache"
 End Sub
 ' Botão btnLTxtLimparDespache tela despache
 Private Sub btnLTxtLimparDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
@@ -3798,7 +3904,7 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
     Dim qtdEstoque As Integer
     Dim mediaComp As Double
     Dim mediaAlt As Double
-    Dim totalM2 As Double
+    Dim totalm2 As Double
     Dim valorPolimento As String
     Dim esp As String
     
@@ -3841,7 +3947,7 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
                     qtdEstoque = qtdEstoque + CInt(tamanho.qtdEstoque)
                     mediaComp = mediaComp + CDbl(tamanho.compremento)
                     mediaAlt = mediaAlt + CDbl(tamanho.altura)
-                    totalM2 = totalM2 + CDbl(tamanho.qtdM2)
+                    totalm2 = totalm2 + CDbl(tamanho.qtdM2)
                     valorPolimento = tamanho.valorPolimento
                     esp = tamanho.espessura
                     
@@ -3865,7 +3971,7 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
                                         M_METODOS_GLOBAL.formatarComPontos(Format(mediaAlt, "0.0000"))
                                         
                 ListBox.list(ListBox.ListCount - 1, 5) = _
-                                        M_METODOS_GLOBAL.formatarComPontos(Format(totalM2, "0.0000"))
+                                        M_METODOS_GLOBAL.formatarComPontos(Format(totalm2, "0.0000"))
                 ListBox.list(ListBox.ListCount - 1, 6) = objetoChapa.tipoPolimento.nome
                 ListBox.list(ListBox.ListCount - 1, 7) = esp
                 ListBox.list(ListBox.ListCount - 1, 8) = _
@@ -3877,7 +3983,7 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
                 qtdEstoque = 0
                 mediaComp = 0
                 mediaAlt = 0
-                totalM2 = 0
+                totalm2 = 0
                 valorPolimento = ""
                 esp = "02"
                 

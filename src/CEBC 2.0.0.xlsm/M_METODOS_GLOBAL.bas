@@ -4,6 +4,11 @@ Function caminhoSalvarEstoqueBlocos() As String
     CAMINHO_SALVAR_ESTOQUE_BLOCOS = ThisWorkbook.Path & "\PDF ESTOQUE BLOCOS\"
     caminhoSalvarEstoqueBlocos = CAMINHO_SALVAR_ESTOQUE_BLOCOS
 End Function
+' Retorna caminho patrão para salvar estoque chapas em pdf
+Function caminhoSalvarEstoqueChapas() As String
+    CAMINHO_SALVAR_ESTOQUE_CHAPAS = ThisWorkbook.Path & "\PDF ESTOQUE CHAPAS\"
+    caminhoSalvarEstoqueChapas = CAMINHO_SALVAR_ESTOQUE_CHAPAS
+End Function
 ' Retorna data inicial patrão
 Function dataInicial() As String
     DATA_INICIO = "01/01/2000"
@@ -431,17 +436,17 @@ Function subtracaoM2(m2Estoque As String, m2Despache As String) As Double
     Dim textoFormatado As String
     Dim estoque As Double
     Dim despache As Double
-    Dim totalM2 As Double
+    Dim totalm2 As Double
     
     'Convertendo os valores
     estoque = CDbl(m2Estoque)
     despache = CDbl(m2Despache)
     
     'Receber e calcular o total do bloco
-    totalM2 = estoque - despache
+    totalm2 = estoque - despache
     
     'Retornar valor calcuculado e formatado
-    subtracaoM2 = totalM2
+    subtracaoM2 = totalm2
 End Function
 
 ' Calcula o custo do material por metro
@@ -527,7 +532,7 @@ Function calcularM2(compr As String, alt As String, qtd As String) As Double
     Dim comprimento As Double
     Dim altura As Double
     Dim quantidade As Double
-    Dim totalM2 As Double
+    Dim totalm2 As Double
     
     If qtd = "" Then
         qtd = 0
@@ -538,10 +543,10 @@ Function calcularM2(compr As String, alt As String, qtd As String) As Double
     quantidade = CDbl(qtd)
     
     'Calculando o metro m³
-    totalM2 = comprimento * altura * quantidade
+    totalm2 = comprimento * altura * quantidade
     
     'Retornando o m³
-    calcularM2 = totalM2
+    calcularM2 = totalm2
 End Function
 
 ' Formata com pontos para melhor visualiação

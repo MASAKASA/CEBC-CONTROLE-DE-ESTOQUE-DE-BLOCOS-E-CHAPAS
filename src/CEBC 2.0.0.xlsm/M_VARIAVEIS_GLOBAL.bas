@@ -13,3 +13,4 @@ Global DATA_FINAL As String
 
 ' Variaveis para montrar os caminho onde vão ser salvos os pdfs
 Global CAMINHO_SALVAR_ESTOQUE_BLOCOS As String
+Global CAMINHO_SALVAR_ESTOQUE_CHAPAS As String

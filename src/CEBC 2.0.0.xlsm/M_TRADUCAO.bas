@@ -3,6 +3,10 @@ Option Explicit
 
 ' Variaveis globais para os erros
 ' TELA CHAPA
+Global INFORMACAO_INVALIDA_MENSAGEM As String
+Global INFORMACAO_INVALIDA_TITULO As String
+Global SELECIONE_POLIMENTO_MENSAGEM As String
+Global SELECIONE_POLIMENTO_TITULO As String
 Global SUCESSO_CADASTRO_EDICAO_MENSAGEM As String
 Global SUCESSO_CADASTRO_EDICAO_TITULO As String
 Global SELECIONE_TAMANHO_MENSAGEM As String
@@ -75,6 +79,10 @@ Global ADICIONE_STATUS_TITULO As String
 Public Sub carregarTraducaoErros()
     ' Mensagem para usuário
     ' TELA CHAPA
+    INFORMACAO_INVALIDA_MENSAGEM = "Informação pedente!"
+    INFORMACAO_INVALIDA_TITULO = "Faltando informação"
+    SELECIONE_POLIMENTO_MENSAGEM = "Selecione um tipo de polimento!"
+    SELECIONE_POLIMENTO_TITULO = "Sem Polimento"
     SUCESSO_CADASTRO_EDICAO_MENSAGEM = "Alteração feito com sucesso!"
     SUCESSO_CADASTRO_EDICAO_TITULO = "cadastro/edição chapa"
     SELECIONE_TAMANHO_MENSAGEM = "Seledione um tamanho das lista"
