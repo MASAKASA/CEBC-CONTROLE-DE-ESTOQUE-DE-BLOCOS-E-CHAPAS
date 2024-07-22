@@ -54,6 +54,7 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
         Case "fTiraEfeitoBotoesAcoesDespachar"
             formControle.Controls("btnLTxtDespachar").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtSalvarDespache").Font.Size = botoesTextoFontSizeSmall
+            formControle.Controls("btnLTxtTirarListaDespache").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtLimparDespache").Font.Size = botoesTextoFontSizeSmall
             
         ' Tela estoque m³

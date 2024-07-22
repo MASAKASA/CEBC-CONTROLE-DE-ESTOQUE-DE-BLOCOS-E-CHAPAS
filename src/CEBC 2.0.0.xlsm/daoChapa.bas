@@ -519,10 +519,6 @@ Function pesquisarPorListaIdsChapas(listaIdsParaPesquisa As Collection) As Colle
     ' Libera espaço
     Set listaChapasAvulsas = Nothing
 End Function
-' Pesquisa objeto por nome
-Function pesquisarPorNome()
-
-End Function
 
 ' Pesquisa objeto
 Function listarChapasFilter(nomeMaterial As String, numeroBlocoPedreira As String, idBlocoSistema As String, _
@@ -722,6 +718,183 @@ Function listarChapasFilter(nomeMaterial As String, numeroBlocoPedreira As Strin
         Set chapa = Nothing
         Set tamanho = Nothing
     End If
+End Function
+
+' Metodo salvar despachar
+Function salvarDespache(despache As objDespache) As Integer
+    ' String para consultas
+    Dim rsDespache As ADODB.Recordset ' Recordset para consulta
+    Dim rsAuxiliar As ADODB.Recordset ' Recordset para consulta
+    Dim fkObject As Variant ' fk para consultas extras
+    Dim strSql As String ' String para consultas
+    Dim campos() As String
+    Dim valoresCampos As String
+    Dim cadastro As Boolean
+    Dim idDespache As Long
+    
+    ' Seta true em cadastro
+    cadastro = True
+    
+    ' Faz a consulta para saber se o código do bloco já exite
+    strSql = "SELECT * FROM Despaches_Salvos WHERE id_Carrego = '" & despache.id & "';"
+    
+    ' Abrindo conexão com banco
+    Call conctarBanco
+    ' Criando e abrindo Recordset para consulta
+    Set rsDespache = ObjectFactory.factoryRsAuxiliar(rsDespache)
+    Set rsAuxiliar = ObjectFactory.factoryRsAuxiliar(rsAuxiliar)
+    ' Abrindo Recordset para consulta
+    rsAuxiliar.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
+    ' Retorno da consulta
+    While Not rsAuxiliar.EOF
+        ' Seta false porquê vai ser uma edição
+        cadastro = False
+        
+        rsAuxiliar.MoveNext
+    Wend
+    ' Fecha conexão do Recordset
+    rsAuxiliar.Close
+    
+    ' Direciona para os comandos certos de cadastro ou edição
+    If cadastro = True Then ' Se cadastro
+        
+        ' Realoca espaço da variavel
+        ReDim campos(1 To 6)
+        ' Colocando vingulas, Parenteses e  arpas simples os valores
+        campos(1) = "(" & despache.motorista.id & ", "
+        campos(2) = "" & despache.destino.id & ", "
+        campos(3) = "" & despache.chapa.idSistema & ", "
+        campos(4) = "" & despache.tamanho.id & ", "
+        campos(5) = "'" & despache.dataDespache & ", "
+        campos(6) = "" & despache.qtd & ");"
+        
+        ' Concatenando os valores
+        For i = 1 To 6
+            valoresCampos = valoresCampos & campos(i)
+        Next i
+    
+        ' Concatenando comando SQL e cadastrando bloco no banco de dados
+        strSql = "INSERT INTO Despaches_Salvos ( fk_motorista, fk_destino, fk_chapa, fk_tamanho, data_despache, quantidade ) " _
+                    & "VALUES " & valoresCampos
+        
+        rsDespache.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
+        
+        ' Faz a consulta para retornar o id cadastrado
+        strSql = "SELECT * FROM Despaches_Salvos WHERE id_Carrego = '" & despache.id & "';"
+        ' Abrindo Recordset para consulta
+        rsDespache.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
+        ' Retorno da consulta
+        While Not rsDespache.EOF
+            ' Seta id do bancco
+            idDespache = rsDespache.Fields("id_Carrego").Value
+            
+            rsDespache.MoveNext
+        Wend
+    Else ' Se edição
+        
+        ' Edição do bloco com serraria e polideira
+        strSql = "UPDATE Despaches_Salvos SET fk_motorista = '" & despache.motorista.id & ", " _
+                            & "fk_destino = " & despache.destino.id & ", " _
+                            & "fk_chapa = " & despache.chapa.idSistema & "," _
+                            & "fk_tamanho = " & despache.tamanho.id & ",  " _
+                            & "data_despache = '" & chapa.bloco.idSistema & "' " _
+                            & "estoque_zero = '" & despache.dataDespache & "' " _
+                            & "quantidade = " & despache.qtd & " " _
+                            & "WHERE id_Carrego = '" & despache.id & "';"
+            
+        rsDespache.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
+        
+        idDespache = despache.id
+    End If
+    
+    ' Libera espaço da memoria
+    Set rsDespache = Nothing
+    Set rsAuxiliar = Nothing
+    'Fechando conexão com banco
+    Call fecharConexaoBanco
+    ' Retorna o id
+    salvarDespache = idDespache
+End Function
+
+' Metodo salvar despachar
+Function pesquisarDespache(id As String) As objDespache
+    'Metodos do metodo
+    ' String para consultas
+    Dim sqlSelectPesquisarPorId As String ' String para consultas
+    Dim fkObject As String ' fk para consultas extras
+    Dim rsDespache As ADODB.Recordset ' Recordset para consulta principal
+    Dim despache As objDespache
+    Dim motorista As objMotorista
+    Dim destino As objDestino
+    Dim chapaDespache As objChapa
+    Dim tamanhoDespache As objTamanho
+    
+    ' Criação e atribuição dos objetos
+    Set despache = ObjectFactory.factoryDespache(despache)
+    Set motorista = ObjectFactory.factoryMotorista(motorista)
+    Set destino = ObjectFactory.factoryDestino(destino)
+    
+    'Abrindo conexão com banco
+    Call conctarBanco
+    ' String para consulta
+    sqlSelectPesquisarPorId = "SELECT * FROM Despaches_Salvos WHERE id_Carrego = '" & id & "';"
+    ' Criando e abrindo Recordset para consulta
+    Set rsDespache = ObjectFactory.factoryRsAuxiliar(rsDespache)
+    ' Consulta banco
+    rsDespache.Open sqlSelectPesquisarPorId, CONEXAO_BD, adOpenKeyset, adLockReadOnly
+    ' Retorno da consulta
+    While Not rsDespache.EOF
+        ' Atribuição dos atributos
+        despache.id = rsChapa.Fields("id_Carrego").Value
+        despache.dataDespache = rsChapa.Fields("data_despache").Value
+        despache.qtd = rsChapa.Fields("quantidade").Value
+        
+        'Atribuições dos objetos
+        ' fk para consulta
+        fkObject = rsDespache.Fields("fk_motorista").Value
+        ' String para consulta
+        sqlSelectPesquisarPorId = "SELECT * FROM Motoristas WHERE Id_Motorista = " & fkObject & ";"
+        ' Setando Objeto
+        despache.setMotorista retornarObjeto(tipoPolimento, sqlSelectPesquisarPorId, "id_motorista", "nome_motorista")
+        
+        ' fk para consulta
+        fkObject = rsDespache.Fields("fk_destino").Value
+        ' String para consulta
+        sqlSelectPesquisarPorId = "SELECT * FROM Destinos WHERE id_destino = " & fkObject & ";"
+        ' Setando Objeto
+        despache.setDestino retornarObjeto(tipoPolimento, sqlSelectPesquisarPorId, "id_destino", "nome_destino")
+        
+        ' fk para consulta
+        fkObject = rsDespache.Fields("fk_chapa").Value
+        ' Consulta objeto
+        Set chapaDespache = daoChapa.pesquisarPorId(fkObject)
+        ' Setando Objeto
+        despache.setChapa = chapaDespache
+        
+        ' fk para consulta
+        fkObject = rsDespache.Fields("fk_tamanho").Value
+        ' Consulta objeto
+        Set tamanhoDespache = daoTamanho.pesquisarPorIdTamanho(fkObject)
+        ' Setando Objeto
+        despache.tamanho = tamanhoDespache
+        
+        rsDespache.MoveNext
+    Wend
+    
+    ' Libera espaço da memoria
+    Set rsDespache = Nothing
+    'Fechando conexão com banco
+    Call fecharConexaoBanco
+    
+    ' Retorno
+    Set pesquisarDespache = chapa
+    
+    ' Libera espaço na memoria
+    Set despache = Nothing
+    Set motorista = Nothing
+    Set destino = Nothing
+    Set chapaDespache = Nothing
+    Set tamanhoDespache = Nothing
 End Function
 
 ' Metodo auxiliar para montar o objeto bloco

@@ -80,7 +80,7 @@ Function excluir(id As String)
 End Function
 
 ' Pesquisa objeto por id
-Function pesquisarPorId(id As String) As objMotoista
+Function pesquisarPorId(id As String) As objMotorista
     ' String para consultas
     Dim rs As ADODB.Recordset
     Dim strSql As String
@@ -118,7 +118,7 @@ Function pesquisarPorId(id As String) As objMotoista
 End Function
 
 ' Pesquisa objeto por nome
-Function pesquisarPorNome(nomeMotorista) As objMotoista
+Function pesquisarPorNome(nomeMotorista) As objMotorista
     ' String para consultas
     Dim rs As ADODB.Recordset
     Dim strSql As String
@@ -159,10 +159,10 @@ End Function
 Function listarMotoristas() As Collection
     ' String para consultas
     Dim strSql As String ' String para consultas
-    Dim rsBloco As ADODB.Recordset ' Recordset para consulta principal
+    Dim rs As ADODB.Recordset ' Recordset para consulta principal
     
     ' String para consulta
-    strSql = "SELECT * FROM Motoristas ORDER BY Nome_Pedreira;"
+    strSql = "SELECT * FROM Motoristas ORDER BY Nome_Motorista;"
     
     'Abrindo conexão com banco
     Call conctarBanco
@@ -178,7 +178,7 @@ Function listarMotoristas() As Collection
         Set motorista = ObjectFactory.factoryMotorista(motorista)
         
         motorista.id = rs.Fields("Id_Motorista").Value
-        motorista.nome = rs.Fields("Nome_Pedreira").Value
+        motorista.nome = rs.Fields("Nome_Motorista").Value
         
         ' Adiciona na lista
         listaMotoristas.Add motorista

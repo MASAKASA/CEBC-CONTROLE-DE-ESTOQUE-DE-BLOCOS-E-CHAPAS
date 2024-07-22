@@ -62,10 +62,10 @@ Public Function factoryDestino(variavelDestino As objDestino) As objDestino
 End Function
 
 ' Criação da instância de motorista
-Public Function factoryMotorista(variavelMotorista As objMotoista) As objMotoista
+Public Function factoryMotorista(variavelMotorista As objMotorista) As objMotorista
     ' Verificação se a instância já foi criada
     If variavelMotorista Is Nothing Then
-        Set variavelMotorista = New objMotoista
+        Set variavelMotorista = New objMotorista
     End If
     ' Retorna a instância
     Set factoryMotorista = variavelMotorista
@@ -160,3 +160,14 @@ Public Function factoryEstoqueChapas(variavelEstoque As objEstoqueChapa) As objE
     ' Retorna a instância
     Set factoryEstoqueChapas = variavelEstoque
 End Function
+
+' Criação da instância de despache
+Public Function factoryDespache(variavelDespache As objDespache) As objDespache
+    ' Verificação se a instância já foi criada
+    If variavelDespache Is Nothing Then
+        Set variavelDespache = New objDespache
+    End If
+    ' Retorna a instância
+    Set factoryDespache = variavelDespache
+End Function
+

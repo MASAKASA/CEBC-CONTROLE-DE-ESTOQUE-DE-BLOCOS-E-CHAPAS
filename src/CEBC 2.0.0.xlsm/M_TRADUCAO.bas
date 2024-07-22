@@ -2,6 +2,11 @@ Attribute VB_Name = "M_TRADUCAO"
 Option Explicit
 
 ' Variaveis globais para os erros
+' TELA DESPACHE
+Global SELECIONE_DESTINO_MENSAGEM As String
+Global SELECIONE_DESTINO_TITULO As String
+Global SELECIONE_MOTORISTA_MENSAGEM As String
+Global SELECIONE_MOTORISTA_TITULO As String
 ' TELA CHAPA
 Global INFORMACAO_INVALIDA_MENSAGEM As String
 Global INFORMACAO_INVALIDA_TITULO As String
@@ -78,6 +83,12 @@ Global ADICIONE_STATUS_TITULO As String
 ' Carrega as variaveis dos erros
 Public Sub carregarTraducaoErros()
     ' Mensagem para usuário
+    ' TELA DESPACHE
+    SELECIONE_DESTINO_MENSAGEM = "Selecione um destino!"
+    SELECIONE_DESTINO_TITULO = "Sem destino"
+    SELECIONE_MOTORISTA_MENSAGEM = "Selecione um motorista!"
+    SELECIONE_MOTORISTA_TITULO = "Sem motorista"
+    
     ' TELA CHAPA
     INFORMACAO_INVALIDA_MENSAGEM = "Informação pedente!"
     INFORMACAO_INVALIDA_TITULO = "Faltando informação"
@@ -85,7 +96,7 @@ Public Sub carregarTraducaoErros()
     SELECIONE_POLIMENTO_TITULO = "Sem Polimento"
     SUCESSO_CADASTRO_EDICAO_MENSAGEM = "Alteração feito com sucesso!"
     SUCESSO_CADASTRO_EDICAO_TITULO = "cadastro/edição chapa"
-    SELECIONE_TAMANHO_MENSAGEM = "Seledione um tamanho das lista"
+    SELECIONE_TAMANHO_MENSAGEM = "Selecione um tamanho das lista"
     SELECIONE_TAMANHO_TITULO = "Sem tamanho"
     TAMANHO_CHAPA_MENSAGEM = "Adicione os tamanhos das chapas"
     TAMANHO_CHAPA_TITULO = "Sem tamanho"
