@@ -502,6 +502,19 @@ Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As 
     ' Libera espaço em memoria
     Set bloco = Nothing
 End Sub
+' Botão btnLExcluirBloco tela estoque m³
+Private Sub btnLExcluirBloco_Click()
+    
+    ' Verifica se tem algum item selecionado
+    If Me.ListEstoqueM3.ListIndex = -1 Then
+        ' Mensagem usuário
+        errorStyle.Informativo SELECIONE_TEM_MENSAGEM, SELECIONE_TEM_TITULO
+        Exit Sub
+    End If
+    
+    ' Chama serviço para excluir o bloco
+    daoBloco.excluir (Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0))
+End Sub
 
 '-----------------------------------------------------------------TELA CADASTRO DE BLOCOS-----------------------------------
 '                                                                 -----------------------

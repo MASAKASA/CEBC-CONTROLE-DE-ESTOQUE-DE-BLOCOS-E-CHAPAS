@@ -244,7 +244,54 @@ End Function
 
 ' Exclui objeto
 Function excluir(id As String)
-
+    'Metodos do metodo
+    ' String para consultas
+    Dim resposta As VbMsgBoxResult ' Variavel para confirmação das chapas
+    Dim sqlExcluirBloco As String ' String para consultas
+    Dim sqlChapaBloco As String ' fk para consultas extras
+    Dim rsAuxiliar As ADODB.Recordset ' Recordset para consulta
+    Dim rsBloco As ADODB.Recordset ' Recordset para consulta principal
+    
+    ' Faz a consulta para saber se tem chapa ese bloco
+    sqlChapaBloco = "SELECT * FROM Chapas WHERE Fk_Bloco = '" & id & "';"
+    
+    ' Abrindo conexão com banco
+    Call conctarBanco
+    
+    ' Criando e abrindo Recordset para consulta
+    Set rsAuxiliar = ObjectFactory.factoryRsAuxiliar(rsAuxiliar)
+    ' Abrindo Recordset para consulta
+    rsAuxiliar.Open sqlChapaBloco, CONEXAO_BD, adOpenKeyset, adLockReadOnly
+    
+    ' Retorno da consulta
+    While Not rsAuxiliar.EOF
+        ' Mensagem de confirmação
+        resposta = MsgBox(CONFIRMACAO_CADASTRO_MENSAGEM, vbQuestion + vbYesNo, CONFIRMACAO_CADASTRO_TITULO)
+        rsAuxiliar.MoveNext
+    Wend
+    ' Fecha conexão do Recordset
+    rsAuxiliar.Close
+    
+    ' Fechando conexão com banco
+    Call fecharConexaoBanco
+    
+    If resposta = vbYes Then
+        ' Inativa as chapas
+        
+    End If
+    
+    sqlExcluirBloco = "UPDATE Blocos SET ativo = 'NÃO'" _
+                        & "WHERE Id_Bloco = '" & id & "';"
+                        
+    ' Abrindo conexão com banco
+    Call conctarBanco
+    
+    ' Criando e abrindo Recordset para consulta
+    Set rsBloco = ObjectFactory.factoryRsAuxiliar(rsBloco)
+    rsBloco.Open sqlChapaBloco, CONEXAO_BD, adOpenKeyset, adLockReadOnly
+    
+    ' Fechando conexão com banco
+    Call fecharConexaoBanco
 End Function
 
 ' Pesquisa objeto por id
