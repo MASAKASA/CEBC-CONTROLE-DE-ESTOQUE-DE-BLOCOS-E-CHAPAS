@@ -347,7 +347,7 @@ Private Sub btnLImgExportarEstoqueM3_MouseDown(ByVal Button As Integer, ByVal Sh
     
     ' Captura ids da lista
     For i = 0 To Me.ListEstoqueM3.ListCount - 1
-        idsParaPesquisa.Add Me.ListEstoqueM3.list(i, 0)
+        idsParaPesquisa.add Me.ListEstoqueM3.list(i, 0)
     Next i
     
     ' Pesquisa os ids
@@ -502,8 +502,10 @@ Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As 
     ' Libera espaço em memoria
     Set bloco = Nothing
 End Sub
-' Botão btnLExcluirBloco tela estoque m³
-Private Sub btnLExcluirBloco_Click()
+' Botão btnLTxtExcluirBloco tela estoque m³
+Private Sub btnLTxtExcluirBloco_Click()
+    
+    Dim resposta As VbMsgBoxResult ' Variavel para confirmação do bloco
     
     ' Verifica se tem algum item selecionado
     If Me.ListEstoqueM3.ListIndex = -1 Then
@@ -512,8 +514,19 @@ Private Sub btnLExcluirBloco_Click()
         Exit Sub
     End If
     
-    ' Chama serviço para excluir o bloco
-    daoBloco.excluir (Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0))
+    ' Mensagem de confirmação
+    resposta = MsgBox(EXCLUIR_BLOCO_MENSAGEM, vbQuestion + vbYesNo, EXCLUIR_BLOCO_TITULO)
+    
+    If resposta = vbYes Then
+        ' Chama serviço para excluir o bloco
+        daoBloco.excluir (Me.ListEstoqueM3.list(Me.ListEstoqueM3.ListIndex, 0))
+    End If
+    
+    ' Chama serviço para pesquisa
+    Call pesquisarBlocosFilter
+    
+    ' Mensagem usuário
+    errorStyle.Informativo SUCESSO_EXCLUIR_BLOCO_MENSAGEM, SUCESSO_EXCLUIR_BLOCO_TITULO
 End Sub
 
 '-----------------------------------------------------------------TELA CADASTRO DE BLOCOS-----------------------------------
@@ -1495,7 +1508,7 @@ Private Sub btnLImgExportarEstoqueM2_MouseDown(ByVal Button As Integer, ByVal Sh
     
     ' Captura ids da lista
     For i = 0 To Me.ListEstoqueChapas.ListCount - 1
-        idsParaPesquisa.Add Me.ListEstoqueChapas.list(i, 0)
+        idsParaPesquisa.add Me.ListEstoqueChapas.list(i, 0)
     Next i
     
     ' Pesquisa os ids
@@ -1545,7 +1558,7 @@ Private Sub btnLTxtNovoAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As 
         ' Confere se é um avulso ou importado
         If primeiroNome <> "BLOCO" Then
             ' Captura as chapa avulso/importado para pesquisa
-            idsChapaAvulso.Add blocoLista.numeroBlocoPedreira
+            idsChapaAvulso.add blocoLista.numeroBlocoPedreira
         End If
     Next i
     
@@ -1606,7 +1619,7 @@ Private Sub btnLTxtNovoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As I
         ' Seta o ojeto
         Set chapaPesquisa = listaChapasPesquisa(i)
         ' Seta os polimentos já cadastrados
-        listaPolimentosJaCadastras.Add chapaPesquisa.tipoPolimento.nome
+        listaPolimentosJaCadastras.add chapaPesquisa.tipoPolimento.nome
     Next i
     
     ' Carrega só os tipos deferentes
@@ -2117,7 +2130,7 @@ Private Sub btnLTxtCadastrarChapaAvulso_MouseDown(ByVal Button As Integer, ByVal
         Set tamanhoChapaAvulso.estoque = estoqueChapa
         
         ' Adiciona na lista
-        listaTamanhoChapaAvulso.Add tamanhoChapaAvulso
+        listaTamanhoChapaAvulso.add tamanhoChapaAvulso
         
         ' Atribuições
         Set chapaAvulsa.tamanhos = listaTamanhoChapaAvulso
@@ -2160,7 +2173,7 @@ Private Sub btnLTxtCadastrarChapaAvulso_MouseDown(ByVal Button As Integer, ByVal
             ' Confere se é um avulso ou importado
             If primeiroNome <> "BLOCO" Then
                 ' Captura as chapa avulso/importado para pesquisa
-                idsChapaAvulso.Add blocoLista.numeroBlocoPedreira
+                idsChapaAvulso.add blocoLista.numeroBlocoPedreira
             End If
         Next i
         
@@ -2286,7 +2299,7 @@ End Sub
 Private Sub cbTipoPolimentoChapa_Change()
     
     ' Varuaveis do metodo
-    Dim idchapas As String
+    Dim idChapas As String
     Dim descricaoChapa As String
     Dim codFinal As String
     Dim posicao As Integer
@@ -2299,48 +2312,48 @@ Private Sub cbTipoPolimentoChapa_Change()
      
     'Captura o tipo de polimento, cria o id e descrição da chapa
     If cbTipoPolimentoChapa.Value = "BRUTO" Then
-        idchapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "BT")
+        idChapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "BT")
         descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "BRUTO")
         
     ElseIf cbTipoPolimentoChapa.Value = "BI POLIDO" Then
-        idchapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "BPO")
+        idChapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "BPO")
         descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "BI POLIDO")
         
     ElseIf cbTipoPolimentoChapa.Value = "ESCOVADO" Then
-        idchapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "ES")
+        idChapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "ES")
         descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "ESCOVADO")
         
     ElseIf cbTipoPolimentoChapa.Value = "BI ESCOVADO" Then
-        idchapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "BES")
+        idChapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "BES")
         descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "BI ESCOVADO")
         
     ElseIf cbTipoPolimentoChapa.Value = "LEVIGADO" Then
-        idchapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "LE")
+        idChapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "LE")
         descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "LEVIGADO")
         
     ElseIf cbTipoPolimentoChapa.Value = "FLAMIADO" Then
-        idchapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "FL")
+        idChapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "FL")
         descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "FLAMIADO")
         
     ElseIf cbTipoPolimentoChapa.Value = "RIPADO" Then
-        idchapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "RI")
+        idChapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "RI")
         descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "RIPADO")
         
     ElseIf cbTipoPolimentoChapa.Value = "POLIDO" Then
-        idchapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "PO")
+        idChapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "PO")
         descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "POLIDO")
         
     ElseIf cbTipoPolimentoChapa.Value = "MATTE" Then
-        idchapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "MA")
+        idChapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "MA")
         descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "MATTE")
         
     ElseIf cbTipoPolimentoChapa.Value = "RESIN PINTADO" Then
-        idchapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "RP")
+        idChapas = M_METODOS_GLOBAL.formatarIdChapa(idBloco, "RP")
         descricaoChapa = M_METODOS_GLOBAL.formatarNomeChapa(descricao, "RESIN PINTADO")
     End If
     
     ' Seta id e descrição
-    txtIdChapaSistema.Value = idchapas
+    txtIdChapaSistema.Value = idChapas
     txtDescricaoChapa.Value = descricaoChapa
 End Sub
 
@@ -2638,7 +2651,7 @@ Private Sub btnLTxtSalvarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As
             custoTotal = custoTotal + CDbl(ListTamanhosChapas.list(i, 6))
         End If
         ' Seta tamanho
-        listaTamanhosAtualizados.Add tamanho
+        listaTamanhosAtualizados.add tamanho
         
         ' Libera memoria
         Set tamanho = Nothing
@@ -2877,7 +2890,7 @@ Private Sub btnLTxtTrocarEstoque_MouseDown(ByVal Button As Integer, ByVal Shift 
                 chapaTroca.tamanhos.Remove (i)
                 
                 tamanhoSerTrocada.setChapa chapaSerTrocada
-                chapaSerTrocada.tamanhos.Add tamanhoSerTrocada
+                chapaSerTrocada.tamanhos.add tamanhoSerTrocada
                 
                 ' Atualizações custo
                 For j = 1 To chapaTroca.tamanhos.Count
@@ -2924,7 +2937,7 @@ Private Sub btnLTxtTrocarEstoque_MouseDown(ByVal Button As Integer, ByVal Shift 
                 tamanhoNovo.setEstoque tamanhoSerTrocada.estoque
                 tamanhoNovo.setChapa chapaSerTrocada
                 
-                chapaSerTrocada.tamanhos.Add tamanhoNovo
+                chapaSerTrocada.tamanhos.add tamanhoNovo
                 
                 ' Atualizações custo
                 For j = 1 To chapaTroca.tamanhos.Count

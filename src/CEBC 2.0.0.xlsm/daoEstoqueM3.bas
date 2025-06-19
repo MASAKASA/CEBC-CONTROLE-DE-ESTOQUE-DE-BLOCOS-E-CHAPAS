@@ -181,7 +181,7 @@ Function listarEstoqueM3() As Collection
         estoque.nome = rs.Fields("Empresa").Value
         
         ' Adiciona na lista
-        listaEstoquesM3.Add estoque
+        listaEstoquesM3.add estoque
         
         ' Libera espaço para nova pesquisa se ouver
         Set estoque = Nothing

@@ -181,7 +181,7 @@ Function listarEstoqueChapas() As Collection
         estoque.nome = rs.Fields("Nome_Empresa").Value
 
         ' Adiciona na lista
-        listaEstoques.Add estoque
+        listaEstoques.add estoque
 
         ' Libera espaço para nova pesquisa se ouver
         Set estoque = Nothing

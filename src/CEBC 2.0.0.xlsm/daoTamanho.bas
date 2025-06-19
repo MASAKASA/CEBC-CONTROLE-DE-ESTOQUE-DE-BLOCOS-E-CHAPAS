@@ -273,7 +273,7 @@ Function pesquisarPorIdChapa(idChapa As Variant, conexaoFechar As Boolean) As Co
 '        tamanho.setChapa chapa
         
         ' Setando tamanhos
-        listaTamanhos.Add tamanho
+        listaTamanhos.add tamanho
         
         ' Liberando espaço na memoria
         Set tipoMaterial = Nothing

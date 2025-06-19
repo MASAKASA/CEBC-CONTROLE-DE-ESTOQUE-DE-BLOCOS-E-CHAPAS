@@ -180,7 +180,7 @@ Function listarSerrarias() As Collection
         serraria.nome = rs.Fields("Nome_Serraria").Value
         
         ' Adiciona na lista
-        listaSerrarias.Add serraria
+        listaSerrarias.add serraria
         
         ' Libera espaço para nova pesquisa se ouver
         Set serraria = Nothing

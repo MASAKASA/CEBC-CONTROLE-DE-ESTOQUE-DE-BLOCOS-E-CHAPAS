@@ -67,6 +67,7 @@ Private Sub efeitoFrame_MouseMove(ByVal Button As Integer, ByVal Shift As Intege
             formControle.Controls("btnLTxtNovoBloco").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtEditarBloco").Font.Size = botoesTextoFontSizeSmall
             formControle.Controls("btnLTxtADDEstoque").Font.Size = botoesTextoFontSizeSmall
+            formControle.Controls("btnLTxtExcluirBloco").Font.Size = botoesTextoFontSizeSmall
             
         ' Tela estoque m²
         Case "fTiraEfeitoBotoesFiltrosEstoqueM2"

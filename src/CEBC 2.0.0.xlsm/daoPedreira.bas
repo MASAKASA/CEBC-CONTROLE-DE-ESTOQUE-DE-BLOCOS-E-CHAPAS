@@ -181,7 +181,7 @@ Function listarPedreiras() As Collection
         pedreira.nome = rs.Fields("Nome_Pedreira").Value
         
         ' Adiciona na lista
-        listaPedreiras.Add pedreira
+        listaPedreiras.add pedreira
         
         ' Libera espaço para nova pesquisa se ouver
         Set pedreira = Nothing

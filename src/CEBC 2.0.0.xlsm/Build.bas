@@ -250,18 +250,18 @@ Private Sub checkHowToImport(file As Object, includeClassFiles As Boolean)
             Case ".cls" ' 10 == Len(".sheet.cls")
                 If Len(fileName) > 10 And Right(fileName, 10) = ".sheet.cls" Then
                     'import lines into sheet: importLines vbaProjectToImport, file
-                    sheetsToImport.Add componentName, file
+                    sheetsToImport.add componentName, file
                 Else
                     ' .cls files don't import correctly because of a bug in excel, therefore we can exclude them.
                     ' In that case they'll have to be imported manually.
                     If includeClassFiles Then
                         'importComponent vbaProject, file
-                        componentsToImport.Add componentName, file.Path
+                        componentsToImport.add componentName, file.Path
                     End If
                 End If
             Case ".bas", ".frm"
                 'importComponent vbaProject, file
-                componentsToImport.Add componentName, file.Path
+                componentsToImport.add componentName, file.Path
             Case Else
                 'do nothing
                 Debug.Print "Skipping file " & fileName
@@ -372,7 +372,7 @@ Public Function addSheetToWorkbook(sheetName As String, workbookFilePath As Stri
     On Error GoTo 0
     If Not wb Is Nothing Then
         Dim ws As Worksheet
-        Set ws = wb.Sheets.Add(After:=wb.Sheets(wb.Sheets.Count))
+        Set ws = wb.Sheets.add(After:=wb.Sheets(wb.Sheets.Count))
         ws.name = sheetName
         'ws.CodeName = sheetName: cannot assign to read only property
         Debug.Print "Sheet added " & sheetName

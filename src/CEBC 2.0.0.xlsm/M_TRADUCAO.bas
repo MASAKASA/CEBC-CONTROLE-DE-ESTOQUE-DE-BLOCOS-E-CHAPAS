@@ -64,6 +64,12 @@ Global STATUS_SERRARIA_MENSAGEM As String
 Global STATUS_SERRARIA_TITULO As String
 
 ' TELA ESTOQUE BLOCOS M³
+Global SUCESSO_EXCLUIR_BLOCO_MENSAGEM As String
+Global SUCESSO_EXCLUIR_BLOCO_TITULO As String
+Global EXCLUIR_BLOCO_MENSAGEM As String
+Global EXCLUIR_BLOCO_TITULO As String
+Global EXCLUIR_CHAPA_MENSAGEM As String
+Global EXCLUIR_CHAPA_TITULO As String
 Global ESCOLHA_CHAPA_MENSAGEM As String
 Global ESCOLHA_CHAPA_TITULO As String
 Global SELECIONE_TEM_MENSAGEM As String
@@ -146,6 +152,12 @@ Public Sub carregarTraducaoErros()
     NOME_PEDREIRA_TITULO = "Nome da pedreira não informada"
     
     ' TELA ESTOQUE BLOCOS M³
+    SUCESSO_EXCLUIR_BLOCO_MENSAGEM = "Alteração feito com sucesso!"
+    SUCESSO_EXCLUIR_BLOCO_TITULO = "Exclusão de bloco"
+    EXCLUIR_BLOCO_MENSAGEM = "Deseja excluir o bloco?"
+    EXCLUIR_BLOCO_TITULO = "Excluir bloco"
+    EXCLUIR_CHAPA_MENSAGEM = "Esse bloco já foi industrializado. Deseja excluir as chapas?"
+    EXCLUIR_CHAPA_TITULO = "Excluir chapa"
     ESCOLHA_CHAPA_MENSAGEM = "Selecione uma chapa na lista!"
     ESCOLHA_CHAPA_TITULO = "Escolha chapa"
     SELECIONE_TEM_MENSAGEM = "Selecione um item da lista!"

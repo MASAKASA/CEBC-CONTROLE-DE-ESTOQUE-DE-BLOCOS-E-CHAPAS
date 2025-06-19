@@ -244,57 +244,68 @@ End Function
 
 ' Exclui objeto
 Function excluir(id As String)
-    'Metodos do metodo
+    
     ' String para consultas
-    Dim resposta As VbMsgBoxResult ' Variavel para confirmação das chapas
-    Dim sqlExcluirBloco As String ' String para consultas
-    Dim sqlChapaBloco As String ' fk para consultas extras
-    Dim rsAuxiliar As ADODB.Recordset ' Recordset para consulta
+    Dim resposta As VbMsgBoxResult
     Dim rsBloco As ADODB.Recordset ' Recordset para consulta principal
+    Dim rsAuxiliar As ADODB.Recordset ' Recordset para consulta
+    Dim rsAuxiliarLista As ADODB.Recordset ' Recordset para consulta
+    Dim sqlExcluirBloco As String
+    Dim sqlPesquisarChapa As String
+    Dim sqlExcluirChapa As String
+    Dim temChapa As Boolean
+    Dim i As Integer
+    Dim idChapa As String
     
-    ' Faz a consulta para saber se tem chapa ese bloco
-    sqlChapaBloco = "SELECT * FROM Chapas WHERE Fk_Bloco = '" & id & "';"
+    temChapa = False
     
-    ' Abrindo conexão com banco
-    Call conctarBanco
-    
-    ' Criando e abrindo Recordset para consulta
-    Set rsAuxiliar = ObjectFactory.factoryRsAuxiliar(rsAuxiliar)
-    ' Abrindo Recordset para consulta
-    rsAuxiliar.Open sqlChapaBloco, CONEXAO_BD, adOpenKeyset, adLockReadOnly
-    
-    ' Retorno da consulta
-    While Not rsAuxiliar.EOF
-        ' Mensagem de confirmação
-        resposta = MsgBox(CONFIRMACAO_CADASTRO_MENSAGEM, vbQuestion + vbYesNo, CONFIRMACAO_CADASTRO_TITULO)
-        rsAuxiliar.MoveNext
-    Wend
-    ' Fecha conexão do Recordset
-    rsAuxiliar.Close
-    
-    ' Fechando conexão com banco
-    Call fecharConexaoBanco
-    
-    If resposta = vbYes Then
-        ' Inativa as chapas
-        
-    End If
-    
-    sqlExcluirBloco = "UPDATE Blocos SET ativo = 'NÃO'" _
-                        & "WHERE Id_Bloco = '" & id & "';"
-                        
     ' Abrindo conexão com banco
     Call conctarBanco
     
     ' Criando e abrindo Recordset para consulta
     Set rsBloco = ObjectFactory.factoryRsAuxiliar(rsBloco)
-    rsBloco.Open sqlChapaBloco, CONEXAO_BD, adOpenKeyset, adLockReadOnly
+    Set rsAuxiliar = ObjectFactory.factoryRsAuxiliar(rsAuxiliar)
+    Set rsAuxiliarLista = ObjectFactory.factoryRsAuxiliar(rsAuxiliarLista)
+    
+    ' Faz a consulta para saber se tem chapa ese bloco
+    sqlPesquisarChapa = "SELECT * FROM Chapas WHERE Fk_Bloco = '" & id & "';"
+    
+    ' Abrindo Recordset para consulta
+    rsAuxiliar.Open sqlPesquisarChapa, CONEXAO_BD, adOpenKeyset, adLockReadOnly
+    
+    ' Retorno da consulta
+    While Not rsAuxiliar.EOF
+        temChapa = True
+        
+        rsAuxiliar.MoveNext
+    Wend
+    rsAuxiliar.Clone
+    
+    If temChapa = True Then
+        ' Mensagem de confirmação
+        resposta = MsgBox(EXCLUIR_CHAPA_MENSAGEM, vbQuestion + vbYesNo, EXCLUIR_CHAPA_TITULO)
+    End If
+        
+    If resposta = vbYes Then
+
+        ' Inativa as chapas
+        sqlExcluirChapa = "UPDATE Chapas SET ativo = 'NAO' WHERE Fk_Bloco = '" & id & "';"
+        
+        ' Abrindo Recordset para consulta
+        rsAuxiliarLista.Open sqlExcluirChapa, CONEXAO_BD, adOpenKeyset, adLockPessimistic
+    End If
+    
+    sqlExcluirBloco = "UPDATE Blocos SET ativo = 'NAO' WHERE Id_Bloco = '" & id & "';"
+    
+    rsBloco.Open sqlExcluirBloco, CONEXAO_BD, adOpenKeyset, adLockPessimistic
     
     ' Fechando conexão com banco
     Call fecharConexaoBanco
+    
+    Set rsBloco = Nothing
+    Set rsAuxiliar = Nothing
+    Set rsAuxiliarLista = Nothing
 End Function
-
-' Pesquisa objeto por id
 Function pesquisarPorId(id As Variant, conexaoFechar As Boolean) As objBloco
     'Metodos do metodo
     ' String para consultas
@@ -568,7 +579,7 @@ Function pesquisarPorIdsVariados(idsParaPesquisa As Collection) As Collection
             bloco.setEstoque retornarObjeto(estoque, sqlSelectPesquisarPorId, "Id_Estoque", "Empresa")
             
             ' Adiciona na lista
-            listaBlocos.Add bloco
+            listaBlocos.add bloco
             
             ' Libera espaço da memoria
             Set bloco = Nothing
@@ -642,6 +653,8 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
     
     ' Abrindo conexão com banco para pesquisar os blocos
     Call conctarBanco
+    
+    strWhere = "ativo = 'SIM'"
     
     ' Construindo a cláusula WHERE baseada nos filtros selecionados
     If idBlocoPedreira <> "" Then
@@ -727,7 +740,7 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
     
     ' Finalizando a String para Status baseada nos filtros selecionados
     If strFkStatus <> "" Then
-        strFkStatus = "Fk_Status IN (" & strFkStatus & ")"
+        strFkStatus = " AND Fk_Status IN (" & strFkStatus & ")"
     End If
     
     ' Adicionar a cláusula WHERE à consulta
@@ -873,7 +886,7 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
         bloco.setEstoque retornarObjeto(estoque, sqlSelectPesquisarPorId, "Id_Estoque", "Empresa")
     
         ' Adiciona na lista
-        listaBlocos.Add bloco
+        listaBlocos.add bloco
         
         ' Libera espaço para nova pesquisa se ouver
         Set bloco = Nothing

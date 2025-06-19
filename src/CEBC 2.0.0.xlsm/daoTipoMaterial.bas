@@ -180,7 +180,7 @@ Function listarTiposMateriais() As Collection
         tipoMaterial.nome = rs.Fields("Nome_Tipo_Material").Value
         
         ' Adiciona na lista
-        listaTipoMaterial.Add tipoMaterial
+        listaTipoMaterial.add tipoMaterial
         
         ' Libera espaço para nova pesquisa se ouver
         Set tipoMaterial = Nothing

@@ -181,7 +181,7 @@ Function listarMotoristas() As Collection
         motorista.nome = rs.Fields("Nome_Motorista").Value
         
         ' Adiciona na lista
-        listaMotoristas.Add motorista
+        listaMotoristas.add motorista
         
         ' Libera espaço para nova pesquisa se ouver
         Set motorista = Nothing

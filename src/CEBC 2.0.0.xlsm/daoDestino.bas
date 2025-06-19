@@ -180,7 +180,7 @@ Function listarDestinos() As Collection
         destino.nome = rs.Fields("Nome_Destino").Value
         
         ' Adiciona na lista
-        listaDestinos.Add destino
+        listaDestinos.add destino
         
         ' Libera espaço para nova pesquisa se ouver
         Set destino = Nothing
