@@ -34,7 +34,7 @@ End Sub
 
 ' Gets e sets
 Public Function getTipoPolimento() As objTipoPolimento
-    getTipoPolimento = tipoPolimento
+    Set getTipoPolimento = tipoPolimento
 End Function
 
 Public Function setTipoPolimento(tipoPolimento As objTipoPolimento)
@@ -42,7 +42,7 @@ Public Function setTipoPolimento(tipoPolimento As objTipoPolimento)
 End Function
 
 Public Function getBloco() As objBloco
-    getBloco = bloco
+    Set getBloco = bloco
 End Function
 
 Public Function setBloco(bloco As objBloco)

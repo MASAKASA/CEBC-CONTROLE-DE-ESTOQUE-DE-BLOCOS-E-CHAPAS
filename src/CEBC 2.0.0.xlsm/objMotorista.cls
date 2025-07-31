@@ -9,7 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As String
+Public id As Long
 Public nome As String
 
 ' Construtor para cadastro
@@ -18,7 +18,7 @@ Public Sub carregarMotoristaCadastro(nome As String)
 End Sub
 
 ' Construtor para manipulação
-Public Sub carregarMotoristaManipulacao(id As String, nome As String)
+Public Sub carregarMotoristaManipulacao(id As Long, nome As String)
     Me.id = id
     Me.nome = nome
 End Sub

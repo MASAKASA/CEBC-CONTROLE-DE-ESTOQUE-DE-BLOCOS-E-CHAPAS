@@ -115,7 +115,7 @@ Private Sub btnLTxtTrocar_MouseDown(ByVal Button As Integer, ByVal Shift As Inte
         Set chapaPesquisa = listaChapasMesmaPedreira.Item(i)
         
         ' Seta os polimentos já cadastrados
-        listaPolimentosJaCadastras.add chapaPesquisa.tipoPolimento.nome
+        listaPolimentosJaCadastras.Add chapaPesquisa.tipoPolimento.nome
     Next i
     
     ' Carrega só os tipos deferentes

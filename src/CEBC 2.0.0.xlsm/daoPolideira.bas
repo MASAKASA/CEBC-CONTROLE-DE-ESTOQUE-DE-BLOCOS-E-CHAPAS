@@ -181,7 +181,7 @@ Function listarPolideiras() As Collection
         polideira.nome = rs.Fields("Nome_Polidoria").Value
         
         ' Adiciona na lista
-        listaPolideiras.add polideira
+        listaPolideiras.Add polideira
         
         ' Libera espaço para nova pesquisa se ouver
         Set polideira = Nothing

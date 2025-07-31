@@ -30,7 +30,7 @@ Function cadastrarEstoquePedreiras()
     'Adicionando nome na coleção
     While Not rs.EOF
     
-        nomePedreiraCollection.add rs.Fields("Nome_Pedreira").Value
+        nomePedreiraCollection.Add rs.Fields("Nome_Pedreira").Value
         
         rs.MoveNext
     Wend

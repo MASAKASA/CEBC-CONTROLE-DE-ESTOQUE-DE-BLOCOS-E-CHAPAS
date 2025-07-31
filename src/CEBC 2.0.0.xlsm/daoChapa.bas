@@ -243,7 +243,7 @@ Function listaChapasMesmaPedreira(numeroBlocoPedreira As String) As Collection
         chapa.setTamanhos daoTamanho.pesquisarPorIdChapa(chapa.idSistema, False)
         
         ' Adciona a chapa na lista
-        listaChapas.add chapa
+        listaChapas.Add chapa
         
         ' Libera espaço para da momeria
         Set chapa = Nothing
@@ -344,7 +344,7 @@ Function pesquisarPorFKBloco(idBloco As String) As Collection
         chapa.setTamanhos daoTamanho.pesquisarPorIdChapa(chapa.idSistema, False)
         
         ' Seta chapa na lista
-        listaChapas.add chapa
+        listaChapas.Add chapa
         
         ' Libera espaço na memoria
         Set tipoPolimento = Nothing
@@ -417,7 +417,7 @@ Function pesquisarPorListaIdsPedreira(listaIdsParaPesquisa As Collection) As Col
             chapa.setTamanhos daoTamanho.pesquisarPorIdChapa(chapa.idSistema, False)
             
             ' Adciona a chapa na lista
-            listaChapasAvulsas.add chapa
+            listaChapasAvulsas.Add chapa
             
             ' Libera espaço para da momeria
             Set chapa = Nothing
@@ -497,7 +497,7 @@ Function pesquisarPorListaIdsChapas(listaIdsParaPesquisa As Collection) As Colle
             chapa.setTamanhos daoTamanho.pesquisarPorIdChapa(chapa.idSistema, False)
             
             ' Adciona a chapa na lista
-            listaChapasAvulsas.add chapa
+            listaChapasAvulsas.Add chapa
             
             ' Libera espaço para da momeria
             Set chapa = Nothing
@@ -641,7 +641,7 @@ Function listarChapasFilter(nomeMaterial As String, numeroBlocoPedreira As Strin
         Next tamanho
         
         ' Adiciona na lista
-        listaChapas.add chapa
+        listaChapas.Add chapa
         
         ' Libera espaço para nova pesquisa se ouver
         Set tipoPolimento = Nothing
@@ -679,10 +679,10 @@ Function listarChapasFilter(nomeMaterial As String, numeroBlocoPedreira As Strin
                     ' Filtra a qtd estoque
                     If estoqueZero = "NÃO" Then
                         If tamanho.qtdEstoque > 0 Then
-                            filterlistaTamanhos.add tamanho
+                            filterlistaTamanhos.Add tamanho
                         End If
                     Else
-                        filterlistaTamanhos.add tamanho
+                        filterlistaTamanhos.Add tamanho
                     End If
                 End If
                 Set tamanho = Nothing
@@ -694,7 +694,7 @@ Function listarChapasFilter(nomeMaterial As String, numeroBlocoPedreira As Strin
                 chapa.setTamanhos filterlistaTamanhos
             End If
             ' Adiciona na lista
-            filterListaChapa.add chapa
+            filterListaChapa.Add chapa
             
             ' Libera espaço na memoria
             Set chapa = Nothing

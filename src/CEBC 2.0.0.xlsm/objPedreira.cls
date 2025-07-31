@@ -9,7 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As String
+Public id As Long
 Public nome As String
 
 ' Construtor para cadastro
@@ -18,7 +18,7 @@ Public Sub carregarPedreiraCadastro(nomePedreira As String)
 End Sub
 
 ' Construtor para manipulação
-Public Sub carregarPedreiraManipulacao(id As String, nomePedreira As String)
+Public Sub carregarPedreiraManipulacao(id As Long, nomePedreira As String)
     Me.id = id
     Me.nome = nomePedreira
 End Sub

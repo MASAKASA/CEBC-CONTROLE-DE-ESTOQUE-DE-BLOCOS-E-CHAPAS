@@ -127,7 +127,7 @@ Function pesquisarPorNome(nomeDestino As String) As objDestino
     
     ' String para consulta
     strSql = "SELECT * FROM Destinos" _
-        & " WHERE Nome_Destino = '" & nomeDestino & "';"
+        & " WHERE nome_destino = '" & nomeDestino & "';"
         
     'Abrindo conexão com banco
     Call conctarBanco
@@ -137,8 +137,8 @@ Function pesquisarPorNome(nomeDestino As String) As objDestino
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
     While Not rs.EOF
-        destino.id = rs.Fields("Id_Destino").Value
-        destino.nome = rs.Fields("Nome_Destino").Value
+        destino.id = rs.Fields("id_destino").Value
+        destino.nome = rs.Fields("nome_destino").Value
         
         rs.MoveNext
     Wend
@@ -180,7 +180,7 @@ Function listarDestinos() As Collection
         destino.nome = rs.Fields("Nome_Destino").Value
         
         ' Adiciona na lista
-        listaDestinos.add destino
+        listaDestinos.Add destino
         
         ' Libera espaço para nova pesquisa se ouver
         Set destino = Nothing

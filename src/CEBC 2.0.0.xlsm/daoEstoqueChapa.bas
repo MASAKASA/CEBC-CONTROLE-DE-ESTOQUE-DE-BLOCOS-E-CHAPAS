@@ -128,7 +128,7 @@ Function pesquisarPorNome(nomeEmpresa As String) As objEstoqueChapa
 
     ' String para consulta
     strSql = "SELECT * FROM Estoque_chapas" _
-        & " WHERE Nome_Empresa = '" & nomeEmpresa & "';"
+        & " WHERE nome_empresa = '" & nomeEmpresa & "';"
 
     'Abrindo conexão com banco
     Call conctarBanco
@@ -138,8 +138,8 @@ Function pesquisarPorNome(nomeEmpresa As String) As objEstoqueChapa
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
 
     While Not rs.EOF
-        estoque.id = rs.Fields("Id_Estoque").Value
-        estoque.nome = rs.Fields("Nome_Empresa").Value
+        estoque.id = rs.Fields("id_estoque").Value
+        estoque.nome = rs.Fields("nome_empresa").Value
 
         rs.MoveNext
     Wend
@@ -181,7 +181,7 @@ Function listarEstoqueChapas() As Collection
         estoque.nome = rs.Fields("Nome_Empresa").Value
 
         ' Adiciona na lista
-        listaEstoques.add estoque
+        listaEstoques.Add estoque
 
         ' Libera espaço para nova pesquisa se ouver
         Set estoque = Nothing

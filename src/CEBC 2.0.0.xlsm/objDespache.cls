@@ -9,26 +9,39 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As String
+Public id As Long
 Public dataDespache As String
-Public qtd As String
+Public despachado As String
+Public qtdChapas As Integer
 Public motorista As objMotorista
 Public destino As objDestino
-Public chapa As objChapa
-Public tamanho As objTamanho
+Public listaChapas As Collection
 
-' Construtor
-Public Sub carregarDespache(id As String, dataDespache As String, qtd As String, motorista As objMotorista, destino As objDestino, _
-                            chapa As objChapa, tamanho As objTamanho)
+' Construtor para cadastro
+Public Sub carregarDespacheCadastro(dataDespache As String, despachado As String, qtdChapas As Integer, _
+                                    motorista As objMotorista, destino As objDestino, listaChapas As Collection)
+
+    ' Atribuições
+    Me.dataDespache = dataDespache
+    Me.despachado = despachado
+    Me.qtdChapas = qtdChapas
+    Set Me.motorista = motorista
+    Set Me.destino = destino
+    Set Me.listaChapas = listaChapas
+End Sub
+
+' Construtor para manipulação
+Public Sub carregarDespacheManipulacao(id As Long, dataDespache As String, qtdChapas As Integer, _
+                                    motorista As objMotorista, destino As objDestino, listaChapas As Collection)
 
     ' Atribuições
     Me.id = id
     Me.dataDespache = dataDespache
-    Me.qtd = qtd
+    Me.despachado = despachado
+    Me.qtdChapas = qtdChapas
     Set Me.motorista = motorista
     Set Me.destino = destino
-    Set Me.chapa = chapa
-    Set Me.tamanho = tamanho
+    Set Me.listaChapas = listaChapas
 End Sub
 
 ' Gets e sets
@@ -48,20 +61,12 @@ Public Function setDestino(destino As objDestino)
     Set Me.destino = destino
 End Function
 
-Public Function getChapa() As objChapa
-    Set getChapa = Me.chapa
+Public Function getListaChapas() As Collection
+    Set getListaChapas = Me.listaChapas
 End Function
 
-Public Function setChapa(chapa As objChapa)
-    Set Me.chapa = chapa
-End Function
-
-Public Function getTamanho() As Collection
-    Set getTamanho = Me.tamanho
-End Function
-
-Public Function setTamanho(tamanho As objTamanho)
-    Set Me.tamanho = tamanho
+Public Function setListaChapas(listaChapas As Collection)
+    Set Me.listaChapas = listaChapas
 End Function
 
 

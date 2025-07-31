@@ -9,11 +9,11 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As String
+Public id As Long
 Public compremento As String
 Public altura As String
 Public qtdM2 As String
-Public qtdEstoque As String
+Public qtdEstoque As Integer
 Public valorPolimento As String
 Public espessura As String
 Public chapa As objChapa
@@ -23,7 +23,7 @@ Public estoque As objEstoqueChapa
 
 ' Construtor para cadastro
 Public Sub carregarTamanhoCadastro(compremento As String, altura As String, qtdM2 As String, _
-                            qtdEstoque As String, valorPolimento As String, espessura As String, _
+                            qtdEstoque As Integer, valorPolimento As String, espessura As String, _
                             tipoMaterial As objTipoMaterial, chapa As objChapa, polideira As objPolideira, _
                             estoque As objEstoqueChapa)
     
@@ -41,8 +41,8 @@ Public Sub carregarTamanhoCadastro(compremento As String, altura As String, qtdM
 End Sub
 
 ' Construtor para manupulação
-Public Sub carregarTamanhoManipulacao(id As String, compremento As String, altura As String, qtdM2 As String, _
-                            qtdEstoque As String, valorPolimento As String, espessura As String, _
+Public Sub carregarTamanhoManipulacao(id As Long, compremento As String, altura As String, qtdM2 As String, _
+                            qtdEstoque As Integer, valorPolimento As String, espessura As String, _
                             tipoMaterial As objTipoMaterial, chapa As objChapa, polideira As objPolideira, _
                             estoque As objEstoqueChapa)
     

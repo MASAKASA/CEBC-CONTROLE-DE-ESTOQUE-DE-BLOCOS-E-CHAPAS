@@ -182,7 +182,7 @@ Function listarTipoPolideiras() As Collection
         tipoPolimento.nome = rs.Fields("Nome_Polimento").Value
         
         ' Adiciona na lista
-        listaTiposPolimentos.add tipoPolimento
+        listaTiposPolimentos.Add tipoPolimento
         
         ' Libera espaço para nova pesquisa se ouver
         Set tipoPolimento = Nothing

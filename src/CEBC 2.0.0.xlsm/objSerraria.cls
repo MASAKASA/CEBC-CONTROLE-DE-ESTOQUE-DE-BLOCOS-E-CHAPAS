@@ -9,7 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public id As String
+Public id As Long
 Public nome As String
 
 ' Construtor para cadastro
@@ -18,7 +18,7 @@ Public Sub carregarSerrariaCadastro(nomeSerraria As String)
 End Sub
 
 ' Construtor para manipulação
-Public Sub carregarSerrariaManipulacao(id As String, nomeSerraria As String)
+Public Sub carregarSerrariaManipulacao(id As Long, nomeSerraria As String)
     Me.id = id
     Me.nome = nomeSerraria
 End Sub

@@ -44,6 +44,7 @@ Dim estoque As objEstoque
 Dim estoqueChapa As objEstoqueChapa
 Dim motorista As objMotorista
 Dim destino As objDestino
+Dim despache As objDespache
 
 ' Inicialização do formControle
 Private Sub UserForm_Initialize()
@@ -347,7 +348,7 @@ Private Sub btnLImgExportarEstoqueM3_MouseDown(ByVal Button As Integer, ByVal Sh
     
     ' Captura ids da lista
     For i = 0 To Me.ListEstoqueM3.ListCount - 1
-        idsParaPesquisa.add Me.ListEstoqueM3.list(i, 0)
+        idsParaPesquisa.Add Me.ListEstoqueM3.list(i, 0)
     Next i
     
     ' Pesquisa os ids
@@ -1508,7 +1509,7 @@ Private Sub btnLImgExportarEstoqueM2_MouseDown(ByVal Button As Integer, ByVal Sh
     
     ' Captura ids da lista
     For i = 0 To Me.ListEstoqueChapas.ListCount - 1
-        idsParaPesquisa.add Me.ListEstoqueChapas.list(i, 0)
+        idsParaPesquisa.Add Me.ListEstoqueChapas.list(i, 0)
     Next i
     
     ' Pesquisa os ids
@@ -1558,7 +1559,7 @@ Private Sub btnLTxtNovoAvulso_MouseDown(ByVal Button As Integer, ByVal Shift As 
         ' Confere se é um avulso ou importado
         If primeiroNome <> "BLOCO" Then
             ' Captura as chapa avulso/importado para pesquisa
-            idsChapaAvulso.add blocoLista.numeroBlocoPedreira
+            idsChapaAvulso.Add blocoLista.numeroBlocoPedreira
         End If
     Next i
     
@@ -1619,7 +1620,7 @@ Private Sub btnLTxtNovoChapa_MouseDown(ByVal Button As Integer, ByVal Shift As I
         ' Seta o ojeto
         Set chapaPesquisa = listaChapasPesquisa(i)
         ' Seta os polimentos já cadastrados
-        listaPolimentosJaCadastras.add chapaPesquisa.tipoPolimento.nome
+        listaPolimentosJaCadastras.Add chapaPesquisa.tipoPolimento.nome
     Next i
     
     ' Carrega só os tipos deferentes
@@ -2130,7 +2131,7 @@ Private Sub btnLTxtCadastrarChapaAvulso_MouseDown(ByVal Button As Integer, ByVal
         Set tamanhoChapaAvulso.estoque = estoqueChapa
         
         ' Adiciona na lista
-        listaTamanhoChapaAvulso.add tamanhoChapaAvulso
+        listaTamanhoChapaAvulso.Add tamanhoChapaAvulso
         
         ' Atribuições
         Set chapaAvulsa.tamanhos = listaTamanhoChapaAvulso
@@ -2173,7 +2174,7 @@ Private Sub btnLTxtCadastrarChapaAvulso_MouseDown(ByVal Button As Integer, ByVal
             ' Confere se é um avulso ou importado
             If primeiroNome <> "BLOCO" Then
                 ' Captura as chapa avulso/importado para pesquisa
-                idsChapaAvulso.add blocoLista.numeroBlocoPedreira
+                idsChapaAvulso.Add blocoLista.numeroBlocoPedreira
             End If
         Next i
         
@@ -2651,7 +2652,7 @@ Private Sub btnLTxtSalvarChapa_MouseDown(ByVal Button As Integer, ByVal Shift As
             custoTotal = custoTotal + CDbl(ListTamanhosChapas.list(i, 6))
         End If
         ' Seta tamanho
-        listaTamanhosAtualizados.add tamanho
+        listaTamanhosAtualizados.Add tamanho
         
         ' Libera memoria
         Set tamanho = Nothing
@@ -2890,7 +2891,7 @@ Private Sub btnLTxtTrocarEstoque_MouseDown(ByVal Button As Integer, ByVal Shift 
                 chapaTroca.tamanhos.Remove (i)
                 
                 tamanhoSerTrocada.setChapa chapaSerTrocada
-                chapaSerTrocada.tamanhos.add tamanhoSerTrocada
+                chapaSerTrocada.tamanhos.Add tamanhoSerTrocada
                 
                 ' Atualizações custo
                 For j = 1 To chapaTroca.tamanhos.Count
@@ -2937,7 +2938,7 @@ Private Sub btnLTxtTrocarEstoque_MouseDown(ByVal Button As Integer, ByVal Shift 
                 tamanhoNovo.setEstoque tamanhoSerTrocada.estoque
                 tamanhoNovo.setChapa chapaSerTrocada
                 
-                chapaSerTrocada.tamanhos.add tamanhoNovo
+                chapaSerTrocada.tamanhos.Add tamanhoNovo
                 
                 ' Atualizações custo
                 For j = 1 To chapaTroca.tamanhos.Count
@@ -3003,6 +3004,9 @@ End Sub
 Private Sub txtPesquisarMaterial_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     ' Pesquisa e carrega ListBox
     Call pesquisarChapaDespachePorDescricao
+    
+    ' Limpa campos de tamanho da chapa
+    Call limparCamposTamanho
 End Sub
 
 ' Campo txtPesquisarPorNumeroBloco de pesquisa de chapas tela despache
@@ -3015,6 +3019,9 @@ End Sub
 Private Sub txtPesquisarPorNumeroBloco_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     ' Pesquisa e carrega ListBox
     Call pesquisarChapaDespachePorNumeroBloco
+    
+    ' Limpa campos de tamanho da chapa
+    Call limparCamposTamanho
 End Sub
 
 ' Campo txtPesquisarDespache de pesquisa de chapas tela despache
@@ -3027,6 +3034,8 @@ End Sub
 Private Sub txtPesquisarDespache_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     ' Pesquisa e carrega ListBox
     Call pesquisarDespacheSalvo
+    ' Limpa campos de tamanho da chapa
+    Call limparCamposTamanho
 End Sub
 
 ' txtQuantidadeDespache tela despachar
@@ -3065,7 +3074,7 @@ Private Sub txtQuantidadeDespache_Change()
         ' Verifica a quantidade
         If txtQuantidadeDespache.Value = "0" Then
             ' Mensagem usuário
-            errorStyle.EntrarErrorStyleTextBox txtQuantidadeDespache, INFORMACAO_INVALIDA_MENSAGEM, INFORMACAO_INVALIDA_TITULO
+            errorStyle.EntrarErrorStyleTextBox txtQuantidadeDespache, SELECIONE_QTD_MENSAGEM, SELECIONE_QTD_TITULO
             Exit Sub
         End If
         ' Deixa na cor patrão
@@ -3078,6 +3087,26 @@ Private Sub txtQuantidadeDespache_Change()
         txtQtdm2Despache.Value = M_METODOS_GLOBAL.formatarComPontos(Format(M_METODOS_GLOBAL.calcularM2( _
             ListTamanhosChapaDespache.list(linha, 1), ListTamanhosChapaDespache.list(linha, 2), txtQuantidadeDespache.Value), "0.0000"))
     End If
+End Sub
+
+' Limpar campos de tamanho da tela despeche
+Private Sub limparCamposTamanho()
+    ' Limpa campos de material
+    txtNumeroBloco.Value = ""
+    txtPesquisarMaterial.Value = ""
+    txtPesquisarPorNumeroBloco.Value = ""
+    txtPesquisarDespache.Value = ""
+    txtMaterial.Value = ""
+    txtIdSistemaChapaDespache.Value = ""
+    txtQtdm2Despache.Value = "0,0000"
+    
+    ' Seta valor patrão para seleção das listas
+    ListDespachado.ListIndex = -1
+    ListEstoqueM2.ListIndex = -1
+    ListTamanhosChapaDespache.ListIndex = -1
+    ListTamanhosChapaDespache.Clear
+    txtQuantidedadeChapa.Value = "0"
+    txtQuantidadeDespache.Value = "0"
 End Sub
 
 ' Botão btnLImgCadastrarMotoristaDespache tela despache
@@ -3094,6 +3123,10 @@ End Sub
 
 ' Botão btnLTxtAdicionar tela despache
 Private Sub btnLTxtAdicionar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
+    
+    Dim qtdChapas As Integer
+    Dim totalChapas As Integer
+    
     ' Verifica se tem algum chapa selecionada
     If ListEstoqueM2.ListIndex = -1 Then ' Se não tiver dados
         ' Mensagem de retorno vazio
@@ -3101,6 +3134,15 @@ Private Sub btnLTxtAdicionar_MouseDown(ByVal Button As Integer, ByVal Shift As I
         ' Sai do metodo
         Exit Sub
     End If
+    
+    ' Verifica se tem estoque a chapa selecionada
+    If ListTamanhosChapaDespache.list(ListTamanhosChapaDespache.ListIndex, 0) < 1 Then
+        ' Mensagem de retorno vazio
+        errorStyle.Informativo SEM_ESTOQUE_MENSAGEM, SEM_ESTOQUE_TITULO
+        ' Sai do metodo
+        Exit Sub
+    End If
+    
     ' Verifica se tem algum tamanho selecionado
     If ListTamanhosChapaDespache.ListIndex = -1 Then ' Se não tiver dados
         ' Mensagem de retorno vazio
@@ -3134,7 +3176,7 @@ Private Sub btnLTxtAdicionar_MouseDown(ByVal Button As Integer, ByVal Shift As I
     ' Verifica se a data é valida
     If IsDate(txtDataDespacho.Value) = False Then
         ' Deixa visivel o erro com mensagens
-        errorStyle.EntrarErrorStyleTextBox txtDataDespacho, INFORMACAO_INVALIDA_MENSAGEM, INFORMACAO_INVALIDA_TITULO
+        errorStyle.EntrarErrorStyleTextBox txtDataDespacho, SELECIONE_DATA_MENSAGEM, SELECIONE_DATA_TITULO
         ' Para o fluxo do sistema para a correção
         Exit Sub
     End If
@@ -3144,13 +3186,13 @@ Private Sub btnLTxtAdicionar_MouseDown(ByVal Button As Integer, ByVal Shift As I
     ' Verifica a quantidade para despache
     If txtQuantidadeDespache.Value = "0" Then
         ' Deixa visivel o erro com mensagens
-        errorStyle.EntrarErrorStyleTextBox txtQuantidadeDespache, INFORMACAO_INVALIDA_MENSAGEM, INFORMACAO_INVALIDA_TITULO
+        errorStyle.EntrarErrorStyleTextBox txtQuantidadeDespache, SELECIONE_QTD_MENSAGEM, SELECIONE_QTD_TITULO
         ' Para o fluxo do sistema para a correção
         Exit Sub
     End If
     ' Deixa na cor patrão
     errorStyle.sairErrorStyleTextBox txtQuantidadeDespache
-    
+   
     ' NOME CABEÇALHO DESPACHE     | COD | DESCRIÇÃO | QTD   | M²
     ' Tamanho do cabeçalho left   | 7   | 118       | 346,5 | 399
     ' Tamanho do cabeçalho width  | 110 | 228       | 52    | 81
@@ -3166,7 +3208,16 @@ Private Sub btnLTxtAdicionar_MouseDown(ByVal Button As Integer, ByVal Shift As I
     ListDespachado.list(ListDespachado.ListCount - 1, 2) = txtQuantidadeDespache.Value
     ListDespachado.list(ListDespachado.ListCount - 1, 3) = txtQtdm2Despache.Value
     ListDespachado.list(ListDespachado.ListCount - 1, 4) = ListTamanhosChapaDespache.list( _
-                                ListTamanhosChapaDespache.ListIndex, 5)
+                                ListTamanhosChapaDespache.ListIndex, 5) ' Id tamanho
+    ListDespachado.list(ListDespachado.ListCount - 1, 5) = ListTamanhosChapaDespache.list( _
+                                ListTamanhosChapaDespache.ListIndex, 1) ' Comprimento
+    ListDespachado.list(ListDespachado.ListCount - 1, 6) = ListTamanhosChapaDespache.list( _
+                                ListTamanhosChapaDespache.ListIndex, 2) ' Altura
+    ListDespachado.list(ListDespachado.ListCount - 1, 7) = ListTamanhosChapaDespache.list( _
+                                ListTamanhosChapaDespache.ListIndex, 3) ' Espesura
+    ListDespachado.list(ListDespachado.ListCount - 1, 8) = ListTamanhosChapaDespache.list( _
+                                ListTamanhosChapaDespache.ListIndex, 6) ' Estoque
+    ListDespachado.list(ListDespachado.ListCount - 1, 9) = txtNumeroBloco.Value
                                 
     ' Atualiza a lista do estoque na memoria
     ListEstoqueM2.list(ListEstoqueM2.ListIndex, 2) = ListEstoqueM2.list( _
@@ -3174,20 +3225,14 @@ Private Sub btnLTxtAdicionar_MouseDown(ByVal Button As Integer, ByVal Shift As I
     ListEstoqueM2.list(ListEstoqueM2.ListIndex, 3) = Format(ListEstoqueM2.list( _
                 ListEstoqueM2.ListIndex, 3) - ListDespachado.list(ListDespachado.ListCount - 1, 3), "0.0000")
     
-    ' Limpa campos de material
-    txtPesquisarMaterial.Value = ""
-    txtPesquisarPorNumeroBloco.Value = ""
-    txtPesquisarDespache.Value = ""
-    txtMaterial.Value = ""
-    txtIdSistemaChapaDespache.Value = ""
-    txtQuantidedadeChapa.Value = "0"
-    txtQtdm2Despache.Value = "0,0000"
-    txtQuantidadeDespache.Value = "0"
-    ' Seta valor patrão para seleção das listas
-    ListDespachado.ListIndex = -1
-    ListEstoqueM2.ListIndex = -1
-    ListTamanhosChapaDespache.ListIndex = -1
-    ListTamanhosChapaDespache.Clear
+    qtdChapas = CInt(ListDespachado.list(ListDespachado.ListCount - 1, 2))
+    
+    totalChapas = CInt(lQtdChapasDespache.Caption) + qtdChapas
+    
+    lQtdChapasDespache.Caption = totalChapas
+    
+    ' Limpa campos de tamanho da chapa
+    Call limparCamposTamanho
     
     ' Seta focu
     txtPesquisarMaterial.SetFocus
@@ -3195,22 +3240,275 @@ End Sub
 
 ' Botão btnLTxtDespachar tela despache
 Private Sub btnLTxtDespachar_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    ' Chama Serviço
-    MsgBox "Chama Serviço despachar, tela despache"
+
+    Dim resposta As VbMsgBoxResult ' Variavel para confirmação impressão
+    Dim tamanhoChapa As Collection
+    Dim totalChapasDespachadas As Integer
+    Dim venda As String
+    Dim i As Integer
+    
+    ' Verificoes
+    If IsDate(txtDataDespacho.Value) = False Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtDataDespacho, SELECIONE_DATA_MENSAGEM, SELECIONE_DATA_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtDataDespacho
+    
+    ' Verifica se tem algum item na lista
+    If Me.ListDespachado.ListCount = -1 Then
+        ' Mensagem usuário
+        errorStyle.Informativo LIST_DESPACHE_SEM_DADOS_MENSAGEM, LIST_DESPACHE_SEM_DADOS_TITULO
+        Exit Sub
+    End If
+    
+    If obVenda.Value = False Then
+        ' Verifica o motorista
+        If cbMotorista.Value = "" Or cbMotorista.Value = " " Then
+            ' Deixa visivel o erro com mensagens
+            errorStyle.EntrarErrorStyleComboBox cbMotorista, SELECIONE_MOTORISTA_MENSAGEM, SELECIONE_MOTORISTA_TITULO
+            ' Para o fluxo do sistema para a correção
+            Exit Sub
+        End If
+        ' Deixa na cor patrão
+        errorStyle.sairErrorStyleComboBox cbMotorista
+        
+        ' Seta objeto
+        Set motorista = daoMotorista.pesquisarPorNome(cbMotorista.Value)
+        
+        ' Verifica o destino
+        If cbDestino.Value = "" Or cbDestino.Value = " " Then
+            ' Deixa visivel o erro com mensagens
+            errorStyle.EntrarErrorStyleComboBox cbDestino, SELECIONE_DESTINO_MENSAGEM, SELECIONE_DESTINO_TITULO
+            ' Para o fluxo do sistema para a correção
+            Exit Sub
+        End If
+        ' Deixa na cor patrão
+        errorStyle.sairErrorStyleComboBox cbDestino
+        
+        ' Seta objeto
+        Set destino = daoDestino.pesquisarPorNome(cbDestino.Value)
+    Else
+        ' Seta objeto de venda
+        Set motorista = daoMotorista.pesquisarPorNome("VENDA")
+        Set destino = daoDestino.pesquisarPorNome("VENDA")
+    End If
+    
+    ' Criacao dos objetos
+    Set despache = ObjectFactory.factoryDespache(despache)
+    Set listaObjeto = ObjectFactory.factoryLista(listaObjeto)
+    
+    
+    ' Coloca em lista as chapas para despache
+    For i = 0 To ListDespachado.ListCount - 1
+        
+        Set chapa = ObjectFactory.factoryChapa(chapa)
+        Set tamanho = ObjectFactory.factoryTamanho(tamanho)
+        Set tipoPolimento = ObjectFactory.factoryTipoPolimento(tipoPolimento)
+        Set tamanhoChapa = ObjectFactory.factoryLista(tamanhoChapa)
+        Set estoqueChapa = daoEstoqueChapa.pesquisarPorNome(ListDespachado.list(i, 8))
+        Set bloco = daoBloco.pesquisarPorId(ListDespachado.list(i, 9), True)
+        
+        chapa.idSistema = ListDespachado.list(i, 0)
+        chapa.nomeMaterial = ListDespachado.list(i, 1)
+        chapa.numeroBlocoPedreira = bloco.numeroBlocoPedreira
+        chapa.setBloco bloco
+        
+        tamanho.id = ListDespachado.list(i, 4)
+        tamanho.qtdEstoque = ListDespachado.list(i, 2)
+        tamanho.qtdM2 = ListDespachado.list(i, 3)
+        tamanho.compremento = ListDespachado.list(i, 5)
+        tamanho.altura = ListDespachado.list(i, 6)
+        tamanho.espessura = ListDespachado.list(i, 7)
+        tamanho.setEstoque estoqueChapa
+        
+        tamanhoChapa.Add tamanho
+        chapa.setTamanhos tamanhoChapa
+        
+        listaObjeto.Add chapa
+        
+        Set chapa = Nothing
+        Set tipoPolimento = Nothing
+        Set tamanho = Nothing
+        Set tamanhoChapa = Nothing
+        Set estoqueChapa = Nothing
+        Set bloco = Nothing
+    Next i
+    
+    totalChapasDespachadas = CInt(lQtdChapasDespache.Caption)
+    
+    despache.carregarDespacheCadastro txtDataDespacho.Value, "SIM", totalChapasDespachadas, motorista, destino, listaObjeto
+
+    ' Chama medoto para salvar no banco
+    Call DaoDespache.cadastrarEEditar(despache)
+    
+    ' Mensagem de confirmação para gerar pdf da carga
+    resposta = MsgBox(IMPRIMIR_CARREGO_MENSAGEM, vbQuestion + vbYesNo, IMPRIMIR_CARREGO_TITULO)
+    
+    
+    ' Verifica a confirmação do usário para poder cadastrar
+    If resposta = vbYes Then
+        ' Gera um PDf
+        Call ExportarArquivos.exportarCarregoPDF(despache)
+
+    End If
+    
+    ' MENSAGEM DE SUCESSO
+    
+    ' Mensagem usuário
+    errorStyle.Informativo SUCESSO_DESPACHE_MENSAGEM, SUCESSO_DESPACHE_TITULO
+    
+    ' Limpa os campos
+    Call limparCamposTelaDespache
+    
+    Set despache = Nothing
+    Set listaObjeto = Nothing
 End Sub
 
 ' Botão btnLTxtSalvarDespache tela despache
 Private Sub btnLTxtSalvarDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
-    ' Seta objetos
-    Set motorista = daoMotorista.pesquisarPorNome(cbMotorista.Value)
-    Set destino = daoDestino.pesquisarPorNome(cbDestino.Value)
     
+    Dim resposta As VbMsgBoxResult ' Variavel para confirmação impressão
+    Dim tamanhoChapa As Collection
+    Dim totalChapasDespachadas As Integer
+    Dim venda As String
+    Dim i As Integer
+    
+    ' Verificoes
+    If IsDate(txtDataDespacho.Value) = False Then
+        ' Deixa visivel o erro com mensagens
+        errorStyle.EntrarErrorStyleTextBox txtDataDespacho, SELECIONE_DATA_MENSAGEM, SELECIONE_DATA_TITULO
+        ' Para o fluxo do sistema para a correção
+        Exit Sub
+    End If
+    ' Deixa na cor patrão
+    errorStyle.sairErrorStyleTextBox txtDataDespacho
+    
+    ' Verifica se tem algum item na lista
+    If Me.ListDespachado.ListCount = -1 Then
+        ' Mensagem usuário
+        errorStyle.Informativo LIST_DESPACHE_SEM_DADOS_MENSAGEM, LIST_DESPACHE_SEM_DADOS_TITULO
+        Exit Sub
+    End If
+    
+    If obVenda.Value = False Then
+        ' Verifica o motorista
+        If cbMotorista.Value = "" Or cbMotorista.Value = " " Then
+            ' Deixa visivel o erro com mensagens
+            errorStyle.EntrarErrorStyleComboBox cbMotorista, SELECIONE_MOTORISTA_MENSAGEM, SELECIONE_MOTORISTA_TITULO
+            ' Para o fluxo do sistema para a correção
+            Exit Sub
+        End If
+        ' Deixa na cor patrão
+        errorStyle.sairErrorStyleComboBox cbMotorista
+        
+        ' Seta objeto
+        Set motorista = daoMotorista.pesquisarPorNome(cbMotorista.Value)
+        
+        ' Verifica o destino
+        If cbDestino.Value = "" Or cbDestino.Value = " " Then
+            ' Deixa visivel o erro com mensagens
+            errorStyle.EntrarErrorStyleComboBox cbDestino, SELECIONE_DESTINO_MENSAGEM, SELECIONE_DESTINO_TITULO
+            ' Para o fluxo do sistema para a correção
+            Exit Sub
+        End If
+        ' Deixa na cor patrão
+        errorStyle.sairErrorStyleComboBox cbDestino
+        
+        ' Seta objeto
+        Set destino = daoDestino.pesquisarPorNome(cbDestino.Value)
+    Else
+        ' Seta objeto de venda
+        Set motorista = daoMotorista.pesquisarPorNome("VENDA")
+        Set destino = daoDestino.pesquisarPorNome("VENDA")
+    End If
+    
+    ' Criacao dos objetos
+    Set despache = ObjectFactory.factoryDespache(despache)
+    Set listaObjeto = ObjectFactory.factoryLista(listaObjeto)
+    
+    
+    ' Coloca em lista as chapas para despache
+    For i = 0 To ListDespachado.ListCount - 1
+        
+        Set chapa = ObjectFactory.factoryChapa(chapa)
+        Set tamanho = ObjectFactory.factoryTamanho(tamanho)
+        Set tipoPolimento = ObjectFactory.factoryTipoPolimento(tipoPolimento)
+        Set tamanhoChapa = ObjectFactory.factoryLista(tamanhoChapa)
+        Set estoqueChapa = daoEstoqueChapa.pesquisarPorNome(ListDespachado.list(i, 8))
+        Set bloco = daoBloco.pesquisarPorId(ListDespachado.list(i, 9), True)
+        
+        chapa.idSistema = ListDespachado.list(i, 0)
+        chapa.nomeMaterial = ListDespachado.list(i, 1)
+        chapa.numeroBlocoPedreira = bloco.numeroBlocoPedreira
+        chapa.setBloco bloco
+        
+        tamanho.id = ListDespachado.list(i, 4)
+        tamanho.qtdEstoque = ListDespachado.list(i, 2)
+        tamanho.qtdM2 = ListDespachado.list(i, 3)
+        tamanho.compremento = ListDespachado.list(i, 5)
+        tamanho.altura = ListDespachado.list(i, 6)
+        tamanho.espessura = ListDespachado.list(i, 7)
+        tamanho.setEstoque estoqueChapa
+        
+        tamanhoChapa.Add tamanho
+        chapa.setTamanhos tamanhoChapa
+        
+        listaObjeto.Add chapa
+        
+        Set chapa = Nothing
+        Set tipoPolimento = Nothing
+        Set tamanho = Nothing
+        Set tamanhoChapa = Nothing
+        Set estoqueChapa = Nothing
+        Set bloco = Nothing
+    Next i
+    
+    totalChapasDespachadas = CInt(lQtdChapasDespache.Caption)
+    
+    despache.carregarDespacheCadastro txtDataDespacho.Value, "NÃO", totalChapasDespachadas, motorista, destino, listaObjeto
+
+    ' Chama medoto para salvar no banco
+    Call DaoDespache.cadastrarEEditar(despache)
+    
+    ' Mensagem de confirmação para gerar pdf da carga
+    resposta = MsgBox(IMPRIMIR_CARREGO_MENSAGEM, vbQuestion + vbYesNo, IMPRIMIR_CARREGO_TITULO)
+    
+    
+    ' Verifica a confirmação do usário para poder cadastrar
+    If resposta = vbYes Then
+        ' Gera um PDf
+        Call ExportarArquivos.exportarCarregoPDF(despache)
+
+    End If
+    
+    ' MENSAGEM DE SUCESSO
+    
+    ' Mensagem usuário
+    errorStyle.Informativo SUCESSO_DESPACHE_MENSAGEM, SUCESSO_DESPACHE_TITULO
+    
+    ' Limpa os campos
+    Call limparCamposTelaDespache
+    
+    Set despache = Nothing
+    Set listaObjeto = Nothing
 End Sub
 
 ' Botão btnLTxtTirarListaDespache tela despache
 Private Sub btnLTxtTirarListaDespache_MouseDown(ByVal Button As Integer, ByVal Shift As Integer, ByVal X As Single, ByVal Y As Single)
     ' Variaveis do metodo
     Dim linha As Double
+    Dim totalChapas As Integer
+    Dim i As Integer
+    Dim qtdDespache As Integer
+    Dim qtdEstoque As Integer
+    Dim totalQtd As Integer
+    Dim qtdM2Despache As Double
+    Dim qtdM2Estoque As Double
+    Dim totalM2 As Double
+    Dim totalM2String As String
     
     ' Verifica se tem algum item selecionado
     If Me.ListDespachado.ListIndex = -1 Then
@@ -3222,6 +3520,34 @@ Private Sub btnLTxtTirarListaDespache_MouseDown(ByVal Button As Integer, ByVal S
     ' Captura a linha clicada
     linha = ListDespachado.ListIndex
     
+    ' Analisa se tem item na lista de despache
+    If ListEstoqueM2.ListCount > 0 Then
+        ' Percorre a lista
+        For i = 0 To ListEstoqueM2.ListCount - 1
+            ' Compara se já tem o material
+            If ListEstoqueM2.list(i, 0) = ListDespachado.list(ListDespachado.ListIndex, 0) Then
+                ' Atualiza quantidade na lista
+                qtdDespache = CInt(ListDespachado.list(ListDespachado.ListIndex, 2))
+                qtdEstoque = CInt(ListEstoqueM2.list(i, 2))
+                totalM2 = qtdDespache + qtdEstoque
+                
+                ListEstoqueM2.list(i, 2) = totalM2
+                
+                ' Atualiza m² na lista
+                qtdM2Despache = CDbl(ListDespachado.list(ListDespachado.ListIndex, 3))
+                qtdM2Estoque = CDbl(ListEstoqueM2.list(i, 3))
+                totalM2 = qtdM2Despache + qtdM2Estoque
+                totalM2String = CStr(totalM2)
+                
+                ListEstoqueM2.list(i, 3) = Format(totalM2String, "0.0000")
+
+                ' Atualiza label com total de chapas a serem carregadas
+                totalChapas = CInt(lQtdChapasDespache.Caption) - qtdDespache
+                
+                lQtdChapasDespache.Caption = totalChapas
+            End If
+        Next i
+    End If
     ' Remove o item selecionado
     ListDespachado.RemoveItem linha
 End Sub
@@ -3332,6 +3658,8 @@ End Sub
 Private Sub ListTamanhosChapaDespache_Click()
     ' Variaveis do metodo
     Dim linha As Integer
+    Dim qtdEstoque As Integer
+    Dim qtdSaida As Integer
     
     ' Captura a linha selecionada
     linha = ListTamanhosChapaDespache.ListIndex
@@ -3341,7 +3669,19 @@ Private Sub ListTamanhosChapaDespache_Click()
         ' Verifica a quantidade
         If txtQuantidadeDespache.Value = "0" Then
             ' Mensagem usuário
-            errorStyle.EntrarErrorStyleTextBox txtQuantidadeDespache, INFORMACAO_INVALIDA_MENSAGEM, INFORMACAO_INVALIDA_TITULO
+            errorStyle.EntrarErrorStyleTextBox txtQuantidadeDespache, SELECIONE_QTD_MENSAGEM, SELECIONE_QTD_TITULO
+            Exit Sub
+        End If
+        ' Deixa na cor patrão
+        errorStyle.sairErrorStyleTextBox txtQuantidadeDespache
+        
+        qtdEstoque = CInt(ListTamanhosChapaDespache.list(linha, 0))
+        qtdSaida = CInt(txtQuantidadeDespache.Value)
+        
+        ' Verifica o estoque
+        If qtdSaida > qtdEstoque Then
+            ' Mensagem usuário
+            errorStyle.EntrarErrorStyleTextBox txtQuantidadeDespache, SEM_ESTOQUE_MENSAGEM, SEM_ESTOQUE_TITULO
             Exit Sub
         End If
         ' Deixa na cor patrão
@@ -3364,22 +3704,28 @@ Private Sub ListEstoqueM2_Click()
     Dim i As Integer
     ' Captura linha selecionada
     linha = ListEstoqueM2.ListIndex
-    ' Seta linha n label
-    lLinhaListEstoque.Caption = linha
+
     ' Pesquisa pela chapa
     Set chapa = daoChapa.pesquisarPorId(ListEstoqueM2.list(linha, 0))
+    
     ' Soma total disponivel no estoque
     For i = 1 To chapa.tamanhos.Count
         Set tamanho = chapa.tamanhos.Item(i)
         ' Soma
         estoqueDespache = estoqueDespache + CInt(tamanho.qtdEstoque)
     Next i
+    
     ' Seta valores
     txtMaterial.Value = ListEstoqueM2.list(linha, 1)
     txtIdSistemaChapaDespache.Value = ListEstoqueM2.list(linha, 0)
-    txtQuantidedadeChapa = estoqueDespache
+    txtQuantidedadeChapa.Value = estoqueDespache
+    txtNumeroBloco.Value = ListEstoqueM2.list(linha, 4)
+    
     ' Seta tamanhos da chapa pesquisada
     Call carregarTamanhosChapasTelaDespache(ListTamanhosChapaDespache, chapa.tamanhos)
+    
+    Set chapa = Nothing
+    
     ' Seta foco para ser adicionada a quantiidade
     txtQuantidadeDespache.SetFocus
 End Sub
@@ -3744,6 +4090,8 @@ End Sub
 ' Limpa os campos da tela despache
 Private Sub limparCamposTelaDespache()
     ' Limpa os campos
+    lQtdChapasDespache.Caption = "0"
+    txtNumeroBloco.Value = ""
     txtPesquisarMaterial.Value = ""
     txtPesquisarPorNumeroBloco.Value = ""
     txtPesquisarDespache.Value = ""
@@ -3754,6 +4102,8 @@ Private Sub limparCamposTelaDespache()
     txtQuantidadeDespache.Value = "0"
     ListDespachado.Clear
     ListEstoqueM2.Clear
+    cbMotorista.Clear
+    cbDestino.Clear
     ListTamanhosChapaDespache.Clear
 End Sub
 
@@ -4352,7 +4702,7 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
     Dim qtdEstoque As Integer
     Dim mediaComp As Double
     Dim mediaAlt As Double
-    Dim totalm2 As Double
+    Dim totalM2 As Double
     Dim valorPolimento As String
     Dim esp As String
     
@@ -4395,7 +4745,7 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
                     qtdEstoque = qtdEstoque + CInt(tamanho.qtdEstoque)
                     mediaComp = mediaComp + CDbl(tamanho.compremento)
                     mediaAlt = mediaAlt + CDbl(tamanho.altura)
-                    totalm2 = totalm2 + CDbl(tamanho.qtdM2)
+                    totalM2 = totalM2 + CDbl(tamanho.qtdM2)
                     valorPolimento = tamanho.valorPolimento
                     esp = tamanho.espessura
                     
@@ -4419,7 +4769,7 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
                                         M_METODOS_GLOBAL.formatarComPontos(Format(mediaAlt, "0.0000"))
                                         
                 ListBox.list(ListBox.ListCount - 1, 5) = _
-                                        M_METODOS_GLOBAL.formatarComPontos(Format(totalm2, "0.0000"))
+                                        M_METODOS_GLOBAL.formatarComPontos(Format(totalM2, "0.0000"))
                 ListBox.list(ListBox.ListCount - 1, 6) = objetoChapa.tipoPolimento.nome
                 ListBox.list(ListBox.ListCount - 1, 7) = esp
                 ListBox.list(ListBox.ListCount - 1, 8) = _
@@ -4431,7 +4781,7 @@ Private Sub carregarList(ListBox As MSForms.ListBox, listaCollection As Collecti
                 qtdEstoque = 0
                 mediaComp = 0
                 mediaAlt = 0
-                totalm2 = 0
+                totalM2 = 0
                 valorPolimento = ""
                 esp = "02"
                 
@@ -4614,6 +4964,7 @@ Private Sub carregarListsTelaDespache(ListBox As MSForms.ListBox, listaColletion
         ListBox.list(ListBox.ListCount - 1, 1) = chapa.nomeMaterial
         ListBox.list(ListBox.ListCount - 1, 2) = qtd
         ListBox.list(ListBox.ListCount - 1, 3) = Format(m2, "0.0000")
+        ListBox.list(ListBox.ListCount - 1, 4) = chapa.bloco.idSistema
         
         ' Analisa se tem item na lista de despache
         If ListDespachado.ListCount > 0 Then
@@ -4642,6 +4993,7 @@ End Sub
 Private Sub carregarTamanhosChapasTelaDespache(ListBox As MSForms.ListBox, listaColletion As Collection)
     ' Variaveis do metodo
     Dim i As Integer
+    Dim j As Integer
     
     ' Limpar a ListBox
     ListBox.Clear
@@ -4688,7 +5040,21 @@ Private Sub carregarTamanhosChapasTelaDespache(ListBox As MSForms.ListBox, lista
                 ListBox.list(ListBox.ListCount - 1, 4) = "ST"
         End Select
         ListBox.list(ListBox.ListCount - 1, 5) = tamanho.id
+        ListBox.list(ListBox.ListCount - 1, 6) = tamanho.estoque.nome
         
+        ' Analisa se tem item na lista de despache
+        If ListDespachado.ListCount > 0 Then
+            ' Percorre a lista
+            For j = 0 To ListDespachado.ListCount - 1
+                ' Compara se já tem o material
+                If ListDespachado.list(j, 4) = ListBox.list(ListBox.ListCount - 1, 5) Then
+                    ' Atualiza quantidade na lista
+                    ListBox.list(i - 1, 0) = ListBox.list(i - 1, 0) - ListDespachado.list(j, 2)
+'                    ' Atualiza m² na lista
+'                    ListBox.list(i - 1, 3) = Format(ListBox.list(i - 1, 3) - ListDespachado.list(j, 3), "0.0000")
+                End If
+            Next j
+        End If
         ' Libera espaço na memoria
         Set tamanho = Nothing
     Next i

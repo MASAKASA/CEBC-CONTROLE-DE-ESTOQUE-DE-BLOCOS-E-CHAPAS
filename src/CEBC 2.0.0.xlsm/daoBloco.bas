@@ -579,7 +579,7 @@ Function pesquisarPorIdsVariados(idsParaPesquisa As Collection) As Collection
             bloco.setEstoque retornarObjeto(estoque, sqlSelectPesquisarPorId, "Id_Estoque", "Empresa")
             
             ' Adiciona na lista
-            listaBlocos.add bloco
+            listaBlocos.Add bloco
             
             ' Libera espaço da memoria
             Set bloco = Nothing
@@ -886,7 +886,7 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
         bloco.setEstoque retornarObjeto(estoque, sqlSelectPesquisarPorId, "Id_Estoque", "Empresa")
     
         ' Adiciona na lista
-        listaBlocos.add bloco
+        listaBlocos.Add bloco
         
         ' Libera espaço para nova pesquisa se ouver
         Set bloco = Nothing

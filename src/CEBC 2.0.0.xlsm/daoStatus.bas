@@ -181,7 +181,7 @@ Function listarStatus() As Collection
         status.nome = rs.Fields("Nome_Status").Value
         
         ' Adiciona na lista
-        listaStatus.add status
+        listaStatus.Add status
         
         ' Libera espaço para nova pesquisa se ouver
         Set status = Nothing

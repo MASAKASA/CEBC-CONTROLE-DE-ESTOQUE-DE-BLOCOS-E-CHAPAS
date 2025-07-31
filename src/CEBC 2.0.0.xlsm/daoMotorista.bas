@@ -128,7 +128,7 @@ Function pesquisarPorNome(nomeMotorista) As objMotorista
     
     ' String para consulta
     strSql = "SELECT * FROM Motoristas" _
-        & " WHERE Nome_Pedreira = '" & nomeMotorista & "';"
+        & " WHERE nome_motorista = '" & nomeMotorista & "';"
         
     'Abrindo conexão com banco
     Call conctarBanco
@@ -138,8 +138,8 @@ Function pesquisarPorNome(nomeMotorista) As objMotorista
     rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
     
     While Not rs.EOF
-        motorista.id = rs.Fields("Id_Motorista").Value
-        motorista.nome = rs.Fields("Nome_Pedreira").Value
+        motorista.id = rs.Fields("id_motorista").Value
+        motorista.nome = rs.Fields("nome_motorista").Value
         
         rs.MoveNext
     Wend
@@ -181,7 +181,7 @@ Function listarMotoristas() As Collection
         motorista.nome = rs.Fields("Nome_Motorista").Value
         
         ' Adiciona na lista
-        listaMotoristas.add motorista
+        listaMotoristas.Add motorista
         
         ' Libera espaço para nova pesquisa se ouver
         Set motorista = Nothing

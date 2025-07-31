@@ -3,10 +3,23 @@ Option Explicit
 
 ' Variaveis globais para os erros
 ' TELA DESPACHE
+Global SUCESSO_DESPACHE_MENSAGEM As String
+Global SUCESSO_DESPACHE_TITULO As String
+Global IMPRIMIR_CARREGO_MENSAGEM As String
+Global IMPRIMIR_CARREGO_TITULO As String
+Global SEM_ESTOQUE_MENSAGEM As String
+Global SEM_ESTOQUE_TITULO As String
+Global LIST_DESPACHE_SEM_DADOS_MENSAGEM As String
+Global LIST_DESPACHE_SEM_DADOS_TITULO As String
+Global SELECIONE_QTD_MENSAGEM As String
+Global SELECIONE_QTD_TITULO As String
+Global SELECIONE_DATA_MENSAGEM As String
+Global SELECIONE_DATA_TITULO As String
 Global SELECIONE_DESTINO_MENSAGEM As String
 Global SELECIONE_DESTINO_TITULO As String
 Global SELECIONE_MOTORISTA_MENSAGEM As String
 Global SELECIONE_MOTORISTA_TITULO As String
+
 ' TELA CHAPA
 Global INFORMACAO_INVALIDA_MENSAGEM As String
 Global INFORMACAO_INVALIDA_TITULO As String
@@ -90,6 +103,18 @@ Global ADICIONE_STATUS_TITULO As String
 Public Sub carregarTraducaoErros()
     ' Mensagem para usuário
     ' TELA DESPACHE
+    SUCESSO_DESPACHE_MENSAGEM = "Alteração feito com sucesso!"
+    SUCESSO_DESPACHE_TITULO = "Despache de chapas"
+    IMPRIMIR_CARREGO_MENSAGEM = "Deseja gerar PDF dos materiais da carga"
+    IMPRIMIR_CARREGO_TITULO = "Atenção - Confirmação"
+    SEM_ESTOQUE_MENSAGEM = "Não tem estoque suficiente para esse tamanho!"
+    SEM_ESTOQUE_TITULO = "Sem estoque"
+    LIST_DESPACHE_SEM_DADOS_MENSAGEM = "Selecione as chapas para seres despachadas"
+    LIST_DESPACHE_SEM_DADOS_TITULO = "Lista vazia"
+    SELECIONE_QTD_MENSAGEM = "Quantidade inválida"
+    SELECIONE_QTD_TITULO = "Digite um valor para ser despachado"
+    SELECIONE_DATA_MENSAGEM = "Digite uma data valida!"
+    SELECIONE_DATA_TITULO = "Data inválida"
     SELECIONE_DESTINO_MENSAGEM = "Selecione um destino!"
     SELECIONE_DESTINO_TITULO = "Sem destino"
     SELECIONE_MOTORISTA_MENSAGEM = "Selecione um motorista!"
@@ -163,7 +188,7 @@ Public Sub carregarTraducaoErros()
     SELECIONE_TEM_MENSAGEM = "Selecione um item da lista!"
     SELECIONE_TEM_TITULO = "Nada selecioando"
     EXPORTADO_SUCESSO_MENSAGEM = "Dados exportados para PDF com sucesso!"
-    EXPORTADO_SUCESSO_TITULO = "Sucesso na esportação"
+    EXPORTADO_SUCESSO_TITULO = "Sucesso na exportação"
     LIST_SEM_DADOS_MENSAGEM = "Faça primeiro uma pesquisa para poder exportar!"
     LIST_SEM_DADOS_TITULO = "Lista sem dados"
     ARQUIVO_SEM_NOME_MENSAGEM = "Digite um nome para o arquivo!"
