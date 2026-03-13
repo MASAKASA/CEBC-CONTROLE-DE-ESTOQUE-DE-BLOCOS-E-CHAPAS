@@ -11,14 +11,17 @@ Option Explicit
 
 Public id As Long
 Public nome As String
+Public ativo As String
 
 ' Construtor para cadastro
-Public Sub carregarDestinoCadastro(nome As String)
+Public Sub carregarDestinoCadastro(nome As String, ativo As String)
     Me.nome = nome
+    Me.ativo = ativo
 End Sub
 
 ' Construtor para manipulação
-Public Sub carregarDestinoManipulacao(id As Long, nome As String)
+Public Sub carregarDestinoManipulacao(id As Long, nome As String, ativo As String)
     Me.id = id
     Me.nome = nome
+    Me.ativo = ativo
 End Sub

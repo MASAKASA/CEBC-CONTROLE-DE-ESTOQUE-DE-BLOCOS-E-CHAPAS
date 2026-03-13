@@ -375,7 +375,8 @@ Function pesquisarPorId(id As Variant, conexaoFechar As Boolean) As objBloco
         ' String para consulta
         sqlSelectPesquisarPorId = "SELECT * FROM Pedreiras WHERE Id_Pedreira = " & fkObject & ";"
         ' Setando Objeto
-        bloco.setPedreira retornarObjeto(pedreira, sqlSelectPesquisarPorId, "Id_Pedreira", "Nome_Pedreira")
+        bloco.setPedreira retornarObjeto(pedreira, sqlSelectPesquisarPorId, _
+                                "Id_Pedreira", "Nome_Pedreira", "ativo")
         
         ' fk para consulta
         ' Só pesquisa se existir objeto
@@ -387,7 +388,8 @@ Function pesquisarPorId(id As Variant, conexaoFechar As Boolean) As objBloco
             ' String para consulta
             sqlSelectPesquisarPorId = "SELECT * FROM Serrarias WHERE Id_Serraria = " & fkObject & ";"
             ' Setando Objeto
-            bloco.setSerraria retornarObjeto(serraria, sqlSelectPesquisarPorId, "Id_Serraria", "Nome_Serraria")
+            bloco.setSerraria retornarObjeto(serraria, sqlSelectPesquisarPorId, _
+                                "Id_Serraria", "Nome_Serraria", "ativo")
         End If
         
         ' fk para consulta
@@ -399,7 +401,8 @@ Function pesquisarPorId(id As Variant, conexaoFechar As Boolean) As objBloco
             ' String para consulta
             sqlSelectPesquisarPorId = "SELECT * FROM Polideiras WHERE Id_Polidoria = " & fkObject & ";"
             ' Setando Objeto
-            bloco.setPolideira retornarObjeto(polideira, sqlSelectPesquisarPorId, "Id_Polidoria", "Nome_Polidoria")
+            bloco.setPolideira retornarObjeto(polideira, sqlSelectPesquisarPorId, _
+                                "Id_Polidoria", "Nome_Polidoria", "ativo")
         End If
         
         ' fk para consulta
@@ -407,21 +410,24 @@ Function pesquisarPorId(id As Variant, conexaoFechar As Boolean) As objBloco
         ' String para consulta
         sqlSelectPesquisarPorId = "SELECT * FROM Status WHERE Id_Status = " & fkObject & ";"
         ' Setando Objeto
-        bloco.setStatus retornarObjeto(status, sqlSelectPesquisarPorId, "Id_Status", "Nome_Status")
+        bloco.setStatus retornarObjeto(status, sqlSelectPesquisarPorId, _
+                                "Id_Status", "Nome_Status", "ativo")
     
         ' fk para consulta
         fkObject = rsBloco.Fields("Fk_Tipo_Material").Value
         ' String para consulta
         sqlSelectPesquisarPorId = "SELECT * FROM Tipo_Material WHERE Id_Tipo_Material = " & fkObject & ";"
         ' Setando Objeto
-        bloco.setTipoMaterial retornarObjeto(tipoMaterial, sqlSelectPesquisarPorId, "Id_Tipo_Material", "Nome_Tipo_Material")
+        bloco.setTipoMaterial retornarObjeto(tipoMaterial, sqlSelectPesquisarPorId, _
+                                "Id_Tipo_Material", "Nome_Tipo_Material", "ativo")
         
         ' fk para consulta
         fkObject = rsBloco.Fields("Fk_Estoque").Value
         ' String para consulta
-        sqlSelectPesquisarPorId = "SELECT * FROM Estoque_blocos WHERE Id_Estoque = " & fkObject & ";"
+        sqlSelectPesquisarPorId = "SELECT * FROM Estoques WHERE Id_Estoque = " & fkObject & ";"
         ' Setando Objeto
-        bloco.setEstoque retornarObjeto(estoque, sqlSelectPesquisarPorId, "Id_Estoque", "Empresa")
+        bloco.setEstoque retornarObjeto(estoque, sqlSelectPesquisarPorId, _
+                                "Id_Estoque", "nome_empresa", "ativo")
         
         rsBloco.MoveNext
     Wend
@@ -530,7 +536,8 @@ Function pesquisarPorIdsVariados(idsParaPesquisa As Collection) As Collection
             ' String para consulta
             sqlSelectPesquisarPorId = "SELECT * FROM Pedreiras WHERE Id_Pedreira = " & fkObject & ";"
             ' Setando Objeto
-            bloco.setPedreira retornarObjeto(pedreira, sqlSelectPesquisarPorId, "Id_Pedreira", "Nome_Pedreira")
+            bloco.setPedreira retornarObjeto(pedreira, sqlSelectPesquisarPorId, _
+                                    "Id_Pedreira", "Nome_Pedreira", "ativo")
             
             ' fk para consulta
             ' Só pesquisa se existir objeto
@@ -542,7 +549,8 @@ Function pesquisarPorIdsVariados(idsParaPesquisa As Collection) As Collection
                 ' String para consulta
                 sqlSelectPesquisarPorId = "SELECT * FROM Serrarias WHERE Id_Serraria = " & fkObject & ";"
                 ' Setando Objeto
-                bloco.setSerraria retornarObjeto(serraria, sqlSelectPesquisarPorId, "Id_Serraria", "Nome_Serraria")
+                bloco.setSerraria retornarObjeto(serraria, sqlSelectPesquisarPorId, _
+                                    "Id_Serraria", "Nome_Serraria", "ativo")
             End If
             
             ' fk para consulta
@@ -554,7 +562,8 @@ Function pesquisarPorIdsVariados(idsParaPesquisa As Collection) As Collection
                 ' String para consulta
                 sqlSelectPesquisarPorId = "SELECT * FROM Polideiras WHERE Id_Polidoria = " & fkObject & ";"
                 ' Setando Objeto
-                bloco.setPolideira retornarObjeto(polideira, sqlSelectPesquisarPorId, "Id_Polidoria", "Nome_Polidoria")
+                bloco.setPolideira retornarObjeto(polideira, sqlSelectPesquisarPorId, _
+                                    "Id_Polidoria", "Nome_Polidoria", "ativo")
             End If
             
             ' fk para consulta
@@ -562,21 +571,24 @@ Function pesquisarPorIdsVariados(idsParaPesquisa As Collection) As Collection
             ' String para consulta
             sqlSelectPesquisarPorId = "SELECT * FROM Status WHERE Id_Status = " & fkObject & ";"
             ' Setando Objeto
-            bloco.setStatus retornarObjeto(status, sqlSelectPesquisarPorId, "Id_Status", "Nome_Status")
+            bloco.setStatus retornarObjeto(status, sqlSelectPesquisarPorId, _
+                                    "Id_Status", "Nome_Status", "ativo")
         
             ' fk para consulta
             fkObject = rsBloco.Fields("Fk_Tipo_Material").Value
             ' String para consulta
             sqlSelectPesquisarPorId = "SELECT * FROM Tipo_Material WHERE Id_Tipo_Material = " & fkObject & ";"
             ' Setando Objeto
-            bloco.setTipoMaterial retornarObjeto(tipoMaterial, sqlSelectPesquisarPorId, "Id_Tipo_Material", "Nome_Tipo_Material")
+            bloco.setTipoMaterial retornarObjeto(tipoMaterial, sqlSelectPesquisarPorId, _
+                                    "Id_Tipo_Material", "Nome_Tipo_Material", "ativo")
             
             ' fk para consulta
             fkObject = rsBloco.Fields("Fk_Estoque").Value
             ' String para consulta
-            sqlSelectPesquisarPorId = "SELECT * FROM Estoque_blocos WHERE Id_Estoque = " & fkObject & ";"
+            sqlSelectPesquisarPorId = "SELECT * FROM Estoques WHERE Id_Estoque = " & fkObject & ";"
             ' Setando Objeto
-            bloco.setEstoque retornarObjeto(estoque, sqlSelectPesquisarPorId, "Id_Estoque", "Empresa")
+            bloco.setEstoque retornarObjeto(estoque, sqlSelectPesquisarPorId, _
+                                    "Id_Estoque", "nome_empresa", "ativo")
             
             ' Adiciona na lista
             listaBlocos.Add bloco
@@ -616,7 +628,7 @@ End Function
 Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoPedreira As String, descricaoBloco As String, _
                 pedreiraBloco As String, serrariaBloco As String, temNota As String, statusPedreira As String, _
                 statusSerraria As String, statusChapasBrutas As String, statusEmProcesso As String, statusEstoque As String, _
-                statusFechado As String) As Collection
+                statusFechado As String, nomeEstoque As String) As Collection
                 
     ' String para consultas
     Dim sqlSelectPesquisarPorId As String ' String para consultas auxiliar
@@ -631,6 +643,7 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
     Dim idPedreira As String
     Dim idSerraria As String
     Dim idStatus As String
+    Dim idEstoque As String
     Dim i As Long
     
     ' Formata a data
@@ -677,6 +690,15 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
             strWhere = strWhere & " AND "
         End If
         strWhere = strWhere & "Fk_Serraria = " & idSerraria
+    End If
+    
+    If nomeEstoque <> "" Then
+        idEstoque = retornarIdObjeto( _
+                        "SELECT * FROM Estoques WHERE nome_empresa = '" & nomeEstoque & "';", "Id_Estoque")
+        If strWhere <> "" Then
+            strWhere = strWhere & " AND "
+        End If
+        strWhere = strWhere & "Id_Estoque = " & idEstoque
     End If
     
     If temNota <> "" Then
@@ -837,7 +859,8 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
         ' String para consulta
         sqlSelectPesquisarPorId = "SELECT * FROM Pedreiras WHERE Id_Pedreira = " & fkObject & ";"
         ' Setando Objeto
-        bloco.setPedreira retornarObjeto(pedreira, sqlSelectPesquisarPorId, "Id_Pedreira", "Nome_Pedreira")
+        bloco.setPedreira retornarObjeto(pedreira, sqlSelectPesquisarPorId, _
+                                "Id_Pedreira", "Nome_Pedreira", "ativo")
         
         ' fk para consulta
         ' Só pesquisa se existir objeto
@@ -849,7 +872,8 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
             ' String para consulta
             sqlSelectPesquisarPorId = "SELECT * FROM Serrarias WHERE Id_Serraria = " & fkObject & ";"
             ' Setando Objeto
-            bloco.setSerraria retornarObjeto(serraria, sqlSelectPesquisarPorId, "Id_Serraria", "Nome_Serraria")
+            bloco.setSerraria retornarObjeto(serraria, sqlSelectPesquisarPorId, _
+                                "Id_Serraria", "Nome_Serraria", "ativo")
         End If
         
         ' fk para consulta
@@ -861,7 +885,8 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
             ' String para consulta
             sqlSelectPesquisarPorId = "SELECT * FROM Polideiras WHERE Id_Polidoria = " & fkObject & ";"
             ' Setando Objeto
-            bloco.setPolideira retornarObjeto(polideira, sqlSelectPesquisarPorId, "Id_Polidoria", "Nome_Polidoria")
+            bloco.setPolideira retornarObjeto(polideira, sqlSelectPesquisarPorId, _
+                                "Id_Polidoria", "Nome_Polidoria", "ativo")
         End If
         
         ' fk para consulta
@@ -869,21 +894,24 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
         ' String para consulta
         sqlSelectPesquisarPorId = "SELECT * FROM Status WHERE Id_Status = " & fkObject & ";"
         ' Setando Objeto
-        bloco.setStatus retornarObjeto(status, sqlSelectPesquisarPorId, "Id_Status", "Nome_Status")
+        bloco.setStatus retornarObjeto(status, sqlSelectPesquisarPorId, _
+                                "Id_Status", "Nome_Status", "ativo")
     
         ' fk para consulta
         fkObject = rsBloco.Fields("Fk_Tipo_Material").Value
         ' String para consulta
         sqlSelectPesquisarPorId = "SELECT * FROM Tipo_Material WHERE Id_Tipo_Material = " & fkObject & ";"
         ' Setando Objeto
-        bloco.setTipoMaterial retornarObjeto(tipoMaterial, sqlSelectPesquisarPorId, "Id_Tipo_Material", "Nome_Tipo_Material")
+        bloco.setTipoMaterial retornarObjeto(tipoMaterial, sqlSelectPesquisarPorId, _
+                                "Id_Tipo_Material", "Nome_Tipo_Material", "ativo")
         
         ' fk para consulta
         fkObject = rsBloco.Fields("Fk_Estoque").Value
         ' String para consulta
-        sqlSelectPesquisarPorId = "SELECT * FROM Estoque_blocos WHERE Id_Estoque = " & fkObject & ";"
+        sqlSelectPesquisarPorId = "SELECT * FROM Estoques WHERE Id_Estoque = " & fkObject & ";"
         ' Setando Objeto
-        bloco.setEstoque retornarObjeto(estoque, sqlSelectPesquisarPorId, "Id_Estoque", "Empresa")
+        bloco.setEstoque retornarObjeto(estoque, sqlSelectPesquisarPorId, _
+                                "Id_Estoque", "nome_empresa", "ativo")
     
         ' Adiciona na lista
         listaBlocos.Add bloco
@@ -917,7 +945,9 @@ Function listarBlocosFilter(dataInicial As String, dataFinal As String, idBlocoP
 End Function
 
 ' Metodo auxiliar para montar o objeto bloco
-Function retornarObjeto(objeto As Object, sqlSelect As String, StringIdBanco As String, StringNomeBanco As String) As Object
+Function retornarObjeto(objeto As Object, sqlSelect As String, StringIdBanco As String, StringNomeBanco As String, _
+                    StringAtivoBanco As String) As Object
+                    
     ' Variaveis do metodo
     Dim rsAuxiliar As ADODB.Recordset ' Recordset para consulta
     
@@ -930,6 +960,7 @@ Function retornarObjeto(objeto As Object, sqlSelect As String, StringIdBanco As 
         ' Atribuição dos atributos
         objeto.id = rsAuxiliar.Fields(StringIdBanco).Value
         objeto.nome = rsAuxiliar.Fields(StringNomeBanco).Value
+        objeto.ativo = rsAuxiliar.Fields(StringAtivoBanco).Value
         
         rsAuxiliar.MoveNext
     Wend

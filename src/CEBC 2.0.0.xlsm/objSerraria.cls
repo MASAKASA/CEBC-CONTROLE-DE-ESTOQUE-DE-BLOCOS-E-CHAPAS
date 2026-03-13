@@ -11,14 +11,17 @@ Option Explicit
 
 Public id As Long
 Public nome As String
+Public ativo As String
 
 ' Construtor para cadastro
-Public Sub carregarSerrariaCadastro(nomeSerraria As String)
+Public Sub carregarSerrariaCadastro(nomeSerraria As String, ativo As String)
     Me.nome = nomeSerraria
+    Me.ativo = ativo
 End Sub
 
 ' Construtor para manipulação
-Public Sub carregarSerrariaManipulacao(id As Long, nomeSerraria As String)
+Public Sub carregarSerrariaManipulacao(id As Long, nomeSerraria As String, ativo As String)
     Me.id = id
     Me.nome = nomeSerraria
+    Me.ativo = ativo
 End Sub

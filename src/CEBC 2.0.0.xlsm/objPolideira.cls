@@ -11,14 +11,17 @@ Option Explicit
 
 Public id As Long
 Public nome As String
+Public ativo As String
 
 ' Construtor cadastro
-Public Sub carregarPolideiraCadastro(nomePolideira As String)
+Public Sub carregarPolideiraCadastro(nomePolideira As String, ativo As String)
     Me.nome = nomePedreira
+    Me.ativo = ativo
 End Sub
 
 ' Construtor para manipulação
-Public Sub carregarPolideiraManipulacao(id As Long, nomePolideira As String)
+Public Sub carregarPolideiraManipulacao(id As Long, nomePolideira As String, ativo As String)
     Me.id = id
     Me.nome = nomePolideira
+    Me.ativo = ativo
 End Sub

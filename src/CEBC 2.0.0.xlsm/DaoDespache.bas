@@ -375,147 +375,156 @@ Function cadastrarEditarMotoristaMateriais(despache As objDespache)
     Next i
 End Function
 
-' Exclui objeto
-Function excluir(id As String)
-'    ' String para consultas
-'    Dim rs As ADODB.Recordset ' Recordset para consulta principal
-'    Dim strSql As String ' String para consultas
-'
-'    'Faz a consulta para saber se o código do bloco já exite
-'    strSql = "DELETE * FROM Destinos WHERE Id_Destino = " & id & ";"
-'
-'    ' Abrindo conexão com banco
-'    Call conctarBanco
-'    ' Criando e abrindo Recordset para consulta
-'    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
-'
-'    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockPessimistic
-'
-'    Set rs = Nothing
-'    'Fechando conexão com banco
-'    Call fecharConexaoBanco
-End Function
-
 ' Pesquisa objeto por id
-Function pesquisarPorId(id As String) As objDespache
-'    ' String para consultas
-'    Dim rs As ADODB.Recordset
-'    Dim strSql As String
-'
-'    ' Criação e atribuição do objeto
-'    Set destino = ObjectFactory.factoryDestino(destino)
-'
-'    ' String para consulta
-'    strSql = "SELECT * FROM Destinos" _
-'        & " WHERE Id_Destino = '" & id & "';"
-'
-'    'Abrindo conexão com banco
-'    Call conctarBanco
-'    ' Criando e abrindo Recordset para consulta
-'    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
-'    ' Consulta banco
-'    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
-'
-'    While Not rs.EOF
-'        destino.id = rs.Fields("Id_Destino").Value
-'        destino.nome = rs.Fields("Nome_Destino").Value
-'
-'        rs.MoveNext
-'    Wend
-'
-'    ' Libera espaço na memoria
-'    Set rs = Nothing
-'    'Fechar conexão com banco
-'    Call fecharConexaoBanco
-'
-'    ' Retorno
-'    Set pesquisarPorId = destino
-'    ' Libera espaço na memoria
-'    Set destino = Nothing
+Function pesquisarPorId(id As Integer) As objDespache
+    
+    ' String para consultas
+    Dim strSql As String ' String para consultas
+    Dim sqlSelectPesquisarPorId As String ' String para consultas
+    Dim fkObject As String ' fk para consultas extras
+    Dim rs As ADODB.Recordset ' Recordset para consulta principal
+    
+    ' String para consulta
+    strSql = "SELECT * FROM Carregos_despaches WHERE Id_Carrego = " & id & ";"
+    
+    'Abrindo conexão com banco
+    Call conctarBanco
+    
+    ' Criação e atribuição dos objeto
+    Set despache = ObjectFactory.factoryDespache(despache)
+    
+    ' Criando e abrindo Recordset para consulta
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
+    
+    ' Consulta banco
+    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
+    
+    While Not rs.EOF
+        
+        despache.id = rs.Fields("Id_Carrego").Value
+        despache.dataDespache = rs.Fields("Data_carrego").Value
+        despache.despachado = rs.Fields("despachado").Value
+        despache.qtdChapas = rs.Fields("qtd_chapas").Value
+        
+        
+        'Atribuições dos objetos
+        ' fk para consulta
+        fkObject = rs.Fields("fk_motorista").Value
+        ' String para consulta
+        sqlSelectPesquisarPorId = "SELECT * FROM Motoristas WHERE Id_Motorista = " & fkObject & ";"
+        ' Setando Objeto
+        despache.setMotorista retornarObjeto(moto, sqlSelectPesquisarPorId, _
+                            "id_motorista", "nome_motorista", "ativo")
+        
+        ' fk para consulta
+        fkObject = rs.Fields("fk_destino").Value
+        ' String para consulta
+        sqlSelectPesquisarPorId = "SELECT * FROM Destinos WHERE id_destino = " & fkObject & ";"
+        ' Setando Objeto
+        despache.setDestino retornarObjeto(tipoPolimento, sqlSelectPesquisarPorId, _
+                            "id_destino", "nome_destino", "ativo")
+                            
+        rs.MoveNext
+    Wend
+    
+    ' Libera recurso Recordset
+    rs.Close
+    Set rs = Nothing
+    
+    ' Fechar conexão com banco
+    Call fecharConexaoBanco
+    
+    Set pesquisarPorId = despache
+    
+    Set despache = Nothing
 End Function
 
-' Pesquisa objeto por nome
-Function pesquisarPorNome(nomeDestino As String) As objDespache
-'    ' String para consultas
-'    Dim rs As ADODB.Recordset
-'    Dim strSql As String
-'
-'    ' Criação e atribuição do objeto
-'    Set destino = ObjectFactory.factoryDestino(destino)
-'
-'    ' String para consulta
-'    strSql = "SELECT * FROM Destinos" _
-'        & " WHERE Nome_Destino = '" & nomeDestino & "';"
-'
-'    'Abrindo conexão com banco
-'    Call conctarBanco
-'    ' Criando e abrindo Recordset para consulta
-'    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
-'    ' Consulta banco
-'    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
-'
-'    While Not rs.EOF
-'        destino.id = rs.Fields("Id_Destino").Value
-'        destino.nome = rs.Fields("Nome_Destino").Value
-'
-'        rs.MoveNext
-'    Wend
-'
-'    ' Libera espaço na memoria
-'    Set rs = Nothing
-'    'Fechar conexão com banco
-'    Call fecharConexaoBanco
-'
-'    ' Retorno
-'    Set pesquisarPorNome = destino
-'    ' Libera espaço na memoria
-'    Set destino = Nothing
+' Pesquisar por motorista materiais
+Function listaMateriaisMotoristasSalvos(despache As objDespache)
+
+
 End Function
 
 ' Pesquisa objeto
-Function listarDestinos() As Collection
-'    ' String para consultas
-'    Dim strSql As String ' String para consultas
-'    Dim rs As ADODB.Recordset ' Recordset para consulta principal
-'
-'    ' String para consulta
-'    strSql = "SELECT * FROM Destinos ORDER BY Nome_Destino;"
-'
-'    'Abrindo conexão com banco
-'    Call conctarBanco
-'    ' Criação e atribuição dos objeto
-'    Set listaDestinos = ObjectFactory.factoryLista(listaDestinos)
-'    ' Criando e abrindo Recordset para consulta
-'    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
-'    ' Consulta banco
-'    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
-'
-'    While Not rs.EOF
-'        ' Criação e atribuição do objeto
-'        Set destino = ObjectFactory.factoryDestino(destino)
-'
-'        destino.id = rs.Fields("Id_Destino").Value
-'        destino.nome = rs.Fields("Nome_Destino").Value
-'
-'        ' Adiciona na lista
-'        listaDestinos.add destino
-'
-'        ' Libera espaço para nova pesquisa se ouver
-'        Set destino = Nothing
-'
-'        rs.MoveNext
-'    Wend
-'    ' Libera recurso Recordset
-'    rs.Close
-'    Set rs = Nothing
-'    ' Fechar conexão com banco
-'    Call fecharConexaoBanco
-'
-'    ' Retorna pesquisa
-'    Set listarDestinos = listaDestinos
-'
-'    ' Libera espaço
-'    Set listaDestinos = Nothing
+Function listarDespachesSalvos()
+    
+    ' String para consultas
+    Dim rs As ADODB.Recordset ' Recordset para consulta principal
+    Dim strSql As String ' String para consultas
+    Dim mensagem As String
+    Dim qtdLista As Integer
+    Dim id As Integer
+    Dim i As Integer
+    
+    ' Criando e abrindo Recordset para consulta
+    Set rs = ObjectFactory.factoryRsAuxiliar(rs)
+    Set listaDespaches = ObjectFactory.factoryLista(listaDespaches)
+    
+    ' String para consulta
+    strSql = "SELECT * FROM Carregos_despaches WHERE despachado = 'NAO' ORDER BY Id_Carrego;"
+    
+    'Abrindo conexão com banco
+    Call conctarBanco
+    
+    ' Consulta banco
+    rs.Open strSql, CONEXAO_BD, adOpenKeyset, adLockReadOnly
+    
+    While Not rs.EOF
+        
+        id = rs.Fields("Id_Carrego").Value
+                            
+        listaDespaches.Add id
+        
+        rs.MoveNext
+    Wend
+    
+    ' Libera recurso Recordset
+    rs.Close
+    Set rs = Nothing
+    
+    ' Fechar conexão com banco
+    Call fecharConexaoBanco
+    
+    mensagem = "Carregamentos salvos: "
+    qtdLista = listaDespaches.Count
+    
+    For i = 1 To listaDespaches.Count
+        If i < qtdLista Then
+            mensagem = mensagem & listaDespaches.Item(i) & ", "
+        Else
+            mensagem = mensagem & listaDespaches.Item(i) & "."
+        End If
+    Next i
+    
+    ' Mensagem de retorno
+    MsgBox mensagem, vbInformation, "CARREGAMENTOS SALVOS"
+    
+    Set listaDespaches = Nothing
 End Function
 
-
+' Metodo auxiliar para montar o objeto bloco
+Function retornarObjeto(objeto As Object, sqlSelect As String, StringIdBanco As String, StringNomeBanco As String, _
+                    StringAtivoBanco As String) As Object
+                    
+    ' Variaveis do metodo
+    Dim rsAuxiliar As ADODB.Recordset ' Recordset para consulta
+    
+    ' Criando e abrindo Recordset para consulta
+    Set rsAuxiliar = ObjectFactory.factoryRsAuxiliar(rsAuxiliar)
+    ' Abrindo Recordset para consulta
+    rsAuxiliar.Open sqlSelect, CONEXAO_BD, adOpenKeyset, adLockReadOnly
+    ' Retorno da consulta
+    While Not rsAuxiliar.EOF
+        ' Atribuição dos atributos
+        objeto.id = rsAuxiliar.Fields(StringIdBanco).Value
+        objeto.nome = rsAuxiliar.Fields(StringNomeBanco).Value
+        objeto.nome = rsAuxiliar.Fields(StringAtivoBanco).Value
+        
+        rsAuxiliar.MoveNext
+    Wend
+    ' Libera recurso Recordset
+    rsAuxiliar.Close
+    Set rsAuxiliar = Nothing
+    ' Retorno
+    Set retornarObjeto = objeto
+End Function

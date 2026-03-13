@@ -11,14 +11,17 @@ Option Explicit
 
 Public id As Long
 Public nome As String
+Public ativo As String
 
 ' Construtor para cadastro
-Public Sub carregarPedreiraCadastro(nomePedreira As String)
+Public Sub carregarPedreiraCadastro(nomePedreira As String, ativo As String)
     Me.nome = nomePedreira
+    Me.ativo = ativo
 End Sub
 
 ' Construtor para manipulação
-Public Sub carregarPedreiraManipulacao(id As Long, nomePedreira As String)
+Public Sub carregarPedreiraManipulacao(id As Long, nomePedreira As String, ativo As String)
     Me.id = id
     Me.nome = nomePedreira
+    Me.ativo = ativo
 End Sub

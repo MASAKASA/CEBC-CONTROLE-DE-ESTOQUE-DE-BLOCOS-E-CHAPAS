@@ -5,7 +5,7 @@ Private listaTamanhos As Collection
 Private tipoMaterial As objTipoMaterial
 Private tamanho As objTamanho
 Private polideira As objPolideira
-Private estoque As objEstoqueChapa
+Private estoque As objEstoque
 Private chapa As objChapa
 
 ' Cadastra e edita objeto

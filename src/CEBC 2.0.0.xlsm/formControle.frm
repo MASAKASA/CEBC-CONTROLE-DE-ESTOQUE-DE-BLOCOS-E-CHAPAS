@@ -41,7 +41,6 @@ Dim tipoMaterial As objTipoMaterial
 Dim tipoPolimento As objTipoPolimento
 Dim statusObj As objStatus
 Dim estoque As objEstoque
-Dim estoqueChapa As objEstoqueChapa
 Dim motorista As objMotorista
 Dim destino As objDestino
 Dim despache As objDespache
@@ -378,9 +377,10 @@ Private Sub btnLTxtNovoBloco_MouseDown(ByVal Button As Integer, ByVal Shift As I
     Call carregarSerrarias(Me.cbSerrariaCB)
     Call carregarTiposMateriais(Me.cbTipoMaterial)
     Call carregarTemNota(Me.cbNotaC)
+    Call carregarEstoque(Me.cbEstoqueFisicoBloco)
     
     ' Pesquisa blocos cadastrado no dia atual
-    Set listaObjeto = daoBloco.listarBlocosFilter(Date, Date, "", "", "", "", "", "", "", "", "", "", "")
+    Set listaObjeto = daoBloco.listarBlocosFilter(Date, Date, "", "", "", "", "", "", "", "", "", "", "", "")
     
     ' Chama metodo para carregar lista e blocos cadastros do dia atual
     Call carregarList(Me.listCadastradosHoje, listaObjeto)
@@ -471,7 +471,7 @@ Private Sub btnLTxtADDEstoque_MouseDown(ByVal Button As Integer, ByVal Shift As 
         Me.MultiPageCEBC.Value = 6
         ' Carrega combox da tela lançamento e edição de chapa
         Call carregarTiposMateriais(Me.cbTipoMaterialChapaC)
-        Call carregarEstoqueChapas(Me.cbEstoqueChapaC)
+        Call carregarEstoque(Me.cbEstoqueChapaC)
         Call carregarPolideiras(Me.cbPolideiraChapa)
         
         ' limpa a lista para carregamento com tipo de polimento só com 'bruto'
@@ -770,7 +770,7 @@ Private Sub btnLTxtCadastrarBloco_MouseDown(ByVal Button As Integer, ByVal Shift
         Set serraria = daoSerrada.pesquisarPorNome(cbSerrariaCB.Value)
         Set tipoMaterial = daoTipoMaterial.pesquisarPorNome(cbTipoMaterial.Value)
         Set statusObj = daoStatus.pesquisarPorNome(nomeStatus)
-        Set estoque = daoEstoqueM3.pesquisarPorNome("CASA DO GRANITO")
+        Set estoque = daoEstoque.pesquisarPorNome(cbEstoqueFisicoBloco.Value)
         Set bloco = ObjectFactory.factoryBloco(bloco)
         Set blocoPesquisa = ObjectFactory.factoryBloco(blocoPesquisa)
         
@@ -798,7 +798,7 @@ Private Sub btnLTxtCadastrarBloco_MouseDown(ByVal Button As Integer, ByVal Shift
                 Call limparCamposCadastroBlocos
                 ' Recarregar a lista com blocos cadastrados hoje
                 ' Pesquisa blocos cadastrado no dia atual
-                Set listaObjeto = daoBloco.listarBlocosFilter(Date, Date, "", "", "", "", "", "", "", "", "", "", "")
+                Set listaObjeto = daoBloco.listarBlocosFilter(Date, Date, "", "", "", "", "", "", "", "", "", "", "", "")
                 
                 ' Chama metodo para carregar lista e blocos cadastros do dia atual
                 Call carregarList(Me.listCadastradosHoje, listaObjeto)
@@ -3002,6 +3002,12 @@ End Sub
 
 ' Campo txtPesquisarMaterial de pesquisa de chapas tela despache
 Private Sub txtPesquisarMaterial_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    
+    If txtPesquisarMaterial.Value = "" Or txtPesquisarMaterial.Value = " " Then
+        txtPesquisarMaterial.SetFocus
+        Exit Sub
+    End If
+    
     ' Pesquisa e carrega ListBox
     Call pesquisarChapaDespachePorDescricao
     
@@ -3017,6 +3023,12 @@ End Sub
 
 ' Campo txtPesquisarPorNumeroBloco de pesquisa de chapas tela despache
 Private Sub txtPesquisarPorNumeroBloco_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    
+    If txtPesquisarPorNumeroBloco.Value = "" Or txtPesquisarPorNumeroBloco.Value = " " Then
+        txtPesquisarPorNumeroBloco.SetFocus
+        Exit Sub
+    End If
+    
     ' Pesquisa e carrega ListBox
     Call pesquisarChapaDespachePorNumeroBloco
     
@@ -3032,10 +3044,23 @@ End Sub
 
 ' Campo txtPesquisarDespache de pesquisa de chapas tela despache
 Private Sub txtPesquisarDespache_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    
+    Dim pesquisa As Integer
+    
+    If txtPesquisarDespache.Value = "" Or txtPesquisarDespache.Value = " " Then
+        txtPesquisarDespache.SetFocus
+        Exit Sub
+    ElseIf txtPesquisarDespache.Value = "*" Then
+        pesquisa = CInt("0")
+    Else
+        pesquisa = CInt(txtPesquisarDespache.Value)
+    End If
+    
     ' Pesquisa e carrega ListBox
-    Call pesquisarDespacheSalvo
-    ' Limpa campos de tamanho da chapa
-    Call limparCamposTamanho
+    Call pesquisarDespacheSalvo(pesquisa)
+    
+'    ' Limpa campos de tamanho da chapa
+'    Call limparCamposTamanho
 End Sub
 
 ' txtQuantidadeDespache tela despachar
@@ -3777,8 +3802,14 @@ Private Sub pesquisarChapaDespachePorNumeroBloco()
 End Sub
 
 ' Pesquisa lista chapas salva para despache tela despachar
-Private Sub pesquisarDespacheSalvo()
+Private Sub pesquisarDespacheSalvo(idDespache As Integer)
 
+    If idDespache = 0 Then
+        Call DaoDespache.listarDespachesSalvos
+    Else
+        Call DaoDespache.pesquisarPorId(idDespache)
+    End If
+    
 End Sub
 
 ' Pesquisa blocos com filtros tela estoque m³
@@ -3822,6 +3853,7 @@ Private Sub pesquisarBlocosFilter()
     Dim statusEmProcesso As String
     Dim statusEstoque As String
     Dim statusFechado As String
+    Dim estoqueFisico As String
     
     ' Formata a data inicial
     If txtDataInicioBlocoPesquisa.Value = "" Or Len(txtDataInicioBlocoPesquisa.Value) < 10 Then
@@ -3861,6 +3893,7 @@ Private Sub pesquisarBlocosFilter()
     pedreiraBloco = cbPedreiraBlocoPesquisa.Value
     serrariaBloco = cbSerrariaBlocoPesquisa.Value
     temNota = cbTemNota.Value
+    estoqueFisico = cbEstoqueBlocoLista.Value
     
     ' Status filter
     statusPedreira = ""
@@ -3909,7 +3942,7 @@ Private Sub pesquisarBlocosFilter()
     ' Faz pesquisa com filtros no banco de dados e retoeno uma lista
     Set listaBlocos = daoBloco.listarBlocosFilter(dataInicial, dataFinal, idBlocoPedreira, _
             descricaoBloco, pedreiraBloco, serrariaBloco, temNota, statusPedreira, statusSerraria, _
-            statusChapasBrutas, statusEmProcesso, statusEstoque, statusFechado)
+            statusChapasBrutas, statusEmProcesso, statusEstoque, statusFechado, estoqueFisico)
             
     ' Carrega a lista
     Call carregarList(ListEstoqueM3, listaBlocos)
@@ -4195,6 +4228,7 @@ Private Sub limparCamposCadastroBlocos()
     txtNomeBloco.Value = ""
     cbTipoMaterial.Value = ""
     cbNotaC.Value = ""
+    cbEstoqueFisicoBloco.Value = ""
     obPedreiraCB.Value = True
     obSerrariaCB.Value = False
     txtObsBlocoCB.Value = ""
@@ -4521,7 +4555,7 @@ Private Sub carregarEstoque(cbTiposEstoque As MSForms.comboBox)
     Dim i As Integer
     
     ' Criando a lista
-    Set listaObjetos = daoEstoqueM3.listarEstoqueM3
+    Set listaObjetos = daoEstoque.listarEstoque
 
     ' limpa a lista para carregamento
     cbTiposEstoque.Clear
@@ -4545,40 +4579,6 @@ Private Sub carregarEstoque(cbTiposEstoque As MSForms.comboBox)
     ' Libera espaço da memoria
     Set listaObjetos = Nothing
     Set estoque = Nothing
-End Sub
-
-' Carrega a combobox de estoque tela chapa
-Private Sub carregarEstoqueChapas(cbTiposEstoque As MSForms.comboBox)
-    ' Variaveis do metodo
-    Dim listaObjetos As Collection
-    Dim i As Integer
-    
-    ' Criando a lista
-    Set listaObjetos = daoEstoqueChapa.listarEstoqueChapas
-
-    ' limpa a lista para carregamento
-    cbTiposEstoque.Clear
-    
-    ' Verifica se tem algum dado a pesquisa
-    If listaObjetos.Count = -1 Or listaObjetos.Count = 0 Then ' Se não tiver dados
-        ' Mensagem de erro
-        errorStyle.Informativo SEM_DADOS_MENSAGEM, SEM_DADOS_TITULO
-        Exit Sub
-    Else
-        ' Loop através dos itens da coleção
-        For i = 1 To listaObjetos.Count
-            ' Seta o ojeto
-            Set estoqueChapa = listaObjetos(i)
-            ' Carregamento para lista
-            cbTiposEstoque.AddItem estoqueChapa.nome
-            ' Libera espaço memoria
-            Set estoqueChapa = Nothing
-        Next i
-        
-    End If
-    ' Libera espaço da memoria
-    Set listaObjetos = Nothing
-    Set estoqueChapa = Nothing
 End Sub
 
 ' Carrega a combobox de custo medio

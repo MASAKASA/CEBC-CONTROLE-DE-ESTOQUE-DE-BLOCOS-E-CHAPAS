@@ -626,7 +626,7 @@ Function listarChapasFilter(nomeMaterial As String, numeroBlocoPedreira As Strin
         ' String para consulta
         sqlSelectPesquisarPorId = "SELECT * FROM Tipo_Polimento WHERE id_polimento = " & fkObject & ";"
         ' Setando Objeto
-        chapa.setTipoPolimento retornarObjeto(tipoPolimento, sqlSelectPesquisarPorId, "id_polimento", "nome_polimento")
+        chapa.setTipoPolimento retornarObjeto(tipoPolimento, sqlSelectPesquisarPorId, "id_polimento", "nome_polimento", "ativo")
         
         ' fk para consulta
         fkObject = rsChapa.Fields("Fk_bloco").Value
@@ -898,7 +898,9 @@ Function pesquisarDespache(id As String) As objDespache
 End Function
 
 ' Metodo auxiliar para montar o objeto bloco
-Function retornarObjeto(objeto As Object, sqlSelect As String, StringIdBanco As String, StringNomeBanco As String) As Object
+Function retornarObjeto(objeto As Object, sqlSelect As String, StringIdBanco As String, StringNomeBanco As String, _
+                    StringAtivoBanco As String) As Object
+                    
     ' Variaveis do metodo
     Dim rsAuxiliar As ADODB.Recordset ' Recordset para consulta
     
@@ -911,6 +913,7 @@ Function retornarObjeto(objeto As Object, sqlSelect As String, StringIdBanco As 
         ' Atribuição dos atributos
         objeto.id = rsAuxiliar.Fields(StringIdBanco).Value
         objeto.nome = rsAuxiliar.Fields(StringNomeBanco).Value
+        objeto.nome = rsAuxiliar.Fields(StringAtivoBanco).Value
         
         rsAuxiliar.MoveNext
     Wend

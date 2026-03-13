@@ -151,16 +151,6 @@ Public Function factoryEstoque(variavelEstoque As objEstoque) As objEstoque
     Set factoryEstoque = variavelEstoque
 End Function
 
-' Criação da instância de estoque de chapas
-Public Function factoryEstoqueChapas(variavelEstoque As objEstoqueChapa) As objEstoqueChapa
-    ' Verificação se a instância já foi criada
-    If variavelEstoque Is Nothing Then
-        Set variavelEstoque = New objEstoqueChapa
-    End If
-    ' Retorna a instância
-    Set factoryEstoqueChapas = variavelEstoque
-End Function
-
 ' Criação da instância de despache
 Public Function factoryDespache(variavelDespache As objDespache) As objDespache
     ' Verificação se a instância já foi criada

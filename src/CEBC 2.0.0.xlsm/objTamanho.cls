@@ -19,13 +19,13 @@ Public espessura As String
 Public chapa As objChapa
 Public tipoMaterial As objTipoMaterial
 Public polideira As objPolideira
-Public estoque As objEstoqueChapa
+Public estoque As objEstoque
 
 ' Construtor para cadastro
 Public Sub carregarTamanhoCadastro(compremento As String, altura As String, qtdM2 As String, _
                             qtdEstoque As Integer, valorPolimento As String, espessura As String, _
                             tipoMaterial As objTipoMaterial, chapa As objChapa, polideira As objPolideira, _
-                            estoque As objEstoqueChapa)
+                            estoque As objEstoque)
     
     ' Atribuições
     Me.compremento = compremento
@@ -44,7 +44,7 @@ End Sub
 Public Sub carregarTamanhoManipulacao(id As Long, compremento As String, altura As String, qtdM2 As String, _
                             qtdEstoque As Integer, valorPolimento As String, espessura As String, _
                             tipoMaterial As objTipoMaterial, chapa As objChapa, polideira As objPolideira, _
-                            estoque As objEstoqueChapa)
+                            estoque As objEstoque)
     
     ' Atribuições
     Me.id = id
@@ -85,10 +85,10 @@ Public Function setPolideira(polideira As objPolideira)
     Set Me.polideira = polideira
 End Function
 
-Public Function getEstoque() As objEstoqueChapa
+Public Function getEstoque() As objEstoque
     getEstoque = Me.estoque
 End Function
 
-Public Function setEstoque(estoque As objEstoqueChapa)
+Public Function setEstoque(estoque As objEstoque)
     Set Me.estoque = estoque
 End Function

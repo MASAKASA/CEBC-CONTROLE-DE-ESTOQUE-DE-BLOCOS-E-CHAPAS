@@ -1,4 +1,4 @@
-Attribute VB_Name = "daoEstoqueM3"
+Attribute VB_Name = "daoEstoque"
 Option Explicit
 
 Private listaEstoques As Collection
